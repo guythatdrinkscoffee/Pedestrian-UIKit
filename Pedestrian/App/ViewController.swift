@@ -11,9 +11,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        // config
+        configureViewController()
     }
 
 
+}
+
+// MARK: - Config
+private extension ViewController {
+    private func configureViewController() {
+        view.backgroundColor = .systemBackground
+    }
 }
 
