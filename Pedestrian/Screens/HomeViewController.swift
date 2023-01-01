@@ -15,18 +15,30 @@ class HomeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     private var stepData: AnyCancellable?
     
+    // MARK: - UI
+    private let stepProgressView = StepProgressView(frame: .zero)
+  
    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // config
         configureViewController()
+        configureProgressView()
+        
+        // layout
+        layoutViews()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        print(#function)
         checkAuthorizationStatus()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print(#function)
     }
 }
 
@@ -34,6 +46,24 @@ class HomeViewController: UIViewController {
 private extension HomeViewController {
     private func configureViewController() {
         view.backgroundColor = .systemBackground
+    }
+    
+    private func configureProgressView() {
+        stepProgressView.translatesAutoresizingMaskIntoConstraints = false
+        stepProgressView.updateMax(10000)
+    }
+}
+
+// MARK: - Layout
+private extension HomeViewController {
+    private func layoutViews() {
+        view.addSubview(stepProgressView)
+        
+        NSLayoutConstraint.activate([
+            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+        ])
     }
 }
 
@@ -56,7 +86,14 @@ private extension HomeViewController {
             .pedometerData
             .sink { pedometerData in
                 print(pedometerData.numberOfSteps)
+                self.updateStepProgress(pedometerData.numberOfSteps)
             }
+    }
+    
+    private func updateStepProgress(_ value: NSNumber) {
+        DispatchQueue.main.async {
+            self.stepProgressView.updateProgress(value.intValue)
+        }
     }
     
     private func handleStatus(_ status: CMAuthorizationStatus) {

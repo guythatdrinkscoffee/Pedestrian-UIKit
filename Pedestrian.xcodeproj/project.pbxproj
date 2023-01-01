@@ -13,6 +13,7 @@
 		BE15AF40296134C9007D4D23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF3F296134C9007D4D23 /* Assets.xcassets */; };
 		BE15AF43296134C9007D4D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF41296134C9007D4D23 /* LaunchScreen.storyboard */; };
 		BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerService.swift */; };
+		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		BE15AF42296134C9007D4D23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE15AF44296134C9007D4D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE15AF4E2962168D007D4D23 /* PedometerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerService.swift; sourceTree = "<group>"; };
+		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
+				BE15AF5029622EC0007D4D23 /* Views */,
 				BE15AF4D29621684007D4D23 /* Services */,
 				BE15AF4C29621628007D4D23 /* Screens */,
 				BE15AF4B296134DF007D4D23 /* Support */,
@@ -97,6 +100,14 @@
 				BE15AF4E2962168D007D4D23 /* PedometerService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		BE15AF5029622EC0007D4D23 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BE15AF5129622F38007D4D23 /* StepProgressView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +183,7 @@
 				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
+				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
