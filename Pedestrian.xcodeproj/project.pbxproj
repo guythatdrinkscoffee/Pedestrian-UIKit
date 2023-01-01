@@ -9,19 +9,21 @@
 /* Begin PBXBuildFile section */
 		BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF36296134C8007D4D23 /* AppDelegate.swift */; };
 		BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF38296134C8007D4D23 /* SceneDelegate.swift */; };
-		BE15AF3B296134C8007D4D23 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* ViewController.swift */; };
+		BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeViewController.swift */; };
 		BE15AF40296134C9007D4D23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF3F296134C9007D4D23 /* Assets.xcassets */; };
 		BE15AF43296134C9007D4D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF41296134C9007D4D23 /* LaunchScreen.storyboard */; };
+		BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BE15AF33296134C8007D4D23 /* Pedestrian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pedestrian.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE15AF36296134C8007D4D23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE15AF38296134C8007D4D23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BE15AF3A296134C8007D4D23 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BE15AF3A296134C8007D4D23 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BE15AF3F296134C9007D4D23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE15AF42296134C9007D4D23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE15AF44296134C9007D4D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE15AF4E2962168D007D4D23 /* PedometerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,8 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
+				BE15AF4D29621684007D4D23 /* Services */,
+				BE15AF4C29621628007D4D23 /* Screens */,
 				BE15AF4B296134DF007D4D23 /* Support */,
 				BE15AF4A296134D7007D4D23 /* App */,
 			);
@@ -65,7 +69,6 @@
 			children = (
 				BE15AF36296134C8007D4D23 /* AppDelegate.swift */,
 				BE15AF38296134C8007D4D23 /* SceneDelegate.swift */,
-				BE15AF3A296134C8007D4D23 /* ViewController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -78,6 +81,22 @@
 				BE15AF44296134C9007D4D23 /* Info.plist */,
 			);
 			name = Support;
+			sourceTree = "<group>";
+		};
+		BE15AF4C29621628007D4D23 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				BE15AF3A296134C8007D4D23 /* HomeViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		BE15AF4D29621684007D4D23 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BE15AF4E2962168D007D4D23 /* PedometerService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +169,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE15AF3B296134C8007D4D23 /* ViewController.swift in Sources */,
+				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
+				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

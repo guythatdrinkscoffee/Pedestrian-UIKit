@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = scene
         
         // assign the root view controller
-        window?.rootViewController = ViewController()
+        window?.rootViewController = HomeViewController()
         
         // make the window visible
         window?.makeKeyAndVisible()
