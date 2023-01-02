@@ -36,7 +36,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemBlue.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 8
+        layer.lineWidth = 15
         return layer
     }()
     

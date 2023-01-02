@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F912C0F8C33A5FA45575B94 /* Pods_Pedestrian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */; };
 		BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF36296134C8007D4D23 /* AppDelegate.swift */; };
 		BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF38296134C8007D4D23 /* SceneDelegate.swift */; };
 		BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeViewController.swift */; };
@@ -21,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pedestrian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.debug.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.debug.xcconfig"; sourceTree = "<group>"; };
 		BE15AF33296134C8007D4D23 /* Pedestrian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pedestrian.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE15AF36296134C8007D4D23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE15AF38296134C8007D4D23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +37,7 @@
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsViewController.swift; sourceTree = "<group>"; };
+		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F912C0F8C33A5FA45575B94 /* Pods_Pedestrian.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +57,8 @@
 			children = (
 				BE15AF35296134C8007D4D23 /* Pedestrian */,
 				BE15AF34296134C8007D4D23 /* Products */,
+				DAEAD486A0AE2B716F35EF09 /* Pods */,
+				EA0991CA1E1F4808C7AF34FC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -130,6 +137,24 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		DAEAD486A0AE2B716F35EF09 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */,
+				D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EA0991CA1E1F4808C7AF34FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,9 +162,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE15AF47296134C9007D4D23 /* Build configuration list for PBXNativeTarget "Pedestrian" */;
 			buildPhases = (
+				CDD4C03AFBBADCAD77309B6A /* [CP] Check Pods Manifest.lock */,
 				BE15AF2F296134C8007D4D23 /* Sources */,
 				BE15AF30296134C8007D4D23 /* Frameworks */,
 				BE15AF31296134C8007D4D23 /* Resources */,
+				E3F9E510CB97D34BC1AC94CF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,6 +221,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CDD4C03AFBBADCAD77309B6A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Pedestrian-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3F9E510CB97D34BC1AC94CF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BE15AF2F296134C8007D4D23 /* Sources */ = {
@@ -342,6 +411,7 @@
 		};
 		BE15AF48296134C9007D4D23 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -370,6 +440,7 @@
 		};
 		BE15AF49296134C9007D4D23 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

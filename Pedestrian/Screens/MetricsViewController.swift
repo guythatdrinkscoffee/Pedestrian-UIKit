@@ -17,8 +17,6 @@ class MetricsViewController: UIViewController {
     
     public var minimumHeight: CGFloat = 0.0
     
-    public var cornerRadius: CGFloat = 15
-    
     private var fullHeight: CGFloat {
         return (self.parent?.view.frame.height ?? 0.0) * 1
     }
@@ -52,23 +50,13 @@ class MetricsViewController: UIViewController {
         super.viewDidAppear(animated)
         
     }
-    
-    private func snapTo(height: CGFloat) {
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self = self else { return }
-            let frame = self.view.frame
-            self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
-        }
-    }
-    
-    
 }
 
 // MARK: - Config
 private extension MetricsViewController {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
-        view.layer.cornerRadius = cornerRadius
+        view.layer.cornerRadius = 10
     }
 }
 
@@ -104,5 +92,13 @@ private extension MetricsViewController {
                 sender.transform = .identity
             }
         })
+    }
+    
+    private func snapTo(height: CGFloat) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self = self else { return }
+            let frame = self.view.frame
+            self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
+        }
     }
 }
