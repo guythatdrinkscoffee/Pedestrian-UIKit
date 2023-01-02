@@ -36,7 +36,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemBlue.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 18
+        layer.lineWidth = 8
         return layer
     }()
     
@@ -45,6 +45,7 @@ class StepProgressView: UIView {
         label.font = .monospacedSystemFont(ofSize: 32, weight: .black)
         label.minimumScaleFactor = 0.5
         label.textAlignment = .center
+        label.text = "\(0)"
         return label
     }()
     

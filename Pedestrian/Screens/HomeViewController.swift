@@ -34,7 +34,20 @@ class HomeViewController: UIViewController {
     
     private var maxSteps = 10000
     
+    private var minOpeningHeight: CGFloat {
+        let height = view.frame.height
+        let safeAreaTop = view.safeAreaInsets.top
+        let padding = 16.0 * 2
+        return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop)
+    }
+    
     // MARK: - UI
+    private lazy var metricsViewController : MetricsViewController = {
+        let drawer = MetricsViewController()
+        drawer.minimumHeight = minOpeningHeight
+        return drawer
+    }()
+    
     private let stepProgressView = StepProgressView(frame: .zero)
     
     private let stairsClimbedSection = InfoSection(
@@ -72,8 +85,13 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(#function)
+        
+        // config
+        configureMetricsViewController()
+        
+        
         checkAuthorizationStatus()
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -93,6 +111,9 @@ private extension HomeViewController {
         stepProgressView.updateMax(maxSteps)
     }
     
+    private func configureMetricsViewController() {
+        add(metricsViewController, frame: CGRectMake(0, view.frame.maxY - minOpeningHeight, view.frame.width, view.frame.height))
+    }
 }
 
 // MARK: - Layout
@@ -101,10 +122,10 @@ private extension HomeViewController {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
         
-        infoRow.addSections([stairsClimbedSection, distanceTraveledSection])
+        infoRow.addSections([distanceTraveledSection, stairsClimbedSection])
         
         NSLayoutConstraint.activate([
-            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1.5),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -160,7 +181,7 @@ private extension HomeViewController {
             .sink(receiveCompletion: { _ in
                 
             }, receiveValue: { weeklyStepData in
-                print(weeklyStepData)
+//                print(weeklyStepData)
             })
     }
    
@@ -203,3 +224,21 @@ private extension HomeViewController {
     }
 }
 
+extension UIViewController {
+    func add(_ child: UIViewController, frame: CGRect? = nil) {
+         addChild(child)
+
+         if let frame = frame {
+             child.view.frame = frame
+         }
+
+         view.addSubview(child.view)
+         child.didMove(toParent: self)
+     }
+
+     func remove() {
+         willMove(toParent: nil)
+         view.removeFromSuperview()
+         removeFromParent()
+     }
+}

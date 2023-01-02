@@ -18,6 +18,7 @@ final class PedometerService {
     private var pedometer: CMPedometer
     
     private var calendar: Calendar
+    
     // MARK: - Life cycle
     init(calendar: Calendar = .current) {
         self.pedometer = CMPedometer()
@@ -68,18 +69,17 @@ final class PedometerService {
     }
     
     private func getCurrentWeek(date: Date = .now) -> [Date] {
-        let cal = Calendar.current
         let currentDate = date
         var dates = [Date]()
         
-        let weekInterval = cal.dateInterval(of: .weekOfMonth, for: currentDate)
+        let weekInterval = calendar.dateInterval(of: .weekOfMonth, for: currentDate)
         
         guard let startOfWeek = weekInterval?.start else {
             return []
         }
         
         for i in 0..<7 {
-            if let nextDay = cal.date(byAdding: .day,value: i, to: startOfWeek){
+            if let nextDay = calendar.date(byAdding: .day,value: i, to: startOfWeek){
                 dates.append(nextDay)
             }
         }

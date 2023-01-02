@@ -17,6 +17,7 @@
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
+		BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
+		BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				BE15AF3A296134C8007D4D23 /* HomeViewController.swift */,
+				BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
+				BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
