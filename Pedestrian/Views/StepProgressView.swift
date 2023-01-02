@@ -106,8 +106,9 @@ class StepProgressView: UIView {
     }
     
     // MARK: - Public Methods
-    public func updateMax(_ max: CGFloat) {
-        self.maxValue = max
+    public func updateMax(_ max: Int) {
+        let maxValue = CGFloat(max)
+        self.maxValue = maxValue
     }
     
     public func updateProgress( _ value: Int) {

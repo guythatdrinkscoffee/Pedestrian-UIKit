@@ -12,8 +12,12 @@ import CoreMotion
 class HomeViewController: UIViewController {
     // MARK: - Properties
     private var pedometerService = PedometerService()
+    
     private var cancellables = Set<AnyCancellable>()
+    
     private var stepData: AnyCancellable?
+    
+    private var weeklydata: AnyCancellable?
     
     private lazy var measurementFormatter : MeasurementFormatter = {
         let formatter = MeasurementFormatter()
@@ -27,6 +31,8 @@ class HomeViewController: UIViewController {
         
         return formatter
     }()
+    
+    private var maxSteps = 10000
     
     // MARK: - UI
     private let stepProgressView = StepProgressView(frame: .zero)
@@ -51,7 +57,7 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-   // MARK: - Life cycle
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,8 +67,9 @@ class HomeViewController: UIViewController {
         
         // layout
         layoutViews()
-    }
 
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(#function)
@@ -83,9 +90,9 @@ private extension HomeViewController {
     
     private func configureProgressView() {
         stepProgressView.translatesAutoresizingMaskIntoConstraints = false
-        stepProgressView.updateMax(10000)
+        stepProgressView.updateMax(maxSteps)
     }
-
+    
 }
 
 // MARK: - Layout
@@ -101,7 +108,7 @@ private extension HomeViewController {
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-         
+            
             infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 1),
             infoRow.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -121,20 +128,42 @@ private extension HomeViewController {
             .store(in: &cancellables)
     }
     
-    private func startUpdatingSteps() {
-        pedometerService
-            .startForCurrentDay(.now)
+    private func updateWithTimer() {
+        var current = 200
+        Timer
+            .publish(every: 3, on: .main, in: .common)
+            .autoconnect()
+            .sink { _ in
+                current += 300
+                self.updateStepProgress(current as NSNumber)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func startUpdatingLiveSteps() {
+        pedometerService.startLiveUpdates()
         
         stepData = pedometerService
             .pedometerData
-            .sink { pedometerData in
+            .sink(receiveValue: { pedometerData in
                 DispatchQueue.main.async {
                     self.updateStepProgress(pedometerData.numberOfSteps)
                     self.updateFloorsClimbed(pedometerData.floorsAscended)
                     self.updateDistanceTraveled(pedometerData.distance)
                 }
-            }
+            })
     }
+    
+    private func updateForCurrentWeek() {
+        weeklydata = pedometerService
+            .getStepsForCurrentWeek()
+            .sink(receiveCompletion: { _ in
+                
+            }, receiveValue: { weeklyStepData in
+                print(weeklyStepData)
+            })
+    }
+   
     
     private func updateStepProgress(_ value: NSNumber) {
         DispatchQueue.main.async {
@@ -166,9 +195,11 @@ private extension HomeViewController {
         case .denied:
             print("denied")
         case .authorized:
-            startUpdatingSteps()
+            startUpdatingLiveSteps()
+            updateForCurrentWeek()
         @unknown default:
             fatalError("failed to determined authorization status")
         }
     }
 }
+
