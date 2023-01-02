@@ -9,15 +9,20 @@ import UIKit
 import Combine
 import CoreMotion
 
+protocol MetricsDelegate: AnyObject {
+    func provideWeeklyData(_ viewController: UIViewController)
+}
+
+
 class HomeViewController: UIViewController {
     // MARK: - Properties
     private var pedometerService = PedometerService()
     
     private var cancellables = Set<AnyCancellable>()
     
-    private var stepData: AnyCancellable?
+    private var stepDataCancellable: AnyCancellable?
     
-    private var weeklydata: AnyCancellable?
+    private var weeklydataCancellable: AnyCancellable?
     
     private lazy var measurementFormatter : MeasurementFormatter = {
         let formatter = MeasurementFormatter()
@@ -41,11 +46,20 @@ class HomeViewController: UIViewController {
         return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop)
     }
     
+    private var weeklyStepData: [CMPedometerData] = [] {
+        didSet {
+            metricsViewController.updateMetrics(weeklyStepData)
+        }
+    }
+    
+    private var authorizationStatus: CMAuthorizationStatus = .notDetermined
+    
     // MARK: - UI
     private lazy var metricsViewController : MetricsViewController = {
-        let drawer = MetricsViewController()
-        drawer.minimumHeight = minOpeningHeight
-        return drawer
+        let controller = MetricsViewController()
+        controller.minimumHeight = minOpeningHeight
+        controller.delegate = self
+        return controller
     }()
     
     private let stepProgressView = StepProgressView(frame: .zero)
@@ -91,12 +105,6 @@ class HomeViewController: UIViewController {
         
         
         checkAuthorizationStatus()
-        
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print(#function)
     }
 }
 
@@ -164,7 +172,7 @@ private extension HomeViewController {
     private func startUpdatingLiveSteps() {
         pedometerService.startLiveUpdates()
         
-        stepData = pedometerService
+        stepDataCancellable = pedometerService
             .pedometerData
             .sink(receiveValue: { pedometerData in
                 DispatchQueue.main.async {
@@ -176,15 +184,26 @@ private extension HomeViewController {
     }
     
     private func updateForCurrentWeek() {
-        weeklydata = pedometerService
+        weeklydataCancellable = pedometerService
             .getStepsForCurrentWeek()
-            .sink(receiveCompletion: { _ in
-                
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                print(completion)
             }, receiveValue: { weeklyStepData in
-//                print(weeklyStepData)
+                self.weeklyStepData = weeklyStepData
             })
     }
    
+    private func updateForLastSevenDays() {
+        weeklydataCancellable = pedometerService
+            .getStepsForLastSevenDays()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                print(completion)
+            }, receiveValue: { weeklyStepData in
+                self.weeklyStepData = weeklyStepData
+            })
+    }
     
     private func updateStepProgress(_ value: NSNumber) {
         DispatchQueue.main.async {
@@ -206,6 +225,8 @@ private extension HomeViewController {
     }
     
     private func handleStatus(_ status: CMAuthorizationStatus) {
+        self.authorizationStatus = status
+        
         switch status {
         case .notDetermined:
             pedometerService.makeAuthorizationRequest {
@@ -217,10 +238,17 @@ private extension HomeViewController {
             print("denied")
         case .authorized:
             startUpdatingLiveSteps()
-            updateForCurrentWeek()
         @unknown default:
             fatalError("failed to determined authorization status")
         }
+    }
+}
+
+// MARK: - Metrics Delegate
+extension HomeViewController: MetricsDelegate {
+    func provideWeeklyData(_ viewController: UIViewController) {
+        guard authorizationStatus == .authorized else { return }
+        updateForLastSevenDays()
     }
 }
 
@@ -242,3 +270,4 @@ extension UIViewController {
          removeFromParent()
      }
 }
+

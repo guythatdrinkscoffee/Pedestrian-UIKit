@@ -87,6 +87,19 @@ final class PedometerService {
         return dates
     }
     
+    private func getLastSevenDays(from date: Date = .now) -> [Date] {
+        let currentDate = date
+        var dates = [Date]()
+        
+        for i in 0..<7 {
+            if let previousDay = calendar.date(byAdding: .day, value: -i, to: currentDate) {
+                dates.append(previousDay)
+            }
+        }
+        
+        return dates
+    }
+    
     // MARK: - Public Methods
     public func determineAuthorizationStatus() -> AnyPublisher<CMAuthorizationStatus, Never> {
         let status = CMPedometer.authorizationStatus()
@@ -113,6 +126,15 @@ final class PedometerService {
         
         return mergeData(week)
             .collect()
+            .eraseToAnyPublisher()
+    }
+    
+    public func getStepsForLastSevenDays() -> AnyPublisher<[CMPedometerData],Error> {
+        let lastSevenDays = getLastSevenDays()
+        
+        return mergeData(lastSevenDays)
+            .collect()
+            .map({$0.reversed()})
             .eraseToAnyPublisher()
     }
 }
