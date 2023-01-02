@@ -14,6 +14,9 @@
 		BE15AF43296134C9007D4D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF41296134C9007D4D23 /* LaunchScreen.storyboard */; };
 		BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerService.swift */; };
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
+		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
+		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
+		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		BE15AF44296134C9007D4D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE15AF4E2962168D007D4D23 /* PedometerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerService.swift; sourceTree = "<group>"; };
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
+		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
+		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
+		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,7 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
+				BEED0E03296245FF00C6656D /* Helpers */,
 				BE15AF5029622EC0007D4D23 /* Views */,
 				BE15AF4D29621684007D4D23 /* Services */,
 				BE15AF4C29621628007D4D23 /* Screens */,
@@ -106,8 +113,18 @@
 			isa = PBXGroup;
 			children = (
 				BE15AF5129622F38007D4D23 /* StepProgressView.swift */,
+				BE15AF5529623EB3007D4D23 /* InfoSection.swift */,
+				BE15AF5729624110007D4D23 /* InfoRow.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		BEED0E03296245FF00C6656D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BEED0E042962460B00C6656D /* UIViewPreview.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,8 +198,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
+				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
+				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
+				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
 			);

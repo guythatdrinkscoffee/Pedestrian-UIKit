@@ -23,7 +23,7 @@ class StepProgressView: UIView {
     private lazy var bottomLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.25).cgColor
+        layer.strokeColor = UIColor.systemBlue.withAlphaComponent(0.25).cgColor
         layer.strokeEnd = 1.0
         layer.lineCap = .round
         layer.lineWidth = 25
@@ -33,7 +33,7 @@ class StepProgressView: UIView {
     private lazy var progressLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemTeal.cgColor
+        layer.strokeColor = UIColor.systemBlue.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
         layer.lineWidth = 18
@@ -44,6 +44,7 @@ class StepProgressView: UIView {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 32, weight: .black)
         label.minimumScaleFactor = 0.5
+        label.textAlignment = .center
         return label
     }()
     
@@ -51,6 +52,7 @@ class StepProgressView: UIView {
         let label = UILabel()
         label.text = "steps"
         label.font = .preferredFont(forTextStyle: .headline)
+        label.textAlignment = .center
         return label
     }()
     
@@ -110,6 +112,7 @@ class StepProgressView: UIView {
     
     public func updateProgress( _ value: Int) {
         topLabel.text = "\(value)"
+        
         let fValue = CGFloat(value)
         let basicProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
         let newStrokeEndPosition = fValue / maxValue
