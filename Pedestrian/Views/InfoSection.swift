@@ -13,6 +13,7 @@ class InfoSection: UIView {
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .systemTeal
         return imageView
     }()
     private lazy var bodyLabel : UILabel = {
@@ -33,7 +34,7 @@ class InfoSection: UIView {
     private lazy var containerStackView : UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [iconImageView, bodyLabel, detailLabel])
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 5
         stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView

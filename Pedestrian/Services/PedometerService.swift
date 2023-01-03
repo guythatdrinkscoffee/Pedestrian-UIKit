@@ -55,44 +55,27 @@ final class PedometerService {
     }
     
     private func mergeData(_ dates: [Date]) -> AnyPublisher<CMPedometerData, Error> {
-        let initialPublisher = fetchDataInRange(from: calendar.startOfDay(for: dates[0]), to: calendar.endOfDay(dates[0]))
+        let initialDate = dates[0]
+        let initialPublisher = fetchDataInRange(from: calendar.startOfDay(for: initialDate), to: calendar.startOfNextDay(initialDate))
         let remainingDates = Array(dates.dropFirst())
         
         return remainingDates.reduce(initialPublisher) { combined, date in
             let start = calendar.startOfDay(for: date)
-            let end = calendar.endOfDay(date)
+            let end = calendar.startOfNextDay(date)
             
             return combined
                 .merge(with: fetchDataInRange(from: start, to: end))
                 .eraseToAnyPublisher()
         }
     }
-    
-    private func getCurrentWeek(date: Date = .now) -> [Date] {
-        let currentDate = date
-        var dates = [Date]()
-        
-        let weekInterval = calendar.dateInterval(of: .weekOfMonth, for: currentDate)
-        
-        guard let startOfWeek = weekInterval?.start else {
-            return []
-        }
-        
-        for i in 0..<7 {
-            if let nextDay = calendar.date(byAdding: .day,value: i, to: startOfWeek){
-                dates.append(nextDay)
-            }
-        }
-        
-        return dates
-    }
-    
+  
     private func getLastSevenDays(from date: Date = .now) -> [Date] {
-        let currentDate = date
+        guard let previousDate = calendar.date(byAdding: .day, value: -1, to: date) else { return [] }
         var dates = [Date]()
         
+        
         for i in 0..<7 {
-            if let previousDay = calendar.date(byAdding: .day, value: -i, to: currentDate) {
+            if let previousDay = calendar.date(byAdding: .day, value: -i, to: previousDate) {
                 dates.append(previousDay)
             }
         }
@@ -121,14 +104,6 @@ final class PedometerService {
         fetchFor(.now)
     }
     
-    public func getStepsForCurrentWeek() -> AnyPublisher<[CMPedometerData], Error> {
-        let week = getCurrentWeek()
-        
-        return mergeData(week)
-            .collect()
-            .eraseToAnyPublisher()
-    }
-    
     public func getStepsForLastSevenDays() -> AnyPublisher<[CMPedometerData],Error> {
         let lastSevenDays = getLastSevenDays()
         
@@ -140,10 +115,8 @@ final class PedometerService {
 }
 
 extension Calendar {
-    func endOfDay(_ date: Date) -> Date {
-        var components = DateComponents()
-        components.day = 1
-        components.second = -1
-        return self.date(byAdding: components, to: date)!
+    func startOfNextDay(_ date: Date) -> Date {
+        let nextDay = self.date(byAdding: DateComponents(day: 1), to: date)!
+        return self.startOfDay(for: nextDay)
     }
 }

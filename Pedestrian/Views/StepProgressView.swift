@@ -19,11 +19,16 @@ class StepProgressView: UIView {
     
     private var currentValue: CGFloat = 0.0
     
+    public var progressColor: UIColor = UIColor.systemTeal {
+        didSet {
+            progressLayer.strokeColor = progressColor.cgColor
+        }
+    }
     // MARK: - UI
     private lazy var bottomLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemBlue.withAlphaComponent(0.25).cgColor
+        layer.strokeColor = progressColor.withAlphaComponent(0.25).cgColor
         layer.strokeEnd = 1.0
         layer.lineCap = .round
         layer.lineWidth = 25
@@ -33,7 +38,7 @@ class StepProgressView: UIView {
     private lazy var progressLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemBlue.cgColor
+        layer.strokeColor = progressColor.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
         layer.lineWidth = 15
@@ -85,7 +90,7 @@ class StepProgressView: UIView {
     private func makePath() {
         let path = UIBezierPath(
             arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-            radius: (frame.width - 1.5) * 0.40,
+            radius: (frame.width - 1.5) * 0.35,
             startAngle: startPoint,
             endAngle: endPoint,
             clockwise: true)

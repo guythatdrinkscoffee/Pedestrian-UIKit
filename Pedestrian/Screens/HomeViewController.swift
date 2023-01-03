@@ -11,6 +11,7 @@ import CoreMotion
 
 protocol MetricsDelegate: AnyObject {
     func provideWeeklyData(_ viewController: UIViewController)
+    func updateSelection(with index: Int?)
 }
 
 
@@ -42,13 +43,19 @@ class HomeViewController: UIViewController {
     private var minOpeningHeight: CGFloat {
         let height = view.frame.height
         let safeAreaTop = view.safeAreaInsets.top
-        let padding = 16.0 * 2
+        let padding = 16.0 * 2.5
         return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop)
     }
     
     private var weeklyStepData: [CMPedometerData] = [] {
         didSet {
             metricsViewController.updateMetrics(weeklyStepData)
+        }
+    }
+    
+    private var currentStepData: CMPedometerData? {
+        didSet {
+            update(currentStepData)
         }
     }
     
@@ -69,7 +76,7 @@ class HomeViewController: UIViewController {
             systemName: "arrow.up.right",
             withConfiguration: UIImage.SymbolConfiguration(scale: .large)),
         body: "\(0)",
-        detail: "Flights Climbed")
+        detail: "Floors Climbed")
     
     private let distanceTraveledSection =  InfoSection(
         icon: UIImage(
@@ -78,12 +85,27 @@ class HomeViewController: UIViewController {
         body: "\(0)",
         detail: "Distance Traveled")
     
+    private let dateSection =  InfoSection(
+        icon: UIImage(
+            systemName: "calendar",
+            withConfiguration: UIImage.SymbolConfiguration(scale: .large)),
+        body: "Today",
+        detail: "Date")
+    
     private lazy var infoRow : InfoRow = {
         let view = InfoRow()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    private lazy var dateFormatter : DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "MM/dd/yy"
+        return formatter
+    }()
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,7 +125,7 @@ class HomeViewController: UIViewController {
         // config
         configureMetricsViewController()
         
-        
+        // check authorization status
         checkAuthorizationStatus()
     }
 }
@@ -111,9 +133,9 @@ class HomeViewController: UIViewController {
 // MARK: - Config
 private extension HomeViewController {
     private func configureViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGray5
     }
-    
+
     private func configureProgressView() {
         stepProgressView.translatesAutoresizingMaskIntoConstraints = false
         stepProgressView.updateMax(maxSteps)
@@ -129,16 +151,16 @@ private extension HomeViewController {
     private func layoutViews() {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
-        
-        infoRow.addSections([distanceTraveledSection, stairsClimbedSection])
+
+        infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
         
         NSLayoutConstraint.activate([
-            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1.5),
+            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
+            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.40),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 1),
+
+            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2),
             infoRow.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -174,26 +196,20 @@ private extension HomeViewController {
         
         stepDataCancellable = pedometerService
             .pedometerData
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { pedometerData in
-                DispatchQueue.main.async {
-                    self.updateStepProgress(pedometerData.numberOfSteps)
-                    self.updateFloorsClimbed(pedometerData.floorsAscended)
-                    self.updateDistanceTraveled(pedometerData.distance)
-                }
+                self.currentStepData = pedometerData
             })
     }
     
-    private func updateForCurrentWeek() {
-        weeklydataCancellable = pedometerService
-            .getStepsForCurrentWeek()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print(completion)
-            }, receiveValue: { weeklyStepData in
-                self.weeklyStepData = weeklyStepData
-            })
+    private func update(_ pedometerData: CMPedometerData?) {
+        guard let pedometerData = pedometerData else { return }
+        self.updateStepProgress(pedometerData.numberOfSteps)
+        self.updateFloorsClimbed(pedometerData.floorsAscended)
+        self.updateDistanceTraveled(pedometerData.distance)
+        self.updateDateSelected(pedometerData.startDate)
     }
-   
+    
     private func updateForLastSevenDays() {
         weeklydataCancellable = pedometerService
             .getStepsForLastSevenDays()
@@ -206,13 +222,21 @@ private extension HomeViewController {
     }
     
     private func updateStepProgress(_ value: NSNumber) {
-        DispatchQueue.main.async {
-            self.stepProgressView.updateProgress(value.intValue)
-        }
+        stepProgressView.updateProgress(value.intValue)
     }
     
     private func updateFloorsClimbed(_ value: NSNumber?) {
         stairsClimbedSection.updateBodyLabel("\(value ?? 0.0)")
+    }
+    
+    private func updateDateSelected(_ date: Date) {
+        if Calendar.current.isDateInToday(date) {
+            dateSection.updateBodyLabel("Today")
+        } else if Calendar.current.isDateInYesterday(date){
+            dateSection.updateBodyLabel("Yesterday")
+        } else {
+            dateSection.updateBodyLabel(dateFormatter.string(from: date))
+        }
     }
     
     private func updateDistanceTraveled(_ value: NSNumber?) {
@@ -250,6 +274,17 @@ extension HomeViewController: MetricsDelegate {
         guard authorizationStatus == .authorized else { return }
         updateForLastSevenDays()
     }
+    
+    func updateSelection(with index: Int?) {
+        guard !weeklyStepData.isEmpty, let idx = index else {
+            update(self.currentStepData)
+            return
+        }
+        
+        let pedometerData = weeklyStepData[idx]
+        update(pedometerData)
+    }
+    
 }
 
 extension UIViewController {

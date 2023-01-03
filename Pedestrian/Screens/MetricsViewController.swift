@@ -21,7 +21,8 @@ class MetricsViewController: UIViewController {
     public var limit : Double = 10000
     
     private var fullHeight: CGFloat {
-        return (self.parent?.view.frame.height ?? 0.0) * 1
+        let safeArea = self.parent?.view.safeAreaInsets.top
+        return (self.parent?.view.frame.height ?? 0.0) - (safeArea ?? 0.0)
     }
     
     private var safeAreaBottomHeight: CGFloat {
@@ -54,14 +55,15 @@ class MetricsViewController: UIViewController {
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
         button.addTarget(self, action: #selector(handleActionTap(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .systemTeal
         return button
     }()
     
     private lazy var limitLine : ChartLimitLine = {
-        let line = ChartLimitLine()
-        line.limit = limit
-        line.lineColor = .systemPink
+        let line = ChartLimitLine(limit: limit)
+        line.lineColor = .systemTeal
         line.labelPosition = .rightTop
+        line.valueTextColor = UIColor.systemTeal
         line.lineDashLengths = [8.0, 6.0]
         return line
     }()
@@ -72,6 +74,7 @@ class MetricsViewController: UIViewController {
         chart.pinchZoomEnabled = false
         chart.setScaleEnabled(false)
         chart.doubleTapToZoomEnabled = false
+        chart.delegate = self
         
         // chart highlight
         chart.highlightPerDragEnabled = false
@@ -92,16 +95,20 @@ class MetricsViewController: UIViewController {
         xAxis.labelPosition = .bottom
         xAxis.labelFont = .systemFont(ofSize: 10, weight: .semibold)
         xAxis.drawGridLinesEnabled = false
-//        xAxis.drawAxisLineEnabled = false
         
         // chart custom legend
         let goalEntry = LegendEntry(label: "Daily Goal")
-        goalEntry.formColor = .systemPink
+        goalEntry.formColor = .systemTeal
         goalEntry.form = .line
+        
+        let infoEntry = LegendEntry(label: "Last 7 Days")
+        infoEntry.formColor = .systemPink
+        infoEntry.form = .square
         
         let legend = chart.legend
         legend.verticalAlignment = .top
-        legend.setCustom(entries: [goalEntry])
+        legend.horizontalAlignment = .left
+        legend.setCustom(entries: [infoEntry, goalEntry])
         
         return chart
     }()
@@ -127,7 +134,7 @@ class MetricsViewController: UIViewController {
 // MARK: - Config
 private extension MetricsViewController {
     private func configureViewController() {
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 15
     }
 }
@@ -137,12 +144,12 @@ private extension MetricsViewController {
     private func layoutViews(){
         view.addSubview(actionButton)
         view.addSubview(barChart)
-        
+
         NSLayoutConstraint.activate([
             actionButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            barChart.topAnchor.constraint(equalToSystemSpacingBelow: actionButton.bottomAnchor, multiplier: 1.5),
+
+            barChart.topAnchor.constraint(equalTo: actionButton.bottomAnchor, constant: 8),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             barChart.heightAnchor.constraint(equalToConstant: minimumHeight - (safeAreaBottomHeight * 1.8))
@@ -166,7 +173,9 @@ extension MetricsViewController {
         
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
-        
+        dataSet.barShadowColor = .black
+        dataSet.setColor(UIColor.systemPink)
+
         let chartData = BarChartData(dataSet: dataSet)
         
         barChart.data = chartData
@@ -202,6 +211,17 @@ private extension MetricsViewController {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
+    }
+}
+
+// MARK: - ChartView Delegate
+extension MetricsViewController: ChartViewDelegate {
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        self.delegate?.updateSelection(with: Int(entry.x))
+    }
+    
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        self.delegate?.updateSelection(with: nil)
     }
 }
 
