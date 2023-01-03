@@ -106,6 +106,11 @@ class HomeViewController: UIViewController {
         return formatter
     }()
 
+    private lazy var refreshTapGesture : UITapGestureRecognizer = {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(refreshToCurrentSteps(_:)))
+        return recognizer
+    }()
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,7 +156,8 @@ private extension HomeViewController {
     private func layoutViews() {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
-
+        view.addGestureRecognizer(refreshTapGesture)
+        
         infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
         
         NSLayoutConstraint.activate([
@@ -191,6 +197,13 @@ private extension HomeViewController {
             .store(in: &cancellables)
     }
     
+    private func resetViewsToZero()  {
+        self.updateStepProgress(0)
+        self.updateFloorsClimbed(0)
+        self.updateDistanceTraveled(0)
+        self.updateDateSelected(.now)
+    }
+    
     private func startUpdatingLiveSteps() {
         pedometerService.startLiveUpdates()
         
@@ -203,7 +216,11 @@ private extension HomeViewController {
     }
     
     private func update(_ pedometerData: CMPedometerData?) {
-        guard let pedometerData = pedometerData else { return }
+        guard let pedometerData = pedometerData else {
+            self.resetViewsToZero()
+            return
+        }
+        
         self.updateStepProgress(pedometerData.numberOfSteps)
         self.updateFloorsClimbed(pedometerData.floorsAscended)
         self.updateDistanceTraveled(pedometerData.distance)
@@ -265,6 +282,11 @@ private extension HomeViewController {
         @unknown default:
             fatalError("failed to determined authorization status")
         }
+    }
+    
+    @objc
+    private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){
+        metricsViewController.resetSelection()
     }
 }
 

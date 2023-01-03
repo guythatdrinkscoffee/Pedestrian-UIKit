@@ -28,6 +28,7 @@ final class PedometerService {
     // MARK: - Private Method
     
     private func fetchFor(_ date: Date) {
+    
         let startOfDay = calendar.startOfDay(for: date)
         
         self.pedometer.startUpdates(from: startOfDay) { pedometerData, error in
@@ -41,7 +42,7 @@ final class PedometerService {
     }
     
     private func fetchDataInRange(from d1: Date, to d2: Date) -> AnyPublisher<CMPedometerData, Error> {
-        Future { promise in
+       return Future { promise in
             self.pedometer.queryPedometerData(from: d1, to: d2) { pedometerData, error in
                 guard error == nil, let pedData = pedometerData else {
                     promise(.failure(error!))
@@ -72,7 +73,6 @@ final class PedometerService {
     private func getLastSevenDays(from date: Date = .now) -> [Date] {
         guard let previousDate = calendar.date(byAdding: .day, value: -1, to: date) else { return [] }
         var dates = [Date]()
-        
         
         for i in 0..<7 {
             if let previousDay = calendar.date(byAdding: .day, value: -i, to: previousDate) {

@@ -75,20 +75,21 @@ class MetricsViewController: UIViewController {
         chart.setScaleEnabled(false)
         chart.doubleTapToZoomEnabled = false
         chart.delegate = self
-        
+    
         // chart highlight
         chart.highlightPerDragEnabled = false
     
         // chart left axis
         let leftAxis = chart.leftAxis
         leftAxis.drawAxisLineEnabled = false
-        leftAxis.drawLabelsEnabled = false
+        leftAxis.drawLimitLinesBehindDataEnabled = true
+        leftAxis.axisMinimum = 0
+        leftAxis.axisMaximum = limit * 1.5
+        leftAxis.addLimitLine(limitLine)
         
         // chart right axis
         let rightAxis = chart.rightAxis
-        rightAxis.drawAxisLineEnabled = false
-        rightAxis.drawLimitLinesBehindDataEnabled = true
-        rightAxis.addLimitLine(limitLine)
+        rightAxis.enabled = false
         
         // chart x-axis
         let xAxis = chart.xAxis
@@ -161,6 +162,7 @@ private extension MetricsViewController {
 extension MetricsViewController {
     public func updateMetrics(_ data: [CMPedometerData]) {
         var dataEntries: [BarChartDataEntry] = []
+        
         let timeStamps : [TimeInterval] = data.map({$0.startDate.timeIntervalSince1970})
         
         for i in 0..<data.count {
@@ -170,16 +172,22 @@ extension MetricsViewController {
         }
         
         barChart.xAxis.valueFormatter = XAxisChartFormatter(dateFormatter: dateFormatter, timestamps: timeStamps)
-        
+    
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
         dataSet.barShadowColor = .black
         dataSet.setColor(UIColor.systemPink)
-
-        let chartData = BarChartData(dataSet: dataSet)
         
+        let chartData = BarChartData(dataSet: dataSet)
+
         barChart.data = chartData
         barChart.notifyDataSetChanged()
+    }
+    
+    
+    public func resetSelection() {
+        chartValueNothingSelected(barChart)
+        barChart.highlightValue(nil)
     }
 }
 
@@ -212,6 +220,7 @@ private extension MetricsViewController {
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
     }
+
 }
 
 // MARK: - ChartView Delegate
