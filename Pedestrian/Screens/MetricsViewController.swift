@@ -43,6 +43,8 @@ class MetricsViewController: UIViewController {
     
     private var state: DrawerState = .compact
     
+    private var animationDuration: TimeInterval = 0.6
+    
     weak var delegate: MetricsDelegate?
     
     
@@ -55,12 +57,25 @@ class MetricsViewController: UIViewController {
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
         button.addTarget(self, action: #selector(handleActionTap(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .systemTeal
+        button.tintColor = .systemGray
+        return button
+    }()
+
+    private lazy var settingsButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(
+            UIImage(
+                systemName: "gearshape.circle.fill",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
+        button.addTarget(self, action: #selector(handleActionTap(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .systemGray
         return button
     }()
     
     private lazy var limitLine : ChartLimitLine = {
-        let line = ChartLimitLine(limit: limit)
+        let line = ChartLimitLine(limit: limit, label: String(format: "%.0f", limit))
+        line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = .systemTeal
         line.labelPosition = .rightTop
         line.valueTextColor = UIColor.systemTeal
@@ -144,13 +159,17 @@ private extension MetricsViewController {
 private extension MetricsViewController {
     private func layoutViews(){
         view.addSubview(actionButton)
+        view.addSubview(settingsButton)
         view.addSubview(barChart)
 
         NSLayoutConstraint.activate([
             actionButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            settingsButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
 
-            barChart.topAnchor.constraint(equalTo: actionButton.bottomAnchor, constant: 8),
+            barChart.topAnchor.constraint(equalToSystemSpacingBelow: settingsButton.bottomAnchor, multiplier: 1.5),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             barChart.heightAnchor.constraint(equalToConstant: minimumHeight - (safeAreaBottomHeight * 1.8))
@@ -204,7 +223,7 @@ private extension MetricsViewController {
             snapTo(height: minimumHeight)
         }
         
-        UIView.animate(withDuration:0.5, animations: { () -> Void in
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
             if sender.transform == .identity {
                 sender.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 0.999))
             } else {
@@ -214,7 +233,7 @@ private extension MetricsViewController {
     }
     
     private func snapTo(height: CGFloat) {
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: animationDuration) { [weak self] in
             guard let self = self else { return }
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)

@@ -47,7 +47,7 @@ class StepProgressView: UIView {
     
     public lazy var topLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 32, weight: .black)
+        label.font = .monospacedSystemFont(ofSize: 36, weight: .black)
         label.minimumScaleFactor = 0.5
         label.textAlignment = .center
         label.text = "\(0)"

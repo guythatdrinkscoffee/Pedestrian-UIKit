@@ -102,7 +102,7 @@ class HomeViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "MM/dd/yy"
+        formatter.dateFormat = "E d"
         return formatter
     }()
 
@@ -138,7 +138,7 @@ class HomeViewController: UIViewController {
 // MARK: - Config
 private extension HomeViewController {
     private func configureViewController() {
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .systemGray6
     }
 
     private func configureProgressView() {
@@ -213,6 +213,10 @@ private extension HomeViewController {
             .sink(receiveValue: { pedometerData in
                 self.currentStepData = pedometerData
             })
+    }
+    
+    private func stopUpdatingSteps() {
+        pedometerService.stopLiveUpdates()
     }
     
     private func update(_ pedometerData: CMPedometerData?) {
@@ -299,11 +303,12 @@ extension HomeViewController: MetricsDelegate {
     
     func updateSelection(with index: Int?) {
         guard !weeklyStepData.isEmpty, let idx = index else {
-            update(self.currentStepData)
+            startUpdatingLiveSteps()
             return
         }
         
         let pedometerData = weeklyStepData[idx]
+        stopUpdatingSteps()
         update(pedometerData)
     }
     

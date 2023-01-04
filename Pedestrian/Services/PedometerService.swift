@@ -100,8 +100,12 @@ final class PedometerService {
         }
     }
     
-    public func startLiveUpdates(){
+    public func startLiveUpdates() {
         fetchFor(.now)
+    }
+    
+    public func stopLiveUpdates() {
+        pedometer.stopUpdates()
     }
     
     public func getStepsForLastSevenDays() -> AnyPublisher<[CMPedometerData],Error> {
