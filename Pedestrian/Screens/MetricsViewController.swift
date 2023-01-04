@@ -67,7 +67,7 @@ class MetricsViewController: UIViewController {
             UIImage(
                 systemName: "gearshape.circle.fill",
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
-        button.addTarget(self, action: #selector(handleActionTap(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleSettingsTap(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .systemGray
         return button
@@ -230,6 +230,12 @@ private extension MetricsViewController {
                 sender.transform = .identity
             }
         })
+    }
+    
+    @objc
+    private func handleSettingsTap(_ sender: UIButton){
+        let containerNav = UINavigationController(rootViewController: SettingsViewController())
+        present(containerNav, animated: true)
     }
     
     private func snapTo(height: CGFloat) {
