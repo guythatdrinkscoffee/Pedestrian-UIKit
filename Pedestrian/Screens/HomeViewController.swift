@@ -64,7 +64,7 @@ class HomeViewController: UIViewController {
     // MARK: - UI
     private lazy var metricsViewController : MetricsViewController = {
         let controller = MetricsViewController()
-        controller.minimumHeight = minOpeningHeight
+        controller.minimumOpeningHeight = minOpeningHeight
         controller.delegate = self
         return controller
     }()

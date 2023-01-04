@@ -16,19 +16,40 @@ class MetricsViewController: UIViewController {
         case open
     }
     
-    public var minimumHeight: CGFloat = 0.0
+    // This height is set by the calling view controller that
+    // is presenting this view and is assigned to the
+    // view's height when first displayed
+    public var minimumOpeningHeight: CGFloat = 0.0
     
-    public var limit : Double = 10000
-    
-    private var fullHeight: CGFloat {
-        let safeArea = self.parent?.view.safeAreaInsets.top
-        return (self.parent?.view.frame.height ?? 0.0) - (safeArea ?? 0.0)
+    // This height is the allowed minimum chart height
+    // after considering the heights of the parent's
+    // safeAreaBottomHeight and the settings button
+    private var minimumChartHeight: CGFloat {
+        return  minimumOpeningHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0)
     }
     
+    // The max limit value which corresponds
+    // to the daily user's step goal
+    public var limit : Double = 10000
+    
+    // This height the maximum height allowed
+    // for the current view after considering the
+    // parent's height minus the top safe area
+    private var maxOpeningHeight: CGFloat {
+        return (self.parent?.view.frame.height ?? 0.0) - safeAreaTopHeight
+    }
+    
+    // Bottom safe area height of the parent view controller
     private var safeAreaBottomHeight: CGFloat {
         return (self.parent?.view.safeAreaInsets.bottom) ?? 0.0
     }
     
+    // Top safe area height of the parent view controller
+    private var safeAreaTopHeight: CGFloat {
+        return (self.parent?.view.safeAreaInsets.top) ?? 0.0
+    }
+    
+    // The height of the settings button
     private var settingsButtonHeight: CGFloat {
         return settingsButton.frame.height
     }
@@ -45,20 +66,20 @@ class MetricsViewController: UIViewController {
     
     private var animationDuration: TimeInterval = 0.6
     
+    private var origin: CGPoint = .zero
+    
+    private var feedbackGenerator: UISelectionFeedbackGenerator?
+    
     weak var delegate: MetricsDelegate?
     
     
     // MARK: - UI
-    private lazy var actionButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(
-            UIImage(
-                systemName: "chevron.compact.up",
-                withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
-        button.addTarget(self, action: #selector(handleActionTap(_:)), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .systemGray
-        return button
+    private lazy var dragIndicator : UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray3
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private lazy var settingsButton : UIButton = {
@@ -128,6 +149,11 @@ class MetricsViewController: UIViewController {
         return chart
     }()
     
+    private lazy var panGesture : UIPanGestureRecognizer = {
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture(_:)))
+        return gesture
+    }()
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +168,11 @@ class MetricsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        origin = view.frame.origin
+        
         self.delegate?.provideWeeklyData(self)
+        
+        print(safeAreaTopHeight)
     }
 }
 
@@ -157,13 +187,16 @@ private extension MetricsViewController {
 // MARK: - Layout
 private extension MetricsViewController {
     private func layoutViews(){
-        view.addSubview(actionButton)
+        view.addSubview(dragIndicator)
         view.addSubview(settingsButton)
         view.addSubview(barChart)
+        view.addGestureRecognizer(panGesture)
 
         NSLayoutConstraint.activate([
-            actionButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
-            actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            dragIndicator.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            dragIndicator.heightAnchor.constraint(equalToConstant: 5),
+            dragIndicator.widthAnchor.constraint(equalToConstant: 35),
+            dragIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             settingsButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -171,8 +204,7 @@ private extension MetricsViewController {
             barChart.topAnchor.constraint(equalToSystemSpacingBelow: settingsButton.bottomAnchor, multiplier: 1.5),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            barChart.heightAnchor.constraint(
-                equalToConstant: minimumHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0))
+            barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight)
         ])
     }
 }
@@ -210,7 +242,6 @@ extension MetricsViewController {
         barChart.notifyDataSetChanged()
     }
     
-    
     public func resetSelection() {
         chartValueNothingSelected(barChart)
         barChart.highlightValue(nil)
@@ -219,25 +250,6 @@ extension MetricsViewController {
 
 // MARK: - Private Methods
 private extension MetricsViewController {
-    @objc
-    private func handleActionTap(_ sender: UIButton){
-        switch state {
-        case .compact:
-            self.state = .open
-            snapTo(height: fullHeight)
-        case .open:
-            self.state = .compact
-            snapTo(height: minimumHeight)
-        }
-        
-        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
-            if sender.transform == .identity {
-                sender.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 0.999))
-            } else {
-                sender.transform = .identity
-            }
-        })
-    }
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
@@ -245,9 +257,52 @@ private extension MetricsViewController {
         present(containerNav, animated: true)
     }
     
+    @objc func handleDragGesture(_ recognizer: UIPanGestureRecognizer) {
+        guard let view = self.view else { return }
+        
+        /// get references to the views min height, width and height
+        let y = view.frame.minY
+        let width = view.frame.width
+        let height = view.frame.height
+        
+        // get a reference to the translation
+        let translation = recognizer.translation(in: view)
+        let velocity = recognizer.velocity(in: view)
+        
+        // check if the translation is greater than or less than the full and minimum heights allowed
+        if translation.y + y >= origin.y {
+            return
+        } else if translation.y + y <= safeAreaTopHeight {
+            return
+        }
+        
+        // handle the recognizer state
+        switch recognizer.state {
+        case .began, .changed:
+            // init the feedback generator
+            feedbackGenerator = UISelectionFeedbackGenerator()
+            feedbackGenerator?.prepare()
+            
+            // set the new frame for the view
+            view.frame = CGRect(x: .zero, y: y + translation.y, width: width, height: height)
+            
+            //reset the translation
+            recognizer.setTranslation(.zero, in: view)
+        case .ended:
+            feedbackGenerator?.selectionChanged()
+            
+            if velocity.y >= 0 {
+                snapTo(height: minimumOpeningHeight)
+            } else {
+                snapTo(height: maxOpeningHeight)
+            }
+        default : break
+        }
+        
+    }
+    
     private func snapTo(height: CGFloat) {
-        UIView.animate(withDuration: animationDuration) { [weak self] in
-            guard let self = self else { return }
+        UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0) {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
