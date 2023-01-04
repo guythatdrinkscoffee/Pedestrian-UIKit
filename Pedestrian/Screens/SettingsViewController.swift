@@ -8,7 +8,10 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
-
+    // MARK: - UI
+    private var feedbackGenerator: UIImpactFeedbackGenerator? = nil
+    
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +40,12 @@ private extension SettingsViewController {
 private extension SettingsViewController {
     @objc
     private func handleDoneTap(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true)
+        feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator?.prepare()
+        feedbackGenerator?.impactOccurred()
+    
+        self.dismiss(animated: true) {
+            self.feedbackGenerator = nil
+        }
     }
 }
