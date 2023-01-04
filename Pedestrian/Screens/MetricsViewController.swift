@@ -29,8 +29,8 @@ class MetricsViewController: UIViewController {
         return (self.parent?.view.safeAreaInsets.bottom) ?? 0.0
     }
     
-    private var actionBarHeight: CGFloat {
-        return actionButton.frame.height
+    private var settingsButtonHeight: CGFloat {
+        return settingsButton.frame.height
     }
     
     private lazy var dateFormatter : DateFormatter = {
@@ -172,7 +172,8 @@ private extension MetricsViewController {
             barChart.topAnchor.constraint(equalToSystemSpacingBelow: settingsButton.bottomAnchor, multiplier: 1.5),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            barChart.heightAnchor.constraint(equalToConstant: minimumHeight - (safeAreaBottomHeight * 1.8))
+            barChart.heightAnchor.constraint(
+                equalToConstant: minimumHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0))
         ])
     }
 }
