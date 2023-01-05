@@ -49,6 +49,7 @@ class MetricsViewController: UIViewController {
         return settingsButton.frame.height
     }
     
+    // date formatter
     private lazy var dateFormatter : DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar.current
@@ -57,6 +58,8 @@ class MetricsViewController: UIViewController {
         return formatter
     }()
     
+    public var measurementFormatter: MeasurementFormatter?
+    
     private var animationDuration: TimeInterval = 0.6
     
     private var origin: CGPoint = .zero
@@ -64,6 +67,16 @@ class MetricsViewController: UIViewController {
     private var feedbackGenerator: UISelectionFeedbackGenerator?
     
     private var sections: [Section]?
+    
+    private var shortFormat = "MMM d"
+    
+    private var mediumFormat = "EEEE, MMM d"
+    
+    private var data: [CMPedometerData] = [] {
+        didSet {
+            updateMetrics(data)
+        }
+    }
     
     weak var delegate: MetricsDelegate?
     // MARK: - UI
@@ -77,10 +90,7 @@ class MetricsViewController: UIViewController {
 
     private lazy var settingsButton : UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(
-            UIImage(
-                systemName: "gearshape.circle.fill",
-                withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large)), for: .normal)
+        button.setImage(.settings, for: .normal)
         button.addTarget(self, action: #selector(handleSettingsTap(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .systemGray
@@ -157,6 +167,7 @@ class MetricsViewController: UIViewController {
         return gesture
     }()
     
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -229,14 +240,18 @@ private extension MetricsViewController {
 
 // MARK: - Public Methods
 extension MetricsViewController {
-    public func updateMetrics(_ data: [CMPedometerData]) {
+    public func setData(data: [CMPedometerData]) {
+        self.data = data
+    }
+    
+    private func updateMetrics(_ data: [CMPedometerData]) {
         var dataEntries: [BarChartDataEntry] = []
         let maxDataPoint = data.max(by: {$0.numberOfSteps.intValue < $1.numberOfSteps.intValue})
         let timeStamps : [TimeInterval] = data.map({$0.startDate.timeIntervalSince1970})
         
         for i in 0..<data.count {
             let steps = data[i].numberOfSteps.doubleValue
-            let newEntry = BarChartDataEntry(x: Double(i), y: steps)
+            let newEntry = BarChartDataEntry(x: Double(i), y: steps, data: data[i])
             dataEntries.append(newEntry)
         }
         
@@ -314,9 +329,10 @@ private extension MetricsViewController {
                 barChart.isUserInteractionEnabled = true
             } else {
                 snapTo(height: maxOpeningHeight)
-                barChart.isUserInteractionEnabled = false
                 resetSelection()
+                barChart.isUserInteractionEnabled = false
             }
+            
         default : break
         }
         
@@ -329,17 +345,17 @@ private extension MetricsViewController {
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
     }
-
+    
 }
 
 // MARK: - ChartView Delegate
 extension MetricsViewController: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        self.delegate?.updateSelection(with: Int(entry.x))
+        delegate?.updateSelection(with: entry.data)
     }
     
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        self.delegate?.updateSelection(with: nil)
+        delegate?.updateSelection(with: nil)
     }
 }
 
@@ -427,3 +443,11 @@ extension UICollectionViewLayout {
     }
 }
 
+extension UIImage {
+    static let cal = UIImage(systemName: "calendar")
+    static let arrowUp = UIImage(systemName: "arrow.up.right")
+    static let arrowDown = UIImage(systemName: "arrow.down.right")
+    static let crown = UIImage(systemName: "crown.fill")
+    static let walking = UIImage(systemName: "figure.walk")
+    static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+}

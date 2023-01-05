@@ -118,7 +118,7 @@ class StepProgressView: UIView {
     }
     
     public func updateProgress( _ value: Int) {
-        topLabel.text = "\(value)"
+        topLabel.text = "\(value == -1 ? 0 : value)"
         
         let fValue = CGFloat(value)
         let basicProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")

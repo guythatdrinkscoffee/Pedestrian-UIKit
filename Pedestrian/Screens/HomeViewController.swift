@@ -11,7 +11,7 @@ import CoreMotion
 
 protocol MetricsDelegate: AnyObject {
     func provideWeeklyData(_ viewController: UIViewController)
-    func updateSelection(with index: Int?)
+    func updateSelection(with data: Any?)
 }
 
 
@@ -49,7 +49,7 @@ class HomeViewController: UIViewController {
     
     private var weeklyStepData: [CMPedometerData] = [] {
         didSet {
-            metricsViewController.updateMetrics(weeklyStepData)
+            metricsViewController.setData(data: weeklyStepData)
         }
     }
     
@@ -64,6 +64,7 @@ class HomeViewController: UIViewController {
         let controller = MetricsViewController()
         controller.minimumOpeningHeight = minOpeningHeight
         controller.delegate = self
+        controller.measurementFormatter = measurementFormatter
         return controller
     }()
     
@@ -120,14 +121,14 @@ class HomeViewController: UIViewController {
         // layout
         layoutViews()
         
-        checkAuthorizationStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        
+        // additional config
         configureMetricsViewController()
-    
     }
 }
 
@@ -156,7 +157,6 @@ private extension HomeViewController {
         
         infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
         
-
         NSLayoutConstraint.activate([
             stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -171,41 +171,10 @@ private extension HomeViewController {
     }
 }
 
-// MARK: - Public Methods
+// MARK: - Public Methods {
 extension HomeViewController {
-    public func checkAuthorizationStatus() {
-//        pedometerService
-//            .authorizationStatus
-//            .sink { status in
-//                self.handleStatus(status)
-//            }
-//            .store(in: &cancellables)
-    }
-}
-
-// MARK: - Private Methods
-private extension HomeViewController {
-    
-    private func updateWithTimer() {
-        var current = 200
-        Timer
-            .publish(every: 3, on: .main, in: .common)
-            .autoconnect()
-            .sink { _ in
-                current += 300
-                self.updateStepProgress(current as NSNumber)
-            }
-            .store(in: &cancellables)
-    }
-    
-    private func resetViewsToZero()  {
-        self.updateStepProgress(0)
-        self.updateFloorsClimbed(0)
-        self.updateDistanceTraveled(0)
-        self.updateDateSelected(.now)
-    }
-    
-    private func startUpdatingLiveSteps() {
+    public func startUpdatingLiveSteps() {
+        print(#function)
         pedometerService.startLiveUpdates()
         
         stepDataCancellable = pedometerService
@@ -216,8 +185,19 @@ private extension HomeViewController {
             })
     }
     
-    private func stopUpdatingSteps() {
+    public func stopUpdatingSteps() {
+        print(#function)
         pedometerService.stopLiveUpdates()
+    }
+}
+// MARK: - Private Methods
+private extension HomeViewController {
+    
+    private func resetViewsToZero()  {
+        self.updateStepProgress(-1)
+        self.updateFloorsClimbed(0)
+        self.updateDistanceTraveled(0)
+        self.updateDateSelected(.now)
     }
     
     private func update(_ pedometerData: CMPedometerData?) {
@@ -269,24 +249,6 @@ private extension HomeViewController {
         
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
-    
-    private func handleStatus(_ status: CMAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            pedometerService.makeAuthorizationRequest {
-                self.checkAuthorizationStatus()
-            }
-            
-        case .authorized:
-            startUpdatingLiveSteps()
-        case .denied:
-            print("denied")
-        case .restricted:
-            print("restricted")
-        @unknown default:
-            fatalError("failed to determine authorization status")
-        }
-    }
 
     @objc
     private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){
@@ -296,19 +258,21 @@ private extension HomeViewController {
 
 // MARK: - Metrics Delegate
 extension HomeViewController: MetricsDelegate {
+    func resetAndStopUpdating() {
+        update(currentStepData)
+        stopUpdatingSteps()
+    }
+    
     func provideWeeklyData(_ viewController: UIViewController) {
-        guard pedometerService.determineAuthorizationStatus() == .authorized else { return }
         updateForLastSevenDays()
     }
     
-    func updateSelection(with index: Int?) {
-        guard !weeklyStepData.isEmpty, let idx = index else {
-            startUpdatingLiveSteps()
+    func updateSelection(with data: Any?) {
+        guard let pedometerData = data as? CMPedometerData else {
+            update(currentStepData)
             return
         }
         
-        let pedometerData = weeklyStepData[idx]
-        stopUpdatingSteps()
         update(pedometerData)
     }
     
