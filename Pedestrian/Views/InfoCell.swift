@@ -91,7 +91,7 @@ class InfoCell: UICollectionViewCell {
 extension InfoCell {
     private func configureContentView() {
         contentView.layer.cornerRadius = 10
-        contentView.backgroundColor = .tertiarySystemGroupedBackground
+        contentView.backgroundColor = .secondarySystemBackground
     }
     
     public func configure(with data: InfoData?) {

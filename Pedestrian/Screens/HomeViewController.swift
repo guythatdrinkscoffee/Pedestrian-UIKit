@@ -217,7 +217,7 @@ private extension HomeViewController {
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                self.provideWeeklyData(self.metricsViewController)
+                print(completion)
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })

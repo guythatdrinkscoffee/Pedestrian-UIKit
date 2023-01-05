@@ -75,6 +75,7 @@ class MetricsViewController: UIViewController {
     private var data: [CMPedometerData] = [] {
         didSet {
             updateMetrics(data)
+            aggregateData(data)
         }
     }
     
@@ -185,17 +186,6 @@ class MetricsViewController: UIViewController {
         origin = view.frame.origin
         
         self.delegate?.provideWeeklyData(self)
-        
-        let dataPoints: [InfoData] = [
-            .init(icon: UIImage(systemName: "crown.fill"), description: "Steps Counted", value: 43000),
-            .init(icon: UIImage(systemName: "figure.walk"), description: "Distance Traveled", value: "\(1234.5) km"),
-            .init(icon: UIImage(systemName: "arrow.up.right"), description: "Floors Ascended", value: 400),
-            .init(icon: UIImage(systemName: "arrow.down.right"), description: "Floors Descended", value: 349)
-        ]
-        
-        sections = [Section(title: "Totals", data: dataPoints)]
-        
-        metricsCollectionView.reloadData()
     }
 }
 
@@ -346,6 +336,26 @@ private extension MetricsViewController {
         }
     }
     
+    private func aggregateData(_ data: [CMPedometerData]) {
+        let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
+        let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
+        let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
+        let floorsDescended = data.reduce(0, {$0 + ($1.floorsDescended?.intValue ?? 0)})
+
+        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
+        let distanceString = measurementFormatter?.string(from: distanceInLength)
+        
+        sections = [
+            .init(title: "Totals For Last 7 Days", data: [
+                .init(icon: .crown, description: "Step Count", value: steps),
+                .init(icon: .walking, description: "Distance Traveled", value: distanceString),
+                .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),
+                .init(icon: .arrowDown, description: "Floors Descended", value: floorsDescended)
+            ])
+        ]
+        
+        metricsCollectionView.reloadData()
+    }
 }
 
 // MARK: - ChartView Delegate
