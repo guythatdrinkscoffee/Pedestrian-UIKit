@@ -70,9 +70,9 @@ class MetricsViewController: UIViewController {
     
     private var feedbackGenerator: UISelectionFeedbackGenerator?
     
+    private var sections: [Section]?
+    
     weak var delegate: MetricsDelegate?
-    
-    
     // MARK: - UI
     private lazy var dragIndicator : UIView = {
         let view = UIView()
@@ -149,6 +149,16 @@ class MetricsViewController: UIViewController {
         return chart
     }()
     
+    private lazy var metricsCollectionView : UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .twoRowLayout(for: view))
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isScrollEnabled = false
+        collectionView.dataSource = self
+        collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.resuseIdentifier)
+        collectionView.register(ReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableHeaderView.reuseIdentifier)
+        return collectionView
+    }()
+    
     private lazy var panGesture : UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture(_:)))
         return gesture
@@ -172,7 +182,16 @@ class MetricsViewController: UIViewController {
         
         self.delegate?.provideWeeklyData(self)
         
-        print(safeAreaTopHeight)
+        let dataPoints: [InfoData] = [
+            .init(icon: UIImage(systemName: "crown.fill"), description: "Steps", value: 1234),
+            .init(icon: UIImage(systemName: "figure.walk"), description: "Distance Traveled", value: 1234),
+            .init(icon: UIImage(systemName: "arrow.up.right"), description: "Floors Ascended", value: 400),
+            .init(icon: UIImage(systemName: "arrow.down.right"), description: "Floors Descended", value: 349)
+        ]
+        
+        sections = [Section(title: "Totals", data: dataPoints)]
+        
+        metricsCollectionView.reloadData()
     }
 }
 
@@ -190,6 +209,7 @@ private extension MetricsViewController {
         view.addSubview(dragIndicator)
         view.addSubview(settingsButton)
         view.addSubview(barChart)
+        view.addSubview(metricsCollectionView)
         view.addGestureRecognizer(panGesture)
 
         NSLayoutConstraint.activate([
@@ -204,7 +224,12 @@ private extension MetricsViewController {
             barChart.topAnchor.constraint(equalToSystemSpacingBelow: settingsButton.bottomAnchor, multiplier: 1.5),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight)
+            barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight),
+            
+            metricsCollectionView.topAnchor.constraint(equalTo: barChart.bottomAnchor, constant: safeAreaBottomHeight),
+            metricsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            metricsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            metricsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -safeAreaBottomHeight)
         ])
     }
 }
@@ -336,5 +361,75 @@ class XAxisChartFormatter: IndexAxisValueFormatter {
         
         let date = Date(timeIntervalSince1970: intervals[Int(value)])
         return dateFormatter.string(from: date)
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+extension MetricsViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        guard let sections = sections else { return 0 }
+        return sections.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let sections = sections else { return 0 }
+        
+        return sections[section].data.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCell.resuseIdentifier, for: indexPath) as? InfoCell,
+              let sections = sections else {
+            fatalError("failed to dequeue a resuable cell")
+        }
+        
+        let dataPoint = sections[indexPath.section].data[indexPath.row]
+        cell.data = dataPoint
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableHeaderView.reuseIdentifier, for: indexPath)
+            
+            guard let titledHeader = header as? ReusableHeaderView else {
+                return header
+            }
+            
+            let sectionTitle = sections?[indexPath.section].title
+            titledHeader.configure(with: sectionTitle)
+            
+            return titledHeader
+        default:
+            fatalError("reusable header of \(kind) is not yet supported")
+        }
+        
+    }
+    
+    
+}
+
+// MARK: - UICollectionViewDelegate
+extension MetricsViewController: UICollectionViewDelegate {
+
+}
+
+extension UICollectionViewLayout {
+    static func twoRowLayout(for view: UIView) -> UICollectionViewFlowLayout {
+        let totalWidth = view.bounds.width
+        let padding: CGFloat = 10
+        let itemSpacing: CGFloat = 10
+        
+        let availableWidth = totalWidth - (padding * 2) - (itemSpacing)
+        
+        let itemWidth = availableWidth / 2
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 30)
+        layout.sectionInset = UIEdgeInsets(top: padding / 2, left: padding, bottom: padding / 2, right: padding)
+        layout.itemSize = CGSize(width: itemWidth, height: 80)
+        
+        return layout
     }
 }

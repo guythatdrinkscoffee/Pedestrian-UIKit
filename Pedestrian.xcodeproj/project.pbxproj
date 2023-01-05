@@ -18,6 +18,8 @@
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
 		BE3707C1296536FC00B67D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C0296536FC00B67D8A /* SettingsViewController.swift */; };
+		BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C22966597E00B67D8A /* InfoCell.swift */; };
+		BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C42966738000B67D8A /* ReusableHeaderView.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -37,6 +39,8 @@
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
 		BE3707C0296536FC00B67D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		BE3707C22966597E00B67D8A /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
+		BE3707C42966738000B67D8A /* ReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableHeaderView.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsViewController.swift; sourceTree = "<group>"; };
 		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 				BE15AF5129622F38007D4D23 /* StepProgressView.swift */,
 				BE15AF5529623EB3007D4D23 /* InfoSection.swift */,
 				BE15AF5729624110007D4D23 /* InfoRow.swift */,
+				BE3707C22966597E00B67D8A /* InfoCell.swift */,
+				BE3707C42966738000B67D8A /* ReusableHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -273,6 +279,7 @@
 			files = (
 				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
+				BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BE3707C1296536FC00B67D8A /* SettingsViewController.swift in Sources */,
 				BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */,
@@ -281,6 +288,7 @@
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
+				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
