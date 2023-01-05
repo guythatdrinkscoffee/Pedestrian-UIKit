@@ -11,11 +11,6 @@ import Charts
 
 class MetricsViewController: UIViewController {
     // MARK: - Properties
-    fileprivate enum DrawerState {
-        case compact
-        case open
-    }
-    
     // This height is set by the calling view controller that
     // is presenting this view and is assigned to the
     // view's height when first displayed
@@ -61,8 +56,6 @@ class MetricsViewController: UIViewController {
         formatter.dateFormat = "MMM d"
         return formatter
     }()
-    
-    private var state: DrawerState = .compact
     
     private var animationDuration: TimeInterval = 0.6
     
@@ -183,8 +176,8 @@ class MetricsViewController: UIViewController {
         self.delegate?.provideWeeklyData(self)
         
         let dataPoints: [InfoData] = [
-            .init(icon: UIImage(systemName: "crown.fill"), description: "Steps", value: 1234),
-            .init(icon: UIImage(systemName: "figure.walk"), description: "Distance Traveled", value: 1234),
+            .init(icon: UIImage(systemName: "crown.fill"), description: "Steps Counted", value: 43000),
+            .init(icon: UIImage(systemName: "figure.walk"), description: "Distance Traveled", value: "\(1234.5) km"),
             .init(icon: UIImage(systemName: "arrow.up.right"), description: "Floors Ascended", value: 400),
             .init(icon: UIImage(systemName: "arrow.down.right"), description: "Floors Descended", value: 349)
         ]
@@ -318,8 +311,11 @@ private extension MetricsViewController {
             
             if velocity.y >= 0 {
                 snapTo(height: minimumOpeningHeight)
+                barChart.isUserInteractionEnabled = true
             } else {
                 snapTo(height: maxOpeningHeight)
+                barChart.isUserInteractionEnabled = false
+                resetSelection()
             }
         default : break
         }
@@ -327,6 +323,7 @@ private extension MetricsViewController {
     }
     
     private func snapTo(height: CGFloat) {
+        
         UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0) {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)

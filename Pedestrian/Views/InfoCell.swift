@@ -33,8 +33,10 @@ class InfoCell: UICollectionViewCell {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .systemTeal
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return imageView
     }()
+    
     private lazy var bodyLabel : UILabel = {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 18, weight: .bold)
@@ -52,8 +54,8 @@ class InfoCell: UICollectionViewCell {
     
     private lazy var labelsStackView : UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [iconImageView, bodyLabel])
-        stackView.spacing = 2
-        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -62,6 +64,7 @@ class InfoCell: UICollectionViewCell {
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.spacing = 8
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -98,6 +101,8 @@ extension InfoCell {
             bodyLabel.text = "\(number)"
         } else if let date = data.value as? Date {
             bodyLabel.text = date.formatted(date: .abbreviated, time: .omitted)
+        } else if let string = data.value as? String {
+            bodyLabel.text = string
         }
         
         iconImageView.image = data.icon
