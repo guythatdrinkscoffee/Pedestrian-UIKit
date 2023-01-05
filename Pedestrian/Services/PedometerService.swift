@@ -13,7 +13,7 @@ final class PedometerService {
     // MARK: - Properties
     
     // pedometerData holds the data for the currentDay
-    public  var pedometerData = PassthroughSubject<CMPedometerData,Never>()
+    public  var currentPedometerData = PassthroughSubject<CMPedometerData,Never>()
     
     private var pedometer: CMPedometer
     
@@ -37,7 +37,7 @@ final class PedometerService {
                 return
             }
             
-            self.pedometerData.send(pedData)
+            self.currentPedometerData.send(pedData)
         }
     }
     
@@ -84,9 +84,8 @@ final class PedometerService {
     }
     
     // MARK: - Public Methods
-    public func determineAuthorizationStatus() -> AnyPublisher<CMAuthorizationStatus, Never> {
-        let status = CMPedometer.authorizationStatus()
-        return Just(status).eraseToAnyPublisher()
+    public func determineAuthorizationStatus() -> CMAuthorizationStatus {
+        return CMPedometer.authorizationStatus()
     }
     
     public func makeAuthorizationRequest(completion: @escaping () -> Void) {

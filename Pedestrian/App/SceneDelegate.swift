@@ -6,17 +6,18 @@
 //
 
 import UIKit
+import CoreMotion
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let scene = (scene as? UIWindowScene) else { return }
+        guard let scene = (scene as? UIWindowScene), let pedometerService = (UIApplication.shared.delegate as? AppDelegate)?.pedometerService else { return }
+
         
         // init the window
         window = UIWindow(frame: scene.coordinateSpace.bounds)
@@ -25,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = scene
         
         // assign the root view controller
-        window?.rootViewController = HomeViewController()
+        window?.rootViewController = determineRootViewController(for: pedometerService.determineAuthorizationStatus(), with: pedometerService)
         
         // make the window visible
         window?.makeKeyAndVisible()
@@ -51,6 +52,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+       
+        
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
@@ -58,7 +61,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
+    
+    func determineRootViewController(for status: CMAuthorizationStatus, with service: PedometerService) -> UIViewController {
+        switch status {
+        case .notDetermined:
+            makeAuthorizationRequest(with: service)
+            return LoadingStatusViewController()
+        case .restricted:
+            return UIViewController()
+        case .denied:
+            return OpenSettingsViewController()
+        case .authorized:
+            return HomeViewController()
+        @unknown default:
+            fatalError("failed to make a root view controller")
+        }
+    }
+    
+    func makeRootViewController(for status: CMAuthorizationStatus) {
+        if status == .denied {
+            self.window?.rootViewController = OpenSettingsViewController()
+        } else if status == .authorized {
+            self.window?.rootViewController = HomeViewController()
+        }
+    }
+    
+    func makeAuthorizationRequest(with service: PedometerService){
+        service.makeAuthorizationRequest {
+            DispatchQueue.main.async {
+                self.makeRootViewController(for: service.determineAuthorizationStatus())
+                return
+            }
+        }
+    }
 }
 

@@ -143,7 +143,7 @@ class MetricsViewController: UIViewController {
     }()
     
     private lazy var metricsCollectionView : UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .twoRowLayout(for: view))
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .twoColumnLayout(for: view))
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
@@ -407,13 +407,9 @@ extension MetricsViewController: UICollectionViewDataSource {
     
 }
 
-// MARK: - UICollectionViewDelegate
-extension MetricsViewController: UICollectionViewDelegate {
-
-}
 
 extension UICollectionViewLayout {
-    static func twoRowLayout(for view: UIView) -> UICollectionViewFlowLayout {
+    static func twoColumnLayout(for view: UIView) -> UICollectionViewFlowLayout {
         let totalWidth = view.bounds.width
         let padding: CGFloat = 10
         let itemSpacing: CGFloat = 10
@@ -430,3 +426,4 @@ extension UICollectionViewLayout {
         return layout
     }
 }
+

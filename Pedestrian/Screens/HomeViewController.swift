@@ -59,8 +59,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    private var authorizationStatus: CMAuthorizationStatus = .notDetermined
-    
     // MARK: - UI
     private lazy var metricsViewController : MetricsViewController = {
         let controller = MetricsViewController()
@@ -105,12 +103,12 @@ class HomeViewController: UIViewController {
         formatter.dateFormat = "E d"
         return formatter
     }()
-
+    
     private lazy var refreshTapGesture : UITapGestureRecognizer = {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(refreshToCurrentSteps(_:)))
         return recognizer
     }()
-    
+     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,20 +116,18 @@ class HomeViewController: UIViewController {
         // config
         configureViewController()
         configureProgressView()
-        
+    
         // layout
         layoutViews()
-
+        
+        checkAuthorizationStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // config
         configureMetricsViewController()
-        
-        // check authorization status
-        checkAuthorizationStatus()
+    
     }
 }
 
@@ -140,7 +136,7 @@ private extension HomeViewController {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
     }
-
+    
     private func configureProgressView() {
         stepProgressView.translatesAutoresizingMaskIntoConstraints = false
         stepProgressView.updateMax(maxSteps)
@@ -160,12 +156,13 @@ private extension HomeViewController {
         
         infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
         
+
         NSLayoutConstraint.activate([
             stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.40),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
+            
             infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2),
             infoRow.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -174,16 +171,20 @@ private extension HomeViewController {
     }
 }
 
-// MARK: - Methods
-private extension HomeViewController {
-    private func checkAuthorizationStatus() {
-        pedometerService
-            .determineAuthorizationStatus()
-            .sink { status in
-                self.handleStatus(status)
-            }
-            .store(in: &cancellables)
+// MARK: - Public Methods
+extension HomeViewController {
+    public func checkAuthorizationStatus() {
+//        pedometerService
+//            .authorizationStatus
+//            .sink { status in
+//                self.handleStatus(status)
+//            }
+//            .store(in: &cancellables)
     }
+}
+
+// MARK: - Private Methods
+private extension HomeViewController {
     
     private func updateWithTimer() {
         var current = 200
@@ -208,7 +209,7 @@ private extension HomeViewController {
         pedometerService.startLiveUpdates()
         
         stepDataCancellable = pedometerService
-            .pedometerData
+            .currentPedometerData
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { pedometerData in
                 self.currentStepData = pedometerData
@@ -236,7 +237,7 @@ private extension HomeViewController {
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                print(completion)
+                self.provideWeeklyData(self.metricsViewController)
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })
@@ -270,24 +271,23 @@ private extension HomeViewController {
     }
     
     private func handleStatus(_ status: CMAuthorizationStatus) {
-        self.authorizationStatus = status
-        
         switch status {
         case .notDetermined:
             pedometerService.makeAuthorizationRequest {
                 self.checkAuthorizationStatus()
             }
-        case .restricted:
-            print("restricted")
-        case .denied:
-            print("denied")
+            
         case .authorized:
             startUpdatingLiveSteps()
+        case .denied:
+            print("denied")
+        case .restricted:
+            print("restricted")
         @unknown default:
-            fatalError("failed to determined authorization status")
+            fatalError("failed to determine authorization status")
         }
     }
-    
+
     @objc
     private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){
         metricsViewController.resetSelection()
@@ -297,7 +297,7 @@ private extension HomeViewController {
 // MARK: - Metrics Delegate
 extension HomeViewController: MetricsDelegate {
     func provideWeeklyData(_ viewController: UIViewController) {
-        guard authorizationStatus == .authorized else { return }
+        guard pedometerService.determineAuthorizationStatus() == .authorized else { return }
         updateForLastSevenDays()
     }
     
@@ -316,20 +316,20 @@ extension HomeViewController: MetricsDelegate {
 
 extension UIViewController {
     func add(_ child: UIViewController, frame: CGRect? = nil) {
-         addChild(child)
-
-         if let frame = frame {
-             child.view.frame = frame
-         }
-
-         view.addSubview(child.view)
-         child.didMove(toParent: self)
-     }
-
-     func remove() {
-         willMove(toParent: nil)
-         view.removeFromSuperview()
-         removeFromParent()
-     }
+        addChild(child)
+        
+        if let frame = frame {
+            child.view.frame = frame
+        }
+        
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    func remove() {
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
+    }
 }
 
