@@ -7,22 +7,22 @@
 
 import UIKit
 
-struct InfoData {
+struct MetricsData {
     let icon: UIImage?
     let description: String?
     let value: Any?
 }
 
-struct Section {
+struct MetricsInfo {
     let title: String
-    let data: [InfoData]
+    let data: [MetricsData]
 }
 
 class InfoCell: UICollectionViewCell {
     // MARK: -  Properties
     static let resuseIdentifier = String(describing: InfoCell.self)
     
-    public var data: InfoData? {
+    public var data: MetricsData? {
         didSet {
             configure(with: data)
         }
@@ -94,7 +94,7 @@ extension InfoCell {
         contentView.backgroundColor = .secondarySystemBackground
     }
     
-    public func configure(with data: InfoData?) {
+    public func configure(with data: MetricsData?) {
         guard let data = data else { return }
         
         if let number = data.value as? Int {

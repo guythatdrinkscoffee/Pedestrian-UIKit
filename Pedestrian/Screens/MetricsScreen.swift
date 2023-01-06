@@ -8,6 +8,7 @@
 import UIKit
 import CoreMotion
 import Charts
+import SwiftUI
 
 class MetricsScreen: UIViewController {
     // MARK: - Properties
@@ -25,7 +26,11 @@ class MetricsScreen: UIViewController {
     
     // The max limit value which corresponds
     // to the daily user's step goal
-    public var limit : Double = 10000
+    public var limit : Double = 0 {
+        didSet {
+            updateMetrics(data)
+        }
+    }
     
     // This height the maximum height allowed
     // for the current view after considering the
@@ -66,7 +71,7 @@ class MetricsScreen: UIViewController {
     
     private var feedbackGenerator: UISelectionFeedbackGenerator?
     
-    private var sections: [Section]?
+    private var sections: [MetricsInfo]?
     
     private var shortFormat = "MMM d"
     
@@ -102,7 +107,7 @@ class MetricsScreen: UIViewController {
         let line = ChartLimitLine(limit: limit, label: String(format: "%.0f", limit))
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = .systemTeal
-        line.labelPosition = .rightTop
+        line.labelPosition = .rightBottom
         line.valueTextColor = UIColor.systemTeal
         line.lineDashLengths = [8.0, 6.0]
         return line
@@ -246,6 +251,8 @@ extension MetricsScreen {
         }
         
         barChart.xAxis.valueFormatter = XAxisChartFormatter(dateFormatter: dateFormatter, timestamps: timeStamps)
+        limitLine.limit = limit
+        limitLine.label = String(format: "%.0f", limit)
         
         if let maxDataPoint = maxDataPoint {
             let maxSteps = maxDataPoint.numberOfSteps.doubleValue
@@ -277,7 +284,9 @@ private extension MetricsScreen {
     @objc
     private func handleSettingsTap(_ sender: UIButton){
        // Show the settings screen
-        
+        let settingsHostingController = UIHostingController(rootView: SettingsView())
+        settingsHostingController.modalPresentationStyle = .overFullScreen
+        present(settingsHostingController, animated: true)
     }
     
     @objc func handleDragGesture(_ recognizer: UIPanGestureRecognizer) {
@@ -432,7 +441,6 @@ extension MetricsScreen: UICollectionViewDataSource {
     
     
 }
-
 
 extension UICollectionViewLayout {
     static func twoColumnLayout(for view: UIView) -> UICollectionViewFlowLayout {

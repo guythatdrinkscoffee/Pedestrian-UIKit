@@ -19,6 +19,8 @@ class HomeScreen: UIViewController {
     // MARK: - Properties
     private var pedometerManager: PedometerManager?
     
+    private var settingsManager: SettingsManager?
+    
     private var cancellables = Set<AnyCancellable>()
     
     private var stepDataCancellable: AnyCancellable?
@@ -38,7 +40,6 @@ class HomeScreen: UIViewController {
         return formatter
     }()
     
-    private var maxSteps = 10000
     
     private var minOpeningHeight: CGFloat {
         let height = view.frame.height
@@ -111,8 +112,9 @@ class HomeScreen: UIViewController {
     }()
      
     // MARK: - Life cycle
-    init(pedometerManager: PedometerManager){
+    init(pedometerManager: PedometerManager, settingsManager: SettingsManager){
         self.pedometerManager = pedometerManager
+        self.settingsManager = settingsManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -137,6 +139,9 @@ class HomeScreen: UIViewController {
         
         // additional config
         configureMetricsViewController()
+        
+        // listen to changes
+        listenToSettingChanges()
     }
 }
 
@@ -148,7 +153,6 @@ private extension HomeScreen {
     
     private func configureProgressView() {
         stepProgressView.translatesAutoresizingMaskIntoConstraints = false
-        stepProgressView.updateMax(maxSteps)
     }
     
     private func configureMetricsViewController() {
@@ -200,6 +204,15 @@ extension HomeScreen {
 }
 // MARK: - Private Methods
 private extension HomeScreen {
+    private func listenToSettingChanges() {
+        settingsManager?
+            .dailyStepGoalCurrent
+            .sink(receiveValue: { dailyStepGoal in
+                self.stepProgressView.updateMax(dailyStepGoal)
+                self.metricsViewController.limit = Double(dailyStepGoal)
+            })
+            .store(in: &cancellables)
+    }
     
     private func resetViewsToZero()  {
         self.updateStepProgress(-1)

@@ -17,6 +17,13 @@
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
+		BE2D45F62967F6FE00973B21 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45F52967F6FE00973B21 /* SettingsView.swift */; };
+		BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45F92968CE4800973B21 /* SettingsIcon.swift */; };
+		BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */; };
+		BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */; };
+		BE2D46002968CFE200973B21 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */; };
+		BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46012968D2D900973B21 /* SettingsManager.swift */; };
+		BE2D46052968D62300973B21 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46042968D62300973B21 /* String+Ext.swift */; };
 		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
 		BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C22966597E00B67D8A /* InfoCell.swift */; };
 		BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C42966738000B67D8A /* ReusableHeaderView.swift */; };
@@ -40,6 +47,13 @@
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
+		BE2D45F52967F6FE00973B21 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE2D45F92968CE4800973B21 /* SettingsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsIcon.swift; sourceTree = "<group>"; };
+		BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationRow.swift; sourceTree = "<group>"; };
+		BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
+		BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		BE2D46012968D2D900973B21 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		BE2D46042968D62300973B21 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
 		BE3707C22966597E00B67D8A /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
 		BE3707C42966738000B67D8A /* ReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableHeaderView.swift; sourceTree = "<group>"; };
@@ -83,6 +97,7 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
+				BE2D46032968D61900973B21 /* Extensions */,
 				BEED0E03296245FF00C6656D /* Helpers */,
 				BE15AF5029622EC0007D4D23 /* Views */,
 				BE15AF4D29621684007D4D23 /* Managers */,
@@ -115,6 +130,7 @@
 		BE15AF4C29621628007D4D23 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				BE2D45F42967F6F000973B21 /* SwiftUI */,
 				BE15AF3A296134C8007D4D23 /* HomeScreen.swift */,
 				BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */,
 				BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */,
@@ -127,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				BE15AF4E2962168D007D4D23 /* PedometerManager.swift */,
+				BE2D46012968D2D900973B21 /* SettingsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -134,11 +151,46 @@
 		BE15AF5029622EC0007D4D23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BE33E59029678A7300E1C77F /* TableView */,
 				BE33E58F29678A3B00E1C77F /* CollectionView */,
 				BE33E58E29678A2E00E1C77F /* CustomViews */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		BE2D45F42967F6F000973B21 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				BE2D45F72968CE2C00973B21 /* Components */,
+				BE2D45F52967F6FE00973B21 /* SettingsView.swift */,
+				BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		BE2D45F72968CE2C00973B21 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BE2D45F82968CE3100973B21 /* Settings */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		BE2D45F82968CE3100973B21 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE2D45F92968CE4800973B21 /* SettingsIcon.swift */,
+				BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */,
+				BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BE2D46032968D61900973B21 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BE2D46042968D62300973B21 /* String+Ext.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BE33E58E29678A2E00E1C77F /* CustomViews */ = {
@@ -158,13 +210,6 @@
 				BE3707C42966738000B67D8A /* ReusableHeaderView.swift */,
 			);
 			path = CollectionView;
-			sourceTree = "<group>";
-		};
-		BE33E59029678A7300E1C77F /* TableView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TableView;
 			sourceTree = "<group>";
 		};
 		BEED0E03296245FF00C6656D /* Helpers */ = {
@@ -314,12 +359,19 @@
 				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
 				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
+				BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */,
+				BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
+				BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */,
+				BE2D46002968CFE200973B21 /* GeneralSettingsView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
+				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
+				BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
+				BE2D45F62967F6FE00973B21 /* SettingsView.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
