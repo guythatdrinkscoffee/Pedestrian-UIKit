@@ -13,7 +13,7 @@
 		BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeScreen.swift */; };
 		BE15AF40296134C9007D4D23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF3F296134C9007D4D23 /* Assets.xcassets */; };
 		BE15AF43296134C9007D4D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF41296134C9007D4D23 /* LaunchScreen.storyboard */; };
-		BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerService.swift */; };
+		BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerManager.swift */; };
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
@@ -36,7 +36,7 @@
 		BE15AF3F296134C9007D4D23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE15AF42296134C9007D4D23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE15AF44296134C9007D4D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE15AF4E2962168D007D4D23 /* PedometerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerService.swift; sourceTree = "<group>"; };
+		BE15AF4E2962168D007D4D23 /* PedometerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerManager.swift; sourceTree = "<group>"; };
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		BE15AF4D29621684007D4D23 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				BE15AF4E2962168D007D4D23 /* PedometerService.swift */,
+				BE15AF4E2962168D007D4D23 /* PedometerManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -318,7 +318,7 @@
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
-				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
+				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);

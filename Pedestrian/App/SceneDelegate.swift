@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let scene = (scene as? UIWindowScene), let pedometerService = (UIApplication.shared.delegate as? AppDelegate)?.pedometerService else { return }
+        guard let scene = (scene as? UIWindowScene), let pedometerManager = (UIApplication.shared.delegate as? AppDelegate)?.pedometerManager else { return }
 
         
         // init the window
@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = scene
         
         // assign the root view controller
-        window?.rootViewController = determineRootViewController(for: pedometerService.determineAuthorizationStatus(), with: pedometerService)
+        window?.rootViewController = determineRootViewController(for: pedometerManager.determineAuthorizationStatus(), with: pedometerManager)
         
         // make the window visible
         window?.makeKeyAndVisible()
