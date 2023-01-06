@@ -129,6 +129,7 @@ class StepProgressView: UIView {
         basicProgressAnimation.duration = 0.5
         basicProgressAnimation.fromValue = currentValue / maxValue
         basicProgressAnimation.toValue = newStrokeEndPosition
+        
         progressLayer.strokeEnd = newStrokeEndPosition
         progressLayer.add(basicProgressAnimation, forKey: "progressAnimation")
         self.currentValue = fValue

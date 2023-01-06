@@ -15,9 +15,9 @@ protocol MetricsDelegate: AnyObject {
 }
 
 
-class HomeViewController: UIViewController {
+class HomeScreen: UIViewController {
     // MARK: - Properties
-    private var pedometerService = PedometerService()
+    private var pedometerManager: PedometerManager?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -60,8 +60,8 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - UI
-    private lazy var metricsViewController : MetricsViewController = {
-        let controller = MetricsViewController()
+    private lazy var metricsViewController : MetricsScreen = {
+        let controller = MetricsScreen()
         controller.minimumOpeningHeight = minOpeningHeight
         controller.delegate = self
         controller.measurementFormatter = measurementFormatter
@@ -111,6 +111,14 @@ class HomeViewController: UIViewController {
     }()
      
     // MARK: - Life cycle
+    init(pedometerManager: PedometerManager){
+        self.pedometerManager = pedometerManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -133,7 +141,7 @@ class HomeViewController: UIViewController {
 }
 
 // MARK: - Config
-private extension HomeViewController {
+private extension HomeScreen {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
     }
@@ -149,7 +157,7 @@ private extension HomeViewController {
 }
 
 // MARK: - Layout
-private extension HomeViewController {
+private extension HomeScreen {
     private func layoutViews() {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
@@ -172,12 +180,12 @@ private extension HomeViewController {
 }
 
 // MARK: - Public Methods {
-extension HomeViewController {
+extension HomeScreen {
     public func startUpdatingLiveSteps() {
         print(#function)
-        pedometerService.startLiveUpdates()
+        pedometerManager?.startLiveUpdates()
         
-        stepDataCancellable = pedometerService
+        stepDataCancellable = pedometerManager?
             .currentPedometerData
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { pedometerData in
@@ -187,11 +195,11 @@ extension HomeViewController {
     
     public func stopUpdatingSteps() {
         print(#function)
-        pedometerService.stopLiveUpdates()
+        pedometerManager?.stopLiveUpdates()
     }
 }
 // MARK: - Private Methods
-private extension HomeViewController {
+private extension HomeScreen {
     
     private func resetViewsToZero()  {
         self.updateStepProgress(-1)
@@ -213,7 +221,7 @@ private extension HomeViewController {
     }
     
     private func updateForLastSevenDays() {
-        weeklydataCancellable = pedometerService
+        weeklydataCancellable = pedometerManager?
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -257,7 +265,7 @@ private extension HomeViewController {
 }
 
 // MARK: - Metrics Delegate
-extension HomeViewController: MetricsDelegate {
+extension HomeScreen: MetricsDelegate {
     func resetAndStopUpdating() {
         update(currentStepData)
         stopUpdatingSteps()

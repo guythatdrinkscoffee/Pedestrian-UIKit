@@ -42,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        if let homeViewController = window?.rootViewController as? HomeViewController {
+        if let homeViewController = window?.rootViewController as? HomeScreen {
             homeViewController.startUpdatingLiveSteps()
         }
     }
@@ -63,39 +63,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        if let homeViewController = window?.rootViewController as? HomeViewController {
+        if let homeViewController = window?.rootViewController as? HomeScreen {
             homeViewController.stopUpdatingSteps()
         }
     }
     
-    func determineRootViewController(for status: CMAuthorizationStatus, with service: PedometerService) -> UIViewController {
+    func determineRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager) -> UIViewController {
         switch status {
         case .notDetermined:
-            makeAuthorizationRequest(with: service)
-            return LoadingStatusViewController()
+            makeAuthorizationRequest(with: manager)
+            return LoadingStatusScreen()
         case .restricted:
             return UIViewController()
         case .denied:
-            return OpenSettingsViewController()
+            return OpenSettingsScreen()
         case .authorized:
-            return HomeViewController()
+            return HomeScreen(pedometerManager: manager)
         @unknown default:
             fatalError("failed to make a root view controller")
         }
     }
     
-    func makeRootViewController(for status: CMAuthorizationStatus) {
+    func makeRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager) {
         if status == .denied {
-            self.window?.rootViewController = OpenSettingsViewController()
+            self.window?.rootViewController = OpenSettingsScreen()
         } else if status == .authorized {
-            self.window?.rootViewController = HomeViewController()
+            self.window?.rootViewController = HomeScreen(pedometerManager: manager)
         }
     }
     
-    func makeAuthorizationRequest(with service: PedometerService){
-        service.makeAuthorizationRequest {
+    func makeAuthorizationRequest(with manager: PedometerManager){
+        manager.makeAuthorizationRequest {
             DispatchQueue.main.async {
-                self.makeRootViewController(for: service.determineAuthorizationStatus())
+                self.makeRootViewController(for: manager.determineAuthorizationStatus(), with: manager)
                 return
             }
         }

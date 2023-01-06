@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OpenSettingsViewController: UIViewController {
+class OpenSettingsScreen: UIViewController {
     
     // MARK: - UI
     private lazy var settingsLabel : UILabel = {

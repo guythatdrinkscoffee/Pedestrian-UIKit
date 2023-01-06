@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadingStatusViewController: UIViewController {
+class LoadingStatusScreen: UIViewController {
     // MARK: - UI
     private lazy var activityIndicator : UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)

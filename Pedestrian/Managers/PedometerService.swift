@@ -1,5 +1,5 @@
 //
-//  PedometerService.swift
+//  PedometerManager.swift
 //  Pedestrian
 //
 //  Created by J Manuel Zaragoza on 1/1/23.
@@ -9,7 +9,7 @@ import Foundation
 import CoreMotion
 import Combine
 
-final class PedometerService {
+final class PedometerManager {
     // MARK: - Properties
     
     // pedometerData holds the data for the currentDay

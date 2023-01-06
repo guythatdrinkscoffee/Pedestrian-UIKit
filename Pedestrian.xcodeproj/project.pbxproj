@@ -10,20 +10,20 @@
 		9F912C0F8C33A5FA45575B94 /* Pods_Pedestrian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */; };
 		BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF36296134C8007D4D23 /* AppDelegate.swift */; };
 		BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF38296134C8007D4D23 /* SceneDelegate.swift */; };
-		BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeViewController.swift */; };
+		BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeScreen.swift */; };
 		BE15AF40296134C9007D4D23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF3F296134C9007D4D23 /* Assets.xcassets */; };
 		BE15AF43296134C9007D4D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE15AF41296134C9007D4D23 /* LaunchScreen.storyboard */; };
 		BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF4E2962168D007D4D23 /* PedometerService.swift */; };
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
-		BE3707C1296536FC00B67D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C0296536FC00B67D8A /* SettingsViewController.swift */; };
+		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
 		BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C22966597E00B67D8A /* InfoCell.swift */; };
 		BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C42966738000B67D8A /* ReusableHeaderView.swift */; };
-		BE3707CB2966B2C400B67D8A /* OpenSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSettingsViewController.swift */; };
-		BE3707CD2966B74F00B67D8A /* LoadingStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CC2966B74F00B67D8A /* LoadingStatusViewController.swift */; };
+		BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */; };
+		BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
-		BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */; };
+		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +32,7 @@
 		BE15AF33296134C8007D4D23 /* Pedestrian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pedestrian.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE15AF36296134C8007D4D23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE15AF38296134C8007D4D23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BE15AF3A296134C8007D4D23 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		BE15AF3A296134C8007D4D23 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		BE15AF3F296134C9007D4D23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE15AF42296134C9007D4D23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE15AF44296134C9007D4D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -40,13 +40,13 @@
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
-		BE3707C0296536FC00B67D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
 		BE3707C22966597E00B67D8A /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
 		BE3707C42966738000B67D8A /* ReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableHeaderView.swift; sourceTree = "<group>"; };
-		BE3707CA2966B2C400B67D8A /* OpenSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSettingsViewController.swift; sourceTree = "<group>"; };
-		BE3707CC2966B74F00B67D8A /* LoadingStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusViewController.swift; sourceTree = "<group>"; };
+		BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSettingsScreen.swift; sourceTree = "<group>"; };
+		BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusScreen.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
-		BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsViewController.swift; sourceTree = "<group>"; };
+		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
 		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,7 +85,7 @@
 			children = (
 				BEED0E03296245FF00C6656D /* Helpers */,
 				BE15AF5029622EC0007D4D23 /* Views */,
-				BE15AF4D29621684007D4D23 /* Services */,
+				BE15AF4D29621684007D4D23 /* Managers */,
 				BE15AF4C29621628007D4D23 /* Screens */,
 				BE15AF4B296134DF007D4D23 /* Support */,
 				BE15AF4A296134D7007D4D23 /* App */,
@@ -115,39 +115,63 @@
 		BE15AF4C29621628007D4D23 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				BE15AF3A296134C8007D4D23 /* HomeViewController.swift */,
-				BEED0E0A29627E4D00C6656D /* MetricsViewController.swift */,
-				BE3707C0296536FC00B67D8A /* SettingsViewController.swift */,
-				BE3707CA2966B2C400B67D8A /* OpenSettingsViewController.swift */,
-				BE3707CC2966B74F00B67D8A /* LoadingStatusViewController.swift */,
+				BE15AF3A296134C8007D4D23 /* HomeScreen.swift */,
+				BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */,
+				BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */,
+				BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		BE15AF4D29621684007D4D23 /* Services */ = {
+		BE15AF4D29621684007D4D23 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				BE15AF4E2962168D007D4D23 /* PedometerService.swift */,
 			);
-			path = Services;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		BE15AF5029622EC0007D4D23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE33E59029678A7300E1C77F /* TableView */,
+				BE33E58F29678A3B00E1C77F /* CollectionView */,
+				BE33E58E29678A2E00E1C77F /* CustomViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BE33E58E29678A2E00E1C77F /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
 				BE15AF5129622F38007D4D23 /* StepProgressView.swift */,
 				BE15AF5529623EB3007D4D23 /* InfoSection.swift */,
 				BE15AF5729624110007D4D23 /* InfoRow.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		BE33E58F29678A3B00E1C77F /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
 				BE3707C22966597E00B67D8A /* InfoCell.swift */,
 				BE3707C42966738000B67D8A /* ReusableHeaderView.swift */,
 			);
-			path = Views;
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		BE33E59029678A7300E1C77F /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TableView;
 			sourceTree = "<group>";
 		};
 		BEED0E03296245FF00C6656D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				BEED0E042962460B00C6656D /* UIViewPreview.swift */,
+				BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -283,20 +307,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE15AF3B296134C8007D4D23 /* HomeViewController.swift in Sources */,
+				BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
-				BE3707C1296536FC00B67D8A /* SettingsViewController.swift in Sources */,
-				BEED0E0B29627E4D00C6656D /* MetricsViewController.swift in Sources */,
+				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
+				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
-				BE3707CB2966B2C400B67D8A /* OpenSettingsViewController.swift in Sources */,
+				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerService.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
-				BE3707CD2966B74F00B67D8A /* LoadingStatusViewController.swift in Sources */,
+				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

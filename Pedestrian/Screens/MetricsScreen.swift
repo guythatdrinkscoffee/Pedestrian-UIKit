@@ -9,7 +9,7 @@ import UIKit
 import CoreMotion
 import Charts
 
-class MetricsViewController: UIViewController {
+class MetricsScreen: UIViewController {
     // MARK: - Properties
     // This height is set by the calling view controller that
     // is presenting this view and is assigned to the
@@ -190,7 +190,7 @@ class MetricsViewController: UIViewController {
 }
 
 // MARK: - Config
-private extension MetricsViewController {
+private extension MetricsScreen {
     private func configureViewController() {
         view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 15
@@ -198,7 +198,7 @@ private extension MetricsViewController {
 }
 
 // MARK: - Layout
-private extension MetricsViewController {
+private extension MetricsScreen {
     private func layoutViews(){
         view.addSubview(dragIndicator)
         view.addSubview(settingsButton)
@@ -229,7 +229,7 @@ private extension MetricsViewController {
 }
 
 // MARK: - Public Methods
-extension MetricsViewController {
+extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
         self.data = data
     }
@@ -272,12 +272,12 @@ extension MetricsViewController {
 }
 
 // MARK: - Private Methods
-private extension MetricsViewController {
+private extension MetricsScreen {
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
-        let containerNav = UINavigationController(rootViewController: SettingsViewController())
-        present(containerNav, animated: true)
+       // Show the settings screen
+        
     }
     
     @objc func handleDragGesture(_ recognizer: UIPanGestureRecognizer) {
@@ -359,7 +359,7 @@ private extension MetricsViewController {
 }
 
 // MARK: - ChartView Delegate
-extension MetricsViewController: ChartViewDelegate {
+extension MetricsScreen: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         delegate?.updateSelection(with: entry.data)
     }
@@ -388,7 +388,7 @@ class XAxisChartFormatter: IndexAxisValueFormatter {
 }
 
 // MARK: - UICollectionViewDataSource
-extension MetricsViewController: UICollectionViewDataSource {
+extension MetricsScreen: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         guard let sections = sections else { return 0 }
         return sections.count
@@ -459,5 +459,9 @@ extension UIImage {
     static let arrowDown = UIImage(systemName: "arrow.down.right")
     static let crown = UIImage(systemName: "crown.fill")
     static let walking = UIImage(systemName: "figure.walk")
+    
+    // Settings
     static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let settingsUnits =   UIImage(systemName: "ruler.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let settingsGoal =   UIImage(systemName: "figure.walk", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
 }
