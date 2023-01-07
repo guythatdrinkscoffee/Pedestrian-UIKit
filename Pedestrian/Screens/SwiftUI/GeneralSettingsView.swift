@@ -19,7 +19,8 @@ struct GeneralSettingsView: View {
                     HStack {
                         Text(dailyStepGoal, format: .number)
                             .font(.system(.title, design: .monospaced, weight: .black))
-                            .padding([.leading], 5)
+                            .padding([.leading], 10)
+                            .foregroundColor(determineColorRange(dailyStepGoal))
                     }
                 }
                 .padding(3)
@@ -31,11 +32,23 @@ struct GeneralSettingsView: View {
                 Toggle(isOn: $preferMetricUnits) {
                     Text("Prefer Metric Units")
                         .font(.system(.subheadline, design: .default, weight: .semibold))
+                        .padding([.leading], 10)
                 }
             }
         }
         .navigationTitle("General")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    func determineColorRange(_ value: Int) -> Color {
+        switch value {
+        case 0...5000 : return .red
+        case 5000...10000 : return .orange
+        case 10000...20000: return .green
+        
+        default:
+            return .green
+        }
     }
 }
 

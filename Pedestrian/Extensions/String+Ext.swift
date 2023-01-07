@@ -11,4 +11,5 @@ extension String {
     static let dailyStepGoal = "dailyStepGoal"
     static let preferMetricUnits = "preferMetricUnits"
     static let defaultSettingsSet = "defaultSettingsSet"
+    static let appTintColor = "appTintColor"
 }

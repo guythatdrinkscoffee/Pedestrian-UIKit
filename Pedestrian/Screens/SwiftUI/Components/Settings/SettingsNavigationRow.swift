@@ -11,11 +11,14 @@ import SwiftUI
 struct SettingsNavigationRow<Destination: View>: View {
     let  title: String
     let icon: Image
-    let color: Color
-    @ViewBuilder let destination: () -> Destination
+ 
     
+    var color = Color(.gray)
     var defaultIconSize = CGSize(width: 30, height: 30)
     var iconRotation: Double = 0
+    
+    
+    @ViewBuilder let destination: () -> Destination
     
     var body: some View {
         NavigationLink {
@@ -29,15 +32,13 @@ struct SettingsNavigationRow<Destination: View>: View {
                     .padding([.leading], 10)
             }
         }
-        .foregroundColor(color)
     }
 }
 
 struct SettingsNavigationRow_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsNavigationRow(title: "General", icon: Image(systemName: "gear"), color: .gray) {
-            Text("Hello World")
+        SettingsNavigationRow(title: "General", icon: Image(systemName: "gear")) {
+            Text("hello world")
         }
-        .previewLayout(.sizeThatFits)
     }
 }

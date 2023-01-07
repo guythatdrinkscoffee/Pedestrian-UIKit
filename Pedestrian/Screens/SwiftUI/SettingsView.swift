@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-enum Settings {
-    
-}
 
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction

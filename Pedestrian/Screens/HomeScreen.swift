@@ -220,7 +220,7 @@ extension HomeScreen {
 private extension HomeScreen {
     private func listenToSettingChanges() {
         settingsManager?
-            .dailyStepGoalCurrent
+            .dailyStepGoal
             .sink(receiveValue: { dailyStepGoal in
                 self.dailyStepGoal = dailyStepGoal
             })

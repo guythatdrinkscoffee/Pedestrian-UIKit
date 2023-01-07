@@ -32,8 +32,8 @@ class InfoCell: UICollectionViewCell {
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .systemTeal
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        imageView.tintColor = .systemTeal
         return imageView
     }()
     

@@ -12,24 +12,19 @@ import SwiftUI
 
 class MetricsScreen: UIViewController {
     // MARK: - Public Properties
-    public var measurementFormatter: MeasurementFormatter?
-    
-    public var unitDistance: UnitLength = .kilometers {
-        didSet {
-            aggregateData(data)
-        }
-    }
-    // MARK: - Private Properties
     // This height is set by the calling view controller that
     // is presenting this view and is assigned to the
     // view's height when first displayed
     public var minimumOpeningHeight: CGFloat = 0.0
     
-    // This height is the allowed minimum chart height
-    // after considering the heights of the parent's
-    // safeAreaBottomHeight and the settings button
-    private var minimumChartHeight: CGFloat {
-        return  minimumOpeningHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0)
+    // The measurement formatter that is passed by the parent view controller
+    public var measurementFormatter: MeasurementFormatter?
+    
+    
+    public var unitDistance: UnitLength = .kilometers {
+        didSet {
+           aggregateData(data)
+        }
     }
     
     // The max limit value which corresponds
@@ -39,7 +34,16 @@ class MetricsScreen: UIViewController {
             updateMetrics(data)
         }
     }
+    // MARK: - Private Properties
     
+    // This height is the allowed minimum chart height
+    // after considering the heights of the parent's
+    // safeAreaBottomHeight and the settings button
+    private var minimumChartHeight: CGFloat {
+        return  minimumOpeningHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0)
+    }
+    
+
     // This height the maximum height allowed
     // for the current view after considering the
     // parent's height minus the top safe area
@@ -70,8 +74,6 @@ class MetricsScreen: UIViewController {
         formatter.dateFormat = "MMM d"
         return formatter
     }()
-    
-    
 
     
     private var animationDuration: TimeInterval = 0.6
@@ -92,6 +94,8 @@ class MetricsScreen: UIViewController {
             aggregateData(data)
         }
     }
+    
+    private var tintColor: UIColor = .systemTeal
     
     weak var delegate: MetricsDelegate?
     // MARK: - UI
@@ -115,9 +119,9 @@ class MetricsScreen: UIViewController {
     private lazy var limitLine : ChartLimitLine = {
         let line = ChartLimitLine(limit: limit, label: String(format: "%.0f", limit))
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
-        line.lineColor = .systemTeal
+        line.lineColor = tintColor
         line.labelPosition = .rightBottom
-        line.valueTextColor = UIColor.systemTeal
+        line.valueTextColor = tintColor
         line.lineDashLengths = [8.0, 6.0]
         return line
     }()
@@ -152,7 +156,7 @@ class MetricsScreen: UIViewController {
         
         // chart custom legend
         let goalEntry = LegendEntry(label: "Daily Goal")
-        goalEntry.formColor = .systemTeal
+        goalEntry.formColor = tintColor
         goalEntry.form = .line
         
         let infoEntry = LegendEntry(label: "Last 7 Days")
@@ -182,7 +186,7 @@ class MetricsScreen: UIViewController {
         return gesture
     }()
     
-    
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -272,8 +276,7 @@ extension MetricsScreen {
             
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
-        dataSet.barShadowColor = .black
-        dataSet.setColor(UIColor.systemPink)
+        dataSet.setColor(.systemPink)
         
         let chartData = BarChartData(dataSet: dataSet)
 
@@ -352,6 +355,10 @@ private extension MetricsScreen {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
+    }
+    
+    private func reloadDistanceSection() {
+        metricsCollectionView.reloadItems(at: [IndexPath(row: 1, section: 0)])
     }
     
     private func aggregateData(_ data: [CMPedometerData]) {
@@ -447,8 +454,6 @@ extension MetricsScreen: UICollectionViewDataSource {
         }
         
     }
-    
-    
 }
 
 extension UICollectionViewLayout {

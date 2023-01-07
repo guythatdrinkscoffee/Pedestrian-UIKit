@@ -13,7 +13,7 @@ class InfoSection: UIView {
     private lazy var iconImageView : UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .systemTeal
+        imageView.tintColor = .systemGray
         return imageView
     }()
     private lazy var bodyLabel : UILabel = {

@@ -22,8 +22,10 @@ class StepProgressView: UIView {
     public var progressColor: UIColor = UIColor.systemTeal {
         didSet {
             progressLayer.strokeColor = progressColor.cgColor
+            bottomLayer.strokeColor = progressColor.withAlphaComponent(0.25).cgColor
         }
     }
+    
     // MARK: - UI
     private lazy var bottomLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
@@ -115,6 +117,10 @@ class StepProgressView: UIView {
     public func updateMax(_ max: Int) {
         let maxValue = CGFloat(max)
         self.maxValue = maxValue
+    }
+    
+    public func updateTint(_ color: UIColor){
+        progressColor = color
     }
     
     public func updateProgress( _ value: Int) {
