@@ -11,7 +11,15 @@ import Charts
 import SwiftUI
 
 class MetricsScreen: UIViewController {
-    // MARK: - Properties
+    // MARK: - Public Properties
+    public var measurementFormatter: MeasurementFormatter?
+    
+    public var unitDistance: UnitLength = .kilometers {
+        didSet {
+            aggregateData(data)
+        }
+    }
+    // MARK: - Private Properties
     // This height is set by the calling view controller that
     // is presenting this view and is assigned to the
     // view's height when first displayed
@@ -63,7 +71,8 @@ class MetricsScreen: UIViewController {
         return formatter
     }()
     
-    public var measurementFormatter: MeasurementFormatter?
+    
+
     
     private var animationDuration: TimeInterval = 0.6
     
@@ -351,7 +360,7 @@ private extension MetricsScreen {
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
         let floorsDescended = data.reduce(0, {$0 + ($1.floorsDescended?.intValue ?? 0)})
 
-        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
+        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: unitDistance)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
         sections = [

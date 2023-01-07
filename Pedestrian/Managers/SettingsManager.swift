@@ -16,11 +16,18 @@ extension UserDefaults {
             return self.integer(forKey: .dailyStepGoal)
         }
     }
+    
+    @objc dynamic var preferMetricUnits: Bool {
+        get {
+            return self.bool(forKey: .preferMetricUnits)
+        }
+    }
 }
 
 final class SettingsManager: ObservableObject{
     // MARK: - Public Publisher
-    public var dailyStepGoalCurrent = CurrentValueSubject<Int, Never>(0)
+    public var dailyStepGoalCurrent = CurrentValueSubject<Int, Never>(10_000)
+    public var preferMetricUnits = CurrentValueSubject<Bool,Never>(false)
     
     // MARK: - Private Properties
     private var defaults: UserDefaults
@@ -62,6 +69,10 @@ private extension SettingsManager {
     private func listenToSettings() {
         defaults.publisher(for: \.dailyStepGoal)
             .assign(to: \.value, on: dailyStepGoalCurrent)
+            .store(in: &cancellables)
+        
+        defaults.publisher(for: \.preferMetricUnits)
+            .assign(to: \.value, on: preferMetricUnits)
             .store(in: &cancellables)
     }
 }

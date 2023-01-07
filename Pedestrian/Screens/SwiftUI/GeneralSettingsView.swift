@@ -10,9 +10,7 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     @AppStorage(.dailyStepGoal) var dailyStepGoal = 10_000
-
-    
-    let defaultIconSize = CGSize(width: 30, height: 30)
+    @AppStorage(.preferMetricUnits) var preferMetricUnits = false
     
     var body: some View {
         List {
@@ -27,6 +25,13 @@ struct GeneralSettingsView: View {
                 .padding(3)
             } header: {
                 Text("Daily Step Goal")
+            }
+            
+            Section {
+                Toggle(isOn: $preferMetricUnits) {
+                    Text("Prefer Metric Units")
+                        .font(.system(.subheadline, design: .default, weight: .semibold))
+                }
             }
         }
         .navigationTitle("General")

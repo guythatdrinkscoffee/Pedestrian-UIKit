@@ -60,6 +60,20 @@ class HomeScreen: UIViewController {
         }
     }
     
+    private var unitDistance: UnitLength = .kilometers {
+        didSet {
+            update(currentStepData)
+            metricsViewController.unitDistance = unitDistance
+        }
+    }
+    
+    private var dailyStepGoal: Int  = 10_000 {
+        didSet {
+            stepProgressView.updateMax(dailyStepGoal)
+            metricsViewController.limit = Double(dailyStepGoal)
+        }
+    }
+    
     // MARK: - UI
     private lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
@@ -208,8 +222,14 @@ private extension HomeScreen {
         settingsManager?
             .dailyStepGoalCurrent
             .sink(receiveValue: { dailyStepGoal in
-                self.stepProgressView.updateMax(dailyStepGoal)
-                self.metricsViewController.limit = Double(dailyStepGoal)
+                self.dailyStepGoal = dailyStepGoal
+            })
+            .store(in: &cancellables)
+        
+        settingsManager?
+            .preferMetricUnits
+            .sink(receiveValue: { preferMetricUnits in
+                self.unitDistance = preferMetricUnits ? .kilometers : .miles
             })
             .store(in: &cancellables)
     }
@@ -262,14 +282,15 @@ private extension HomeScreen {
         }
     }
     
-    private func updateDistanceTraveled(_ value: NSNumber?) {
+    private func updateDistanceTraveled(_ value: NSNumber?, preferMetricUnits: Bool? = false) {
         guard let distanceInMeters = value else { return }
         
-        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: .kilometers)
+        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: unitDistance)
         let formattedDistance = measurementFormatter.string(from: distance)
         
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
+    
 
     @objc
     private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){
