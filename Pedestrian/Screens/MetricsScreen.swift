@@ -80,7 +80,7 @@ class MetricsScreen: UIViewController {
     
     private var origin: CGPoint = .zero
     
-    private var feedbackGenerator: UISelectionFeedbackGenerator?
+    private var feedbackGenerator: UIImpactFeedbackGenerator?
     
     private var sections: [MetricsInfo]?
     
@@ -324,7 +324,7 @@ private extension MetricsScreen {
         switch recognizer.state {
         case .began, .changed:
             // init the feedback generator
-            feedbackGenerator = UISelectionFeedbackGenerator()
+            feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
             feedbackGenerator?.prepare()
             
             // set the new frame for the view
@@ -333,7 +333,7 @@ private extension MetricsScreen {
             //reset the translation
             recognizer.setTranslation(.zero, in: view)
         case .ended:
-            feedbackGenerator?.selectionChanged()
+            feedbackGenerator?.impactOccurred()
             
             if velocity.y >= 0 {
                 snapTo(height: minimumOpeningHeight)

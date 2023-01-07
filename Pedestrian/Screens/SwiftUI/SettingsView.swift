@@ -11,6 +11,8 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
     
+    @State var feedbackGenerator: UIImpactFeedbackGenerator? = nil
+    
     var body: some View {
         NavigationView {
             List {
@@ -24,12 +26,19 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        feedbackGenerator?.impactOccurred()
                         dismiss()
                     } label: {
                         Text("Done")
                     }
 
                 }
+            }
+            .onAppear {
+                feedbackGenerator = UIImpactFeedbackGenerator(style: .medium )
+            }
+            .onDisappear {
+                feedbackGenerator = nil
             }
         }
     }
