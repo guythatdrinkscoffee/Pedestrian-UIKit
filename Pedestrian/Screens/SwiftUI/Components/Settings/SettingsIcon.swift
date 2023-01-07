@@ -13,6 +13,7 @@ struct SettingsIcon: View {
     let icon: Image
     let color: Color
     var rotation: Double = 0
+    var ratio: Double = 1.5
     
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
@@ -22,13 +23,40 @@ struct SettingsIcon: View {
                 icon
                     .resizable()
                     .scaledToFit()
-                    .frame(width: size.width / 1.5, height: size.height / 1.5)
+                    .frame(width: size.width / ratio, height: size.height / ratio)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
                     .rotationEffect(Angle(degrees: rotation))
             }
     }
 }
+
+struct TwoColorSettingsIcon: View {
+    let size: CGSize
+    let icon: Image
+    let primary: Color
+    let secondary: Color
+    let background: Color
+    var rotation: Double = 0
+    var ratio: Double = 1.5
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .frame(width: size.width, height: size.height)
+            .foregroundColor(background)
+            .overlay {
+                icon
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size.width / ratio, height: size.height / ratio)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(primary, secondary)
+                    .fontWeight(.bold)
+                    .rotationEffect(Angle(degrees: rotation))
+            }
+    }
+}
+
 
 
 struct SettingsIcon_Previews: PreviewProvider {

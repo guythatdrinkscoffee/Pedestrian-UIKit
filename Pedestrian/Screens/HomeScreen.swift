@@ -257,8 +257,7 @@ private extension HomeScreen {
         weeklydataCancellable = pedometerManager?
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print(completion)
+            .sink(receiveCompletion: { _ in
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })

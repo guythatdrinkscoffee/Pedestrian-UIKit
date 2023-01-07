@@ -32,6 +32,7 @@ struct SettingsNavigationRow<Destination: View>: View {
                     .padding([.leading], 10)
             }
         }
+        .font(.headline)
     }
 }
 

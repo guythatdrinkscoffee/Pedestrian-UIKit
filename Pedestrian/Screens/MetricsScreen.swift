@@ -297,7 +297,7 @@ private extension MetricsScreen {
     private func handleSettingsTap(_ sender: UIButton){
        // Show the settings screen
         let settingsHostingController = UIHostingController(rootView: SettingsView())
-        settingsHostingController.modalPresentationStyle = .overFullScreen
+//        settingsHostingController.modalPresentationStyle = .overFullScreen
         present(settingsHostingController, animated: true)
     }
     
