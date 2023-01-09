@@ -14,6 +14,8 @@ class ConfettiView: UIView {
     private var intensity: Float!
     private var active: Bool!
     private var emitter: CAEmitterLayer!
+    
+    private var feedbackGenerator: UIImpactFeedbackGenerator?
     // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,6 +65,9 @@ private extension ConfettiView {
 // MARK: - Public Methods
 extension ConfettiView {
     public func startConfetti() {
+        feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        feedbackGenerator?.prepare()
+        
         emitter = CAEmitterLayer()
         
         emitter.emitterPosition = CGPoint(x: frame.size.width / 2.0, y: 0)
@@ -78,6 +83,7 @@ extension ConfettiView {
         emitter.emitterCells = cells
         layer.addSublayer(emitter)
         active = true
+        feedbackGenerator?.impactOccurred()
     }
     
     public func stopConfetti() {

@@ -21,6 +21,8 @@ class HomeScreen: UIViewController {
     
     private var settingsManager: SettingsManager?
     
+    private var storeManger: StoreManager?
+    
     private var cancellables = Set<AnyCancellable>()
     
     private var stepDataCancellable: AnyCancellable?
@@ -131,9 +133,10 @@ class HomeScreen: UIViewController {
     }()
      
     // MARK: - Life cycle
-    init(pedometerManager: PedometerManager, settingsManager: SettingsManager){
+    init(pedometerManager: PedometerManager, settingsManager: SettingsManager, storeManager: StoreManager){
         self.pedometerManager = pedometerManager
         self.settingsManager = settingsManager
+        self.storeManger = storeManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -230,10 +233,9 @@ private extension HomeScreen {
     private func listenToProgess() {
         stepProgressView
             .didReachMax
-            .sink { didCompleteDailyGoal in
-                if didCompleteDailyGoal {
-                    
-                }
+            .compactMap({$0})
+            .sink { completedStepData in
+                self.updateCompletion(completedStepData)
             }
             .store(in: &cancellables)
     }
@@ -255,7 +257,7 @@ private extension HomeScreen {
     }
     
     private func resetViewsToZero()  {
-        self.updateStepProgress(-1)
+        self.updateStepProgress(nil)
         self.updateFloorsClimbed(0)
         self.updateDistanceTraveled(0)
         self.updateDateSelected(.now)
@@ -267,7 +269,7 @@ private extension HomeScreen {
             return
         }
         
-        self.updateStepProgress(pedometerData.numberOfSteps)
+        self.updateStepProgress(pedometerData)
         self.updateFloorsClimbed(pedometerData.floorsAscended)
         self.updateDistanceTraveled(pedometerData.distance)
         self.updateDateSelected(pedometerData.startDate)
@@ -283,8 +285,8 @@ private extension HomeScreen {
             })
     }
     
-    private func updateStepProgress(_ value: NSNumber) {
-        stepProgressView.updateProgress(value.intValue)
+    private func updateStepProgress(_ pedometerData: CMPedometerData?) {
+        stepProgressView.updateData(with: pedometerData)
     }
     
     private func updateFloorsClimbed(_ value: NSNumber?) {
@@ -310,6 +312,25 @@ private extension HomeScreen {
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
     
+    private func updateCompletion(_ pedometerData: CMPedometerData) {
+        guard let context = storeManger?.managedContext else { return }
+        
+        let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
+        
+        if entry.objectID.isTemporaryID || !entry.didComplete {
+            confettiView.startConfetti()
+            entry.didComplete = true
+            entry.date = pedometerData.startDate
+            
+            storeManger?.save()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                if self.confettiView.isActive() {
+                    self.confettiView.stopConfetti()
+                }
+            }
+        } 
+    }
 
     @objc
     private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){

@@ -48,7 +48,7 @@ final class PedometerManager {
                     promise(.failure(error!))
                     return
                 }
-                print(d1, d2)
+                
                 promise(.success(pedData))
             }
         }

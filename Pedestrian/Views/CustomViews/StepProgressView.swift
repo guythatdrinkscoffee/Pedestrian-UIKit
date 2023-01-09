@@ -7,11 +7,16 @@
 
 import UIKit
 import Combine
+import CoreMotion
 
 class StepProgressView: UIView {
     // MARK: - Public Properties
-    public var didReachMax = CurrentValueSubject<Bool,Never>(false)
-    
+    public var didReachMax = CurrentValueSubject<CMPedometerData?,Never>(nil)
+    public var stepData: CMPedometerData? = nil{
+        didSet {
+            self.updateProgress(stepData?.numberOfSteps.intValue ?? -1)
+        }
+    }
     // MARK: - Properties
     
     private var startPoint = CGFloat(-Double.pi * 0.5)
@@ -111,13 +116,8 @@ class StepProgressView: UIView {
         ])
     }
     
-    // MARK: - Public Methods
-    public func updateMax(_ max: Int) {
-        maxValue = CGFloat(max)
-        updateProgress(Int(currentValue))
-    }
     
-    public func updateProgress( _ value: Int) {
+    private func updateProgress( _ value: Int) {
         topLabel.text = "\(value == -1 ? 0 : value)"
         
         let fValue = CGFloat(value)
@@ -136,7 +136,17 @@ class StepProgressView: UIView {
         self.currentValue = fValue
         
         if Int(currentValue) >= Int(maxValue) {
-            didReachMax.send(true)
+            didReachMax.send(stepData)
         }
+    }
+    
+    // MARK: - Public Methods
+    public func updateMax(_ max: Int) {
+        maxValue = CGFloat(max)
+        updateProgress(Int(currentValue))
+    }
+    
+    public func updateData(with pedometerData: CMPedometerData?){
+        self.stepData = pedometerData
     }
 }
