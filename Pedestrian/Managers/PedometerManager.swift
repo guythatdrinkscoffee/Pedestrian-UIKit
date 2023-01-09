@@ -28,7 +28,7 @@ final class PedometerManager {
     // MARK: - Private Method
     
     private func fetchFor(_ date: Date) {
-    
+        
         let startOfDay = calendar.startOfDay(for: date)
         
         self.pedometer.startUpdates(from: startOfDay) { pedometerData, error in
@@ -42,13 +42,13 @@ final class PedometerManager {
     }
     
     private func fetchDataInRange(from d1: Date, to d2: Date) -> AnyPublisher<CMPedometerData, Error> {
-       return Future { promise in
+        return Future { promise in
             self.pedometer.queryPedometerData(from: d1, to: d2) { pedometerData, error in
                 guard error == nil, let pedData = pedometerData else {
                     promise(.failure(error!))
                     return
                 }
-                
+                print(d1, d2)
                 promise(.success(pedData))
             }
         }
@@ -57,19 +57,19 @@ final class PedometerManager {
     
     private func mergeData(_ dates: [Date]) -> AnyPublisher<CMPedometerData, Error> {
         let initialDate = dates[0]
-        let initialPublisher = fetchDataInRange(from: calendar.startOfDay(for: initialDate), to: calendar.startOfNextDay(initialDate))
+        let initialPublisher = fetchDataInRange(from: initialDate.startOfDay, to: initialDate.startOfDay.endOfDay)
         let remainingDates = Array(dates.dropFirst())
         
         return remainingDates.reduce(initialPublisher) { combined, date in
-            let start = calendar.startOfDay(for: date)
-            let end = calendar.startOfNextDay(date)
+            let start = date.startOfDay
+            let end = start.endOfDay
             
             return combined
                 .merge(with: fetchDataInRange(from: start, to: end))
                 .eraseToAnyPublisher()
         }
     }
-  
+    
     private func getLastSevenDays(from date: Date = .now) -> [Date] {
         guard let previousDate = calendar.date(byAdding: .day, value: -1, to: date) else { return [] }
         var dates = [Date]()
@@ -117,9 +117,14 @@ final class PedometerManager {
     }
 }
 
-extension Calendar {
-    func startOfNextDay(_ date: Date) -> Date {
-        let nextDay = self.date(byAdding: DateComponents(day: 1), to: date)!
-        return self.startOfDay(for: nextDay)
+
+extension Date {
+    var startOfDay: Date {
+        return Calendar.current.startOfDay(for: self)
+    }
+    
+    var endOfDay: Date {
+        let components = DateComponents(day: 1, second: -1)
+        return Calendar.current.date(byAdding: components, to: self)!
     }
 }

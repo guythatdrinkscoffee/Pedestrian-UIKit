@@ -83,6 +83,11 @@ class HomeScreen: UIViewController {
         return controller
     }()
     
+    private lazy var confettiView : ConfettiView = {
+        let view = ConfettiView(frame: view.frame )
+        return view
+    }()
+    
     private let stepProgressView = StepProgressView(frame: .zero)
     
     private let stairsClimbedSection = InfoSection(
@@ -156,6 +161,9 @@ class HomeScreen: UIViewController {
         
         // listen to changes
         listenToSettingChanges()
+        
+        // listen to progress
+        listenToProgess()
     }
 }
 
@@ -179,6 +187,7 @@ private extension HomeScreen {
     private func layoutViews() {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
+        view.addSubview(confettiView)
         view.addGestureRecognizer(refreshTapGesture)
         
         infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
@@ -218,6 +227,17 @@ extension HomeScreen {
 }
 // MARK: - Private Methods
 private extension HomeScreen {
+    private func listenToProgess() {
+        stepProgressView
+            .didReachMax
+            .sink { didCompleteDailyGoal in
+                if didCompleteDailyGoal {
+                    
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     private func listenToSettingChanges() {
         settingsManager?
             .dailyStepGoal

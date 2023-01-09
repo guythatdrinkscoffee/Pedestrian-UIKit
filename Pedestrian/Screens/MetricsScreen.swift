@@ -255,7 +255,7 @@ extension MetricsScreen {
     private func updateMetrics(_ data: [CMPedometerData]) {
         var dataEntries: [BarChartDataEntry] = []
         let maxDataPoint = data.max(by: {$0.numberOfSteps.intValue < $1.numberOfSteps.intValue})
-        let timeStamps : [TimeInterval] = data.map({$0.startDate.timeIntervalSince1970})
+        let timeStamps : [TimeInterval] = data.map({$0.endDate.timeIntervalSince1970})
         
         for i in 0..<data.count {
             let steps = data[i].numberOfSteps.doubleValue
@@ -269,7 +269,7 @@ extension MetricsScreen {
         
         if let maxDataPoint = maxDataPoint {
             let maxSteps = maxDataPoint.numberOfSteps.doubleValue
-            barChart.leftAxis.axisMaximum = maxSteps < limit ? limit : maxSteps * 1.5
+            barChart.leftAxis.axisMaximum = maxSteps < limit ? limit * 1.2 : maxSteps * 2
         } else {
             barChart.leftAxis.axisMaximum = limit * 2
         }
@@ -297,7 +297,6 @@ private extension MetricsScreen {
     private func handleSettingsTap(_ sender: UIButton){
        // Show the settings screen
         let settingsHostingController = UIHostingController(rootView: SettingsView())
-//        settingsHostingController.modalPresentationStyle = .overFullScreen
         present(settingsHostingController, animated: true)
     }
     

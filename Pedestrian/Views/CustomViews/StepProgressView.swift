@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 class StepProgressView: UIView {
+    // MARK: - Public Properties
+    public var didReachMax = CurrentValueSubject<Bool,Never>(false)
+    
     // MARK: - Properties
+    
     private var startPoint = CGFloat(-Double.pi * 0.5)
     
     private var endPoint: CGFloat {
@@ -19,18 +24,11 @@ class StepProgressView: UIView {
     
     private var currentValue: CGFloat = 0.0
     
-    public var progressColor: UIColor = UIColor.systemTeal {
-        didSet {
-            progressLayer.strokeColor = progressColor.cgColor
-            bottomLayer.strokeColor = progressColor.withAlphaComponent(0.25).cgColor
-        }
-    }
-    
     // MARK: - UI
     private lazy var bottomLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = progressColor.withAlphaComponent(0.25).cgColor
+        layer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.25).cgColor
         layer.strokeEnd = 1.0
         layer.lineCap = .round
         layer.lineWidth = 25
@@ -40,7 +38,7 @@ class StepProgressView: UIView {
     private lazy var progressLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = progressColor.cgColor
+        layer.strokeColor = UIColor.systemTeal.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
         layer.lineWidth = 15
@@ -115,12 +113,8 @@ class StepProgressView: UIView {
     
     // MARK: - Public Methods
     public func updateMax(_ max: Int) {
-        let maxValue = CGFloat(max)
-        self.maxValue = maxValue
-    }
-    
-    public func updateTint(_ color: UIColor){
-        progressColor = color
+        maxValue = CGFloat(max)
+        updateProgress(Int(currentValue))
     }
     
     public func updateProgress( _ value: Int) {
@@ -132,12 +126,17 @@ class StepProgressView: UIView {
         basicProgressAnimation.fillMode = .forwards
         basicProgressAnimation.isRemovedOnCompletion = false
         basicProgressAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
-        basicProgressAnimation.duration = 0.5
+        basicProgressAnimation.duration = 0.9
         basicProgressAnimation.fromValue = currentValue / maxValue
         basicProgressAnimation.toValue = newStrokeEndPosition
         
         progressLayer.strokeEnd = newStrokeEndPosition
         progressLayer.add(basicProgressAnimation, forKey: "progressAnimation")
+        
         self.currentValue = fValue
+        
+        if Int(currentValue) >= Int(maxValue) {
+            didReachMax.send(true)
+        }
     }
 }

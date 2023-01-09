@@ -29,6 +29,7 @@
 		BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C42966738000B67D8A /* ReusableHeaderView.swift */; };
 		BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */; };
 		BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */; };
+		BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55766E296A06A100A0A927 /* ConfettiView.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
 		BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */; };
@@ -60,6 +61,7 @@
 		BE3707C42966738000B67D8A /* ReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableHeaderView.swift; sourceTree = "<group>"; };
 		BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSettingsScreen.swift; sourceTree = "<group>"; };
 		BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusScreen.swift; sourceTree = "<group>"; };
+		BE55766E296A06A100A0A927 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
 		BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianProView.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				BE15AF5129622F38007D4D23 /* StepProgressView.swift */,
 				BE15AF5529623EB3007D4D23 /* InfoSection.swift */,
 				BE15AF5729624110007D4D23 /* InfoRow.swift */,
+				BE55766E296A06A100A0A927 /* ConfettiView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
 				BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */,
 				BE2D46002968CFE200973B21 /* GeneralSettingsView.swift in Sources */,
+				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
