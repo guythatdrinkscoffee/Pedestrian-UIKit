@@ -11,7 +11,6 @@ import CoreMotion
 
 protocol MetricsDelegate: AnyObject {
     func provideWeeklyData(_ viewController: UIViewController)
-    func updateSelection(with data: Any?)
 }
 
 
@@ -21,7 +20,7 @@ class HomeScreen: UIViewController {
     
     private var settingsManager: SettingsManager?
     
-    private var storeManger: StoreManager?
+    private var storeManager: StoreManager?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -69,7 +68,7 @@ class HomeScreen: UIViewController {
         }
     }
     
-    private var dailyStepGoal: Int  = 10_000 {
+    private var dailyStepGoal: Int  = 5000 {
         didSet {
             stepProgressView.updateMax(dailyStepGoal)
             metricsViewController.limit = Double(dailyStepGoal)
@@ -77,11 +76,12 @@ class HomeScreen: UIViewController {
     }
     
     // MARK: - UI
-    private lazy var metricsViewController : MetricsScreen = {
+    public lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
         controller.minimumOpeningHeight = minOpeningHeight
         controller.delegate = self
         controller.measurementFormatter = measurementFormatter
+        controller.storeManager = storeManager
         return controller
     }()
     
@@ -90,7 +90,10 @@ class HomeScreen: UIViewController {
         return view
     }()
     
-    private let stepProgressView = StepProgressView(frame: .zero)
+    private lazy var stepProgressView : StepProgressView = {
+        let view = StepProgressView(max: self.dailyStepGoal)
+        return view
+    }()
     
     private let stairsClimbedSection = InfoSection(
         icon: UIImage(
@@ -127,16 +130,11 @@ class HomeScreen: UIViewController {
         return formatter
     }()
     
-    private lazy var refreshTapGesture : UITapGestureRecognizer = {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(refreshToCurrentSteps(_:)))
-        return recognizer
-    }()
-     
     // MARK: - Life cycle
     init(pedometerManager: PedometerManager, settingsManager: SettingsManager, storeManager: StoreManager){
         self.pedometerManager = pedometerManager
         self.settingsManager = settingsManager
-        self.storeManger = storeManager
+        self.storeManager = storeManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -152,7 +150,6 @@ class HomeScreen: UIViewController {
     
         // layout
         layoutViews()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -191,7 +188,6 @@ private extension HomeScreen {
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
         view.addSubview(confettiView)
-        view.addGestureRecognizer(refreshTapGesture)
         
         infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
         
@@ -279,6 +275,15 @@ private extension HomeScreen {
         weeklydataCancellable = pedometerManager?
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
+            .map({ weeklyData in
+                for day in weeklyData {
+                    if day.numberOfSteps.intValue >= self.dailyStepGoal {
+                        self.updateCompletion(day)
+                    }
+                }
+                
+                return weeklyData
+            })
             .sink(receiveCompletion: { _ in
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
@@ -313,51 +318,25 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ pedometerData: CMPedometerData) {
-        guard let context = storeManger?.managedContext else { return }
+        guard let context = storeManager?.managedContext else { return }
         
         let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
         
+        // The entry doesn't exist yet
         if entry.objectID.isTemporaryID || !entry.didComplete {
-            confettiView.startConfetti()
             entry.didComplete = true
             entry.date = pedometerData.startDate
             
-            storeManger?.save()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                if self.confettiView.isActive() {
-                    self.confettiView.stopConfetti()
-                }
-            }
-        } 
-    }
-
-    @objc
-    private func refreshToCurrentSteps(_ sender: UIGestureRecognizer){
-        metricsViewController.resetSelection()
+            storeManager?.save()
+        }
     }
 }
 
 // MARK: - Metrics Delegate
 extension HomeScreen: MetricsDelegate {
-    func resetAndStopUpdating() {
-        update(currentStepData)
-        stopUpdatingSteps()
-    }
-    
     func provideWeeklyData(_ viewController: UIViewController) {
         updateForLastSevenDays()
     }
-    
-    func updateSelection(with data: Any?) {
-        guard let pedometerData = data as? CMPedometerData else {
-            update(currentStepData)
-            return
-        }
-        
-        update(pedometerData)
-    }
-    
 }
 
 extension UIViewController {

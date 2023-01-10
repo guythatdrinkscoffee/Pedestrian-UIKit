@@ -35,4 +35,15 @@ extension Entry {
             return newEntry
         }
     }
+    
+    static func getCompleted(in context: NSManagedObjectContext) -> [Entry] {
+        let request: NSFetchRequest<Entry> = Entry.fetchRequest()
+        request.predicate = NSPredicate(format: "didComplete == %@", NSNumber(value: true))
+        
+        if let results = try? context.fetch(request) {
+            return results
+        } else {
+            return []
+        }
+    }
 }

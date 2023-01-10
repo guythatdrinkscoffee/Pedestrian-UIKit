@@ -23,9 +23,11 @@ class MetricsScreen: UIViewController {
     
     public var unitDistance: UnitLength = .kilometers {
         didSet {
-           aggregateData(data)
+           aggregatedTotals(data)
         }
     }
+    
+    public var storeManager: StoreManager?
     
     // The max limit value which corresponds
     // to the daily user's step goal
@@ -91,7 +93,8 @@ class MetricsScreen: UIViewController {
     private var data: [CMPedometerData] = [] {
         didSet {
             updateMetrics(data)
-            aggregateData(data)
+            aggregatedTotals(data)
+            aggregateMilestones()
         }
     }
     
@@ -132,8 +135,8 @@ class MetricsScreen: UIViewController {
         chart.pinchZoomEnabled = false
         chart.setScaleEnabled(false)
         chart.doubleTapToZoomEnabled = false
-        chart.delegate = self
-    
+        chart.isUserInteractionEnabled = false
+        
         // chart highlight
         chart.highlightPerDragEnabled = false
     
@@ -283,11 +286,6 @@ extension MetricsScreen {
         barChart.data = chartData
         barChart.notifyDataSetChanged()
     }
-    
-    public func resetSelection() {
-        chartValueNothingSelected(barChart)
-        barChart.highlightValue(nil)
-    }
 }
 
 // MARK: - Private Methods
@@ -336,11 +334,8 @@ private extension MetricsScreen {
             
             if velocity.y >= 0 {
                 snapTo(height: minimumOpeningHeight)
-                barChart.isUserInteractionEnabled = true
             } else {
                 snapTo(height: maxOpeningHeight)
-                resetSelection()
-                barChart.isUserInteractionEnabled = false
             }
             
         default : break
@@ -356,11 +351,7 @@ private extension MetricsScreen {
         }
     }
     
-    private func reloadDistanceSection() {
-        metricsCollectionView.reloadItems(at: [IndexPath(row: 1, section: 0)])
-    }
-    
-    private func aggregateData(_ data: [CMPedometerData]) {
+    private func aggregatedTotals(_ data: [CMPedometerData]) {
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
@@ -378,18 +369,21 @@ private extension MetricsScreen {
             ])
         ]
         
-        metricsCollectionView.reloadData()
-    }
-}
-
-// MARK: - ChartView Delegate
-extension MetricsScreen: ChartViewDelegate {
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        delegate?.updateSelection(with: entry.data)
+        metricsCollectionView.reloadSections([0])
     }
     
-    func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        delegate?.updateSelection(with: nil)
+    private func aggregateMilestones() {
+        guard let context = storeManager?.managedContext else { return }
+        
+        let daysCompleted = Entry.getCompleted(in: context)
+        
+        sections?.append(
+            .init(title: "Milestones", data: [
+                .init(icon: UIImage(systemName: "crown.fill"), description: "Step Goal Reached", value: daysCompleted.count)
+            ])
+        )
+        
+        metricsCollectionView.reloadData()
     }
 }
 

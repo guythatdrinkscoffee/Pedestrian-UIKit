@@ -26,7 +26,7 @@ extension UserDefaults {
 
 final class SettingsManager: ObservableObject{
     // MARK: - Public Publisher
-    public var dailyStepGoal = CurrentValueSubject<Int, Never>(10_000)
+    public var dailyStepGoal = CurrentValueSubject<Int, Never>(5000)
     public var preferMetricUnits = CurrentValueSubject<Bool,Never>(false)
     
     // MARK: - Private Properties
@@ -55,7 +55,7 @@ private extension SettingsManager {
 
     private func setDefaultSettings() {
         let defaultSettings: [String : Any] = [
-            .dailyStepGoal : 10_000,
+            .dailyStepGoal : 5000,
             .preferMetricUnits: false,
         ]
 

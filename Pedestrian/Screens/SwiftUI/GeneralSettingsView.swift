@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct GeneralSettingsView: View {
-    @AppStorage(.dailyStepGoal) var dailyStepGoal = 10_000
+    @AppStorage(.dailyStepGoal) var dailyStepGoal = 5000
     @AppStorage(.preferMetricUnits) var preferMetricUnits = false
     
     var body: some View {

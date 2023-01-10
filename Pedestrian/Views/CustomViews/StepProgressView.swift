@@ -46,7 +46,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemTeal.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 15
+        layer.lineWidth = 18
         return layer
     }()
     
@@ -67,15 +67,28 @@ class StepProgressView: UIView {
         return label
     }()
     
+    private lazy var didCompleteImageView : UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "crown.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)))
+        imageView.tintColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private lazy var labelsStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [topLabel, bottomLabel])
+        let stackView = UIStackView(arrangedSubviews: [ didCompleteImageView,topLabel, bottomLabel])
         stackView.axis = .vertical
         stackView.spacing = 5
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
     // MARK: - Life cycle
+    convenience init(max: Int) {
+        self.init(frame: .zero)
+        self.maxValue = CGFloat(max)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -135,11 +148,17 @@ class StepProgressView: UIView {
         
         self.currentValue = fValue
         
-        if Int(currentValue) >= Int(maxValue) {
-            didReachMax.send(stepData)
-        }
+        self.checkIfMaxReached()
     }
     
+    private func checkIfMaxReached() {
+        if Int(currentValue) >= Int(maxValue) {
+            didReachMax.send(stepData)
+            didCompleteImageView.tintColor = .systemPink
+        } else {
+            didCompleteImageView.tintColor = .clear
+        }
+    }
     // MARK: - Public Methods
     public func updateMax(_ max: Int) {
         maxValue = CGFloat(max)
