@@ -23,7 +23,7 @@ class MetricsScreen: UIViewController {
     
     public var unitDistance: UnitLength = .kilometers {
         didSet {
-           aggregatedTotals(data)
+            aggregatedTotals(data)
         }
     }
     
@@ -45,7 +45,7 @@ class MetricsScreen: UIViewController {
         return  minimumOpeningHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0)
     }
     
-
+    
     // This height the maximum height allowed
     // for the current view after considering the
     // parent's height minus the top safe area
@@ -76,7 +76,7 @@ class MetricsScreen: UIViewController {
         formatter.dateFormat = "MMM d"
         return formatter
     }()
-
+    
     
     private var animationDuration: TimeInterval = 0.6
     
@@ -94,7 +94,6 @@ class MetricsScreen: UIViewController {
         didSet {
             updateMetrics(data)
             aggregatedTotals(data)
-            aggregateMilestones()
         }
     }
     
@@ -109,7 +108,7 @@ class MetricsScreen: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     private lazy var settingsButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(.settings, for: .normal)
@@ -139,7 +138,7 @@ class MetricsScreen: UIViewController {
         
         // chart highlight
         chart.highlightPerDragEnabled = false
-    
+        
         // chart left axis
         let leftAxis = chart.leftAxis
         leftAxis.drawAxisLineEnabled = false
@@ -189,7 +188,7 @@ class MetricsScreen: UIViewController {
         return gesture
     }()
     
-
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -226,7 +225,7 @@ private extension MetricsScreen {
         view.addSubview(barChart)
         view.addSubview(metricsCollectionView)
         view.addGestureRecognizer(panGesture)
-
+        
         NSLayoutConstraint.activate([
             dragIndicator.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             dragIndicator.heightAnchor.constraint(equalToConstant: 5),
@@ -235,7 +234,7 @@ private extension MetricsScreen {
             
             settingsButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-
+            
             barChart.topAnchor.constraint(equalToSystemSpacingBelow: settingsButton.bottomAnchor, multiplier: 1.5),
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -276,13 +275,13 @@ extension MetricsScreen {
         } else {
             barChart.leftAxis.axisMaximum = limit * 2
         }
-            
+        
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
         dataSet.setColor(.systemPink)
         
         let chartData = BarChartData(dataSet: dataSet)
-
+        
         barChart.data = chartData
         barChart.notifyDataSetChanged()
     }
@@ -293,7 +292,7 @@ private extension MetricsScreen {
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
-       // Show the settings screen
+        // Show the settings screen
         let settingsHostingController = UIHostingController(rootView: SettingsView())
         present(settingsHostingController, animated: true)
     }
@@ -352,13 +351,17 @@ private extension MetricsScreen {
     }
     
     private func aggregatedTotals(_ data: [CMPedometerData]) {
+        guard let context = storeManager?.managedContext else { return }
+        
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
         let floorsDescended = data.reduce(0, {$0 + ($1.floorsDescended?.intValue ?? 0)})
-
+        
         let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: unitDistance)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
+        
+        let daysCompleted = Entry.getCompleted(in: context)
         
         sections = [
             .init(title: "Totals For Last 7 Days", data: [
@@ -366,22 +369,12 @@ private extension MetricsScreen {
                 .init(icon: .walking, description: "Distance Traveled", value: distanceString),
                 .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),
                 .init(icon: .arrowDown, description: "Floors Descended", value: floorsDescended)
-            ])
-        ]
-        
-        metricsCollectionView.reloadSections([0])
-    }
-    
-    private func aggregateMilestones() {
-        guard let context = storeManager?.managedContext else { return }
-        
-        let daysCompleted = Entry.getCompleted(in: context)
-        
-        sections?.append(
+            ]),
+            
             .init(title: "Milestones", data: [
                 .init(icon: UIImage(systemName: "crown.fill"), description: "Step Goal Reached", value: daysCompleted.count)
             ])
-        )
+        ]
         
         metricsCollectionView.reloadData()
     }

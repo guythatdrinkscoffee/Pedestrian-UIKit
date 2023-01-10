@@ -41,12 +41,20 @@ class HomeScreen: UIViewController {
         return formatter
     }()
     
+    private lazy var dateFormatter : DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "EEEE, MMM d"
+        return formatter
+    }()
     
     private var minOpeningHeight: CGFloat {
         let height = view.frame.height
         let safeAreaTop = view.safeAreaInsets.top
+        let titleLabelHeigth = titleLabel.frame.height
         let padding = 16.0 * 2.5
-        return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop)
+        return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop + titleLabelHeigth)
     }
     
     private var weeklyStepData: [CMPedometerData] = [] {
@@ -85,6 +93,14 @@ class HomeScreen: UIViewController {
         return controller
     }()
     
+    private lazy var titleLabel : UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = .monospacedDigitSystemFont(ofSize: 32, weight: .bold)
+        label.text = title
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private lazy var confettiView : ConfettiView = {
         let view = ConfettiView(frame: view.frame )
         return view
@@ -109,27 +125,11 @@ class HomeScreen: UIViewController {
         body: "\(0)",
         detail: "Distance Traveled")
     
-    private let dateSection =  InfoSection(
-        icon: UIImage(
-            systemName: "calendar",
-            withConfiguration: UIImage.SymbolConfiguration(scale: .large)),
-        body: "Today",
-        detail: "Date")
-    
     private lazy var infoRow : InfoRow = {
         let view = InfoRow()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    private lazy var dateFormatter : DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale.current
-        formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "E d"
-        return formatter
-    }()
-    
     // MARK: - Life cycle
     init(pedometerManager: PedometerManager, settingsManager: SettingsManager, storeManager: StoreManager){
         self.pedometerManager = pedometerManager
@@ -171,6 +171,7 @@ class HomeScreen: UIViewController {
 private extension HomeScreen {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
+        title = dateFormatter.string(from: .now)
     }
     
     private func configureProgressView() {
@@ -185,14 +186,20 @@ private extension HomeScreen {
 // MARK: - Layout
 private extension HomeScreen {
     private func layoutViews() {
+        view.addSubview(titleLabel)
         view.addSubview(stepProgressView)
         view.addSubview(infoRow)
         view.addSubview(confettiView)
         
-        infoRow.addSections([dateSection, distanceTraveledSection, stairsClimbedSection])
+        infoRow.addSections([distanceTraveledSection, stairsClimbedSection])
         
         NSLayoutConstraint.activate([
-            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            titleLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
+            titleLabel.heightAnchor.constraint(equalToConstant: 30),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.40),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -256,7 +263,6 @@ private extension HomeScreen {
         self.updateStepProgress(nil)
         self.updateFloorsClimbed(0)
         self.updateDistanceTraveled(0)
-        self.updateDateSelected(.now)
     }
     
     private func update(_ pedometerData: CMPedometerData?) {
@@ -268,7 +274,6 @@ private extension HomeScreen {
         self.updateStepProgress(pedometerData)
         self.updateFloorsClimbed(pedometerData.floorsAscended)
         self.updateDistanceTraveled(pedometerData.distance)
-        self.updateDateSelected(pedometerData.startDate)
     }
     
     private func updateForLastSevenDays() {
@@ -296,16 +301,6 @@ private extension HomeScreen {
     
     private func updateFloorsClimbed(_ value: NSNumber?) {
         stairsClimbedSection.updateBodyLabel("\(value ?? 0.0)")
-    }
-    
-    private func updateDateSelected(_ date: Date) {
-        if Calendar.current.isDateInToday(date) {
-            dateSection.updateBodyLabel("Today")
-        } else if Calendar.current.isDateInYesterday(date){
-            dateSection.updateBodyLabel("Yesterday")
-        } else {
-            dateSection.updateBodyLabel(dateFormatter.string(from: date))
-        }
     }
     
     private func updateDistanceTraveled(_ value: NSNumber?, preferMetricUnits: Bool? = false) {

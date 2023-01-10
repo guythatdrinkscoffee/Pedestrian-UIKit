@@ -31,7 +31,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = scene
         
         // assign the root view controller
-        window?.rootViewController = determineRootViewController(for: pedometerManager.determineAuthorizationStatus(), with: pedometerManager, settings: settingsManager, store: storeManger)
+        let rootViewController =  determineRootViewController(for: pedometerManager.determineAuthorizationStatus(), with: pedometerManager, settings: settingsManager, store: storeManger)
+        window?.rootViewController = rootViewController
         
         // make the window visible
         window?.makeKeyAndVisible()
@@ -93,7 +94,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if status == .denied {
             self.window?.rootViewController = OpenSettingsScreen()
         } else if status == .authorized {
-            self.window?.rootViewController = HomeScreen(pedometerManager: manager, settingsManager: settings, storeManager: store)
+            let homeScreen = HomeScreen(pedometerManager: manager, settingsManager: settings, storeManager: store)
+            self.window?.rootViewController = homeScreen
         }
     }
     
