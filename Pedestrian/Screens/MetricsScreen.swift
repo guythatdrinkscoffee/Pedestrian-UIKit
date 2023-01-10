@@ -120,11 +120,10 @@ class MetricsScreen: UIViewController {
     }()
     
     private lazy var limitLine : ChartLimitLine = {
-        let line = ChartLimitLine(limit: limit, label: String(format: "%.0f", limit))
+        let line = ChartLimitLine(limit: limit)
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = tintColor
         line.valueTextColor = tintColor
-        line.labelPosition = .leftTop
         line.lineWidth = 3.0
         line.lineDashLengths = [8.0, 6.0]
         return line
@@ -269,7 +268,6 @@ extension MetricsScreen {
         
         barChart.xAxis.valueFormatter = XAxisChartFormatter(dateFormatter: dateFormatter, timestamps: timeStamps)
         limitLine.limit = limit
-        limitLine.label = String(format: "%.0f", limit)
         
         if let maxDataPoint = maxDataPoint {
             let maxSteps = maxDataPoint.numberOfSteps.doubleValue
@@ -345,7 +343,6 @@ private extension MetricsScreen {
     }
     
     private func snapTo(height: CGFloat) {
-        
         UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0) {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
@@ -353,8 +350,7 @@ private extension MetricsScreen {
     }
     
     private func aggregatedTotals(_ data: [CMPedometerData]) {
-        guard let context = storeManager?.managedContext else { return }
-        
+
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
@@ -363,8 +359,6 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: unitDistance)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
-        let daysCompleted = Entry.getCompleted(in: context)
-        
         sections = [
             .init(title: "Totals For Last 7 Days", data: [
                 .init(icon: .crown, description: "Step Count", value: steps),
@@ -372,10 +366,6 @@ private extension MetricsScreen {
                 .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),
                 .init(icon: .arrowDown, description: "Floors Descended", value: floorsDescended)
             ]),
-            
-            .init(title: "Milestones", data: [
-                .init(icon: .flag, description: "Step Goal Reached", value: daysCompleted.count)
-            ])
         ]
         
         metricsCollectionView.reloadData()
@@ -461,18 +451,4 @@ extension UICollectionViewLayout {
         
         return layout
     }
-}
-
-extension UIImage {
-    static let cal = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let arrowUp = UIImage(systemName: "arrow.up.forward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let arrowDown = UIImage(systemName: "arrow.down.forward",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let crown = UIImage(systemName: "crown.fill")
-    static let walking = UIImage(systemName: "figure.walk",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let flag = UIImage(systemName: "flag.filled.and.flag.crossed", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    
-    // Settings
-    static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let settingsUnits =   UIImage(systemName: "ruler.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let settingsGoal =   UIImage(systemName: "figure.walk", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
 }

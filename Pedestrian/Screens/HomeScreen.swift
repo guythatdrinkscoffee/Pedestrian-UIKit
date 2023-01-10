@@ -15,12 +15,14 @@ protocol MetricsDelegate: AnyObject {
 
 
 class HomeScreen: UIViewController {
-    // MARK: - Properties
+    // MARK: - Publci Properties
+    public var storeManager: StoreManager?
+    
+    // MARK: - Private Properties
     private var pedometerManager: PedometerManager?
     
     private var settingsManager: SettingsManager?
     
-    private var storeManager: StoreManager?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -279,11 +281,8 @@ private extension HomeScreen {
             .receive(on: DispatchQueue.main)
             .map({ weeklyData in
                 for day in weeklyData {
-                    if day.numberOfSteps.intValue >= self.dailyStepGoal {
-                        self.updateCompletion(day)
-                    }
+                    self.save(day)
                 }
-                
                 return weeklyData
             })
             .sink(receiveCompletion: { _ in
@@ -314,12 +313,26 @@ private extension HomeScreen {
         
         let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
         
-        // The entry doesn't exist yet
-        if entry.objectID.isTemporaryID || !entry.didComplete {
-            entry.didComplete = true
+        if entry.objectID.isTemporaryID {
             entry.date = pedometerData.startDate
+            entry.didComplete = true
             
-            storeManager?.save()
+            confettiView.startConfetti()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.confettiView.stopConfetti()
+            }
+        }
+    }
+    
+    private func save(_ pedometerData: CMPedometerData) {
+        guard let context = storeManager?.managedContext else { return }
+        
+        let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
+        
+        if entry.objectID.isTemporaryID {
+            entry.date = pedometerData.startDate
+            entry.didComplete = pedometerData.numberOfSteps.intValue >= dailyStepGoal
         }
     }
 }
@@ -350,3 +363,4 @@ extension UIViewController {
     }
 }
 
+ 

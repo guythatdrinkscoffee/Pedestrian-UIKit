@@ -11,6 +11,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @Environment(\.openURL) private var openURL
+    
     @AppStorage(.dailyStepGoal) var dailyStepGoal = 5000
     @AppStorage(.preferMetricUnits) var preferMetricUnits = false
     @AppStorage(.allowNotifications) var allowNotifications = false

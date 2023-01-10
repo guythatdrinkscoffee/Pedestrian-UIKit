@@ -36,6 +36,7 @@
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
 		BEED7E41296D0A050077DA71 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E40296D0A050077DA71 /* HelpView.swift */; };
+		BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E44296D32850077DA71 /* UIImage+Ext.swift */; };
 		BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
 		BEED7E40296D0A050077DA71 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		BEED7E44296D32850077DA71 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianProView.swift; sourceTree = "<group>"; };
 		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				BE2D46042968D62300973B21 /* String+Ext.swift */,
+				BEED7E44296D32850077DA71 /* UIImage+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				BE557677296CC11800A0A927 /* Entry+CoreDataProperties.swift in Sources */,
 				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
+				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
 				BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 				BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */,
