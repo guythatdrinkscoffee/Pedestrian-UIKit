@@ -27,8 +27,6 @@ class MetricsScreen: UIViewController {
         }
     }
     
-    public var storeManager: StoreManager?
-    
     // The max limit value which corresponds
     // to the daily user's step goal
     public var limit : Double = 0 {
@@ -358,10 +356,10 @@ private extension MetricsScreen {
         
         let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: unitDistance)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
-        
+
         sections = [
             .init(title: "Totals For Last 7 Days", data: [
-                .init(icon: .crown, description: "Step Count", value: steps),
+                .init(icon: .crown, description: "Step Count", value: steps.formatted(.number)),
                 .init(icon: .walking, description: "Distance Traveled", value: distanceString),
                 .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),
                 .init(icon: .arrowDown, description: "Floors Descended", value: floorsDescended)

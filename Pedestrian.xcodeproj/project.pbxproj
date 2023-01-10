@@ -29,13 +29,8 @@
 		BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */; };
 		BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */; };
 		BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55766E296A06A100A0A927 /* ConfettiView.swift */; };
-		BE557673296CC07B00A0A927 /* Pedestrian.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE557671296CC07B00A0A927 /* Pedestrian.xcdatamodeld */; };
-		BE557676296CC11800A0A927 /* Entry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE557674296CC11800A0A927 /* Entry+CoreDataClass.swift */; };
-		BE557677296CC11800A0A927 /* Entry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE557675296CC11800A0A927 /* Entry+CoreDataProperties.swift */; };
-		BE557679296CC31C00A0A927 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE557678296CC31C00A0A927 /* StoreManager.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
-		BEED7E41296D0A050077DA71 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E40296D0A050077DA71 /* HelpView.swift */; };
 		BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E44296D32850077DA71 /* UIImage+Ext.swift */; };
 		BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */; };
 /* End PBXBuildFile section */
@@ -66,13 +61,8 @@
 		BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSettingsScreen.swift; sourceTree = "<group>"; };
 		BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusScreen.swift; sourceTree = "<group>"; };
 		BE55766E296A06A100A0A927 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
-		BE557672296CC07B00A0A927 /* Pedestrian.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pedestrian.xcdatamodel; sourceTree = "<group>"; };
-		BE557674296CC11800A0A927 /* Entry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Entry+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		BE557675296CC11800A0A927 /* Entry+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Entry+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		BE557678296CC31C00A0A927 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
-		BEED7E40296D0A050077DA71 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		BEED7E44296D32850077DA71 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianProView.swift; sourceTree = "<group>"; };
 		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
@@ -111,7 +101,6 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
-				BE557670296CC06F00A0A927 /* Coredata */,
 				BE2D46032968D61900973B21 /* Extensions */,
 				BEED0E03296245FF00C6656D /* Helpers */,
 				BE15AF5029622EC0007D4D23 /* Views */,
@@ -159,7 +148,6 @@
 			children = (
 				BE15AF4E2962168D007D4D23 /* PedometerManager.swift */,
 				BE2D46012968D2D900973B21 /* SettingsManager.swift */,
-				BE557678296CC31C00A0A927 /* StoreManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -179,7 +167,6 @@
 				BE2D45F72968CE2C00973B21 /* Components */,
 				BE2D45F52967F6FE00973B21 /* SettingsView.swift */,
 				BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */,
-				BEED7E40296D0A050077DA71 /* HelpView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -229,16 +216,6 @@
 				BE3707C42966738000B67D8A /* ReusableHeaderView.swift */,
 			);
 			path = CollectionView;
-			sourceTree = "<group>";
-		};
-		BE557670296CC06F00A0A927 /* Coredata */ = {
-			isa = PBXGroup;
-			children = (
-				BE557674296CC11800A0A927 /* Entry+CoreDataClass.swift */,
-				BE557675296CC11800A0A927 /* Entry+CoreDataProperties.swift */,
-				BE557671296CC07B00A0A927 /* Pedestrian.xcdatamodeld */,
-			);
-			path = Coredata;
 			sourceTree = "<group>";
 		};
 		BEED0E03296245FF00C6656D /* Helpers */ = {
@@ -387,9 +364,7 @@
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
 				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
-				BE557673296CC07B00A0A927 /* Pedestrian.xcdatamodeld in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
-				BE557676296CC11800A0A927 /* Entry+CoreDataClass.swift in Sources */,
 				BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */,
 				BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
@@ -397,16 +372,13 @@
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
-				BEED7E41296D0A050077DA71 /* HelpView.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
-				BE557677296CC11800A0A927 /* Entry+CoreDataProperties.swift in Sources */,
 				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
 				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
 				BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 				BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */,
-				BE557679296CC31C00A0A927 /* StoreManager.swift in Sources */,
 				BE2D45F62967F6FE00973B21 /* SettingsView.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
@@ -620,19 +592,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		BE557671296CC07B00A0A927 /* Pedestrian.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				BE557672296CC07B00A0A927 /* Pedestrian.xcdatamodel */,
-			);
-			currentVersion = BE557672296CC07B00A0A927 /* Pedestrian.xcdatamodel */;
-			path = Pedestrian.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = BE15AF2B296134C8007D4D23 /* Project object */;
 }

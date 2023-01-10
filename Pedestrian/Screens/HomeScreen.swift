@@ -15,9 +15,6 @@ protocol MetricsDelegate: AnyObject {
 
 
 class HomeScreen: UIViewController {
-    // MARK: - Publci Properties
-    public var storeManager: StoreManager?
-    
     // MARK: - Private Properties
     private var pedometerManager: PedometerManager?
     
@@ -91,7 +88,6 @@ class HomeScreen: UIViewController {
         controller.minimumOpeningHeight = minOpeningHeight
         controller.delegate = self
         controller.measurementFormatter = measurementFormatter
-        controller.storeManager = storeManager
         return controller
     }()
     
@@ -129,10 +125,9 @@ class HomeScreen: UIViewController {
         return view
     }()
     // MARK: - Life cycle
-    init(pedometerManager: PedometerManager, settingsManager: SettingsManager, storeManager: StoreManager){
+    init(pedometerManager: PedometerManager, settingsManager: SettingsManager){
         self.pedometerManager = pedometerManager
         self.settingsManager = settingsManager
-        self.storeManager = storeManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -149,6 +144,9 @@ class HomeScreen: UIViewController {
     
         // layout
         layoutViews()
+        
+        // Add a new day observer
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewDay(_:)), name: .NSCalendarDayChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -279,12 +277,6 @@ private extension HomeScreen {
         weeklydataCancellable = pedometerManager?
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
-            .map({ weeklyData in
-                for day in weeklyData {
-                    self.save(day)
-                }
-                return weeklyData
-            })
             .sink(receiveCompletion: { _ in
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
@@ -309,30 +301,26 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ pedometerData: CMPedometerData) {
-        guard let context = storeManager?.managedContext else { return }
+        confettiView.startConfetti()
         
-        let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
         
-        if entry.objectID.isTemporaryID {
-            entry.date = pedometerData.startDate
-            entry.didComplete = true
-            
-            confettiView.startConfetti()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.confettiView.stopConfetti()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.confettiView.stopConfetti()
         }
     }
     
-    private func save(_ pedometerData: CMPedometerData) {
-        guard let context = storeManager?.managedContext else { return }
-        
-        let entry = Entry.findOrInsert(pedometerData.startDate, in: context)
-        
-        if entry.objectID.isTemporaryID {
-            entry.date = pedometerData.startDate
-            entry.didComplete = pedometerData.numberOfSteps.intValue >= dailyStepGoal
+    @objc
+    private func handleNewDay(_ notification: NSNotification) {
+        if let currentStepData = currentStepData {
+            if !Calendar.current.isDateInToday(currentStepData.startDate)
+                || !Calendar.current.isDateInToday(currentStepData.endDate){
+                
+                DispatchQueue.main.async {
+                    self.currentStepData = nil
+                    self.titleLabel.text = self.dateFormatter.string(from: .now)
+                    self.provideWeeklyData(self.metricsViewController)
+                }
+            }
         }
     }
 }

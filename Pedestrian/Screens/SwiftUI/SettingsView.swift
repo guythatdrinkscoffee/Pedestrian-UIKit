@@ -14,7 +14,6 @@ struct SettingsView: View {
     
     @AppStorage(.dailyStepGoal) var dailyStepGoal = 5000
     @AppStorage(.preferMetricUnits) var preferMetricUnits = false
-    @AppStorage(.allowNotifications) var allowNotifications = false
     
     var body: some View {
         NavigationView {
@@ -42,7 +41,7 @@ struct SettingsView: View {
                     
                     Toggle(isOn: $preferMetricUnits) {
                         HStack {
-                            SettingsIcon(size: CGSize(width: 30, height: 30), icon: Image(systemName: "ruler.fill"), color: .purple, rotation: -45)
+                            SettingsIcon(size: CGSize(width: 30, height: 30), icon: Image(systemName: "ruler"), color: .purple, rotation: -45)
                             Text("Prefer Metric Units")
                                 .font(.system(.subheadline, design: .default, weight: .semibold))
                                 .padding([.leading], 10)
