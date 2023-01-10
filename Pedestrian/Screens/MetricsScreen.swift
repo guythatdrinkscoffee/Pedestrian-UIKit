@@ -373,7 +373,7 @@ private extension MetricsScreen {
             ]),
             
             .init(title: "Milestones", data: [
-                .init(icon: UIImage(systemName: "crown.fill"), description: "Step Goal Reached", value: daysCompleted.count)
+                .init(icon: .flag, description: "Step Goal Reached", value: daysCompleted.count)
             ])
         ]
         
@@ -463,12 +463,12 @@ extension UICollectionViewLayout {
 }
 
 extension UIImage {
-    static let cal = UIImage(systemName: "calendar")
-    static let arrowUp = UIImage(systemName: "arrow.up.right")
-    static let arrowDown = UIImage(systemName: "arrow.down.right")
+    static let cal = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let arrowUp = UIImage(systemName: "arrow.up.right.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let arrowDown = UIImage(systemName: "arrow.down.forward.circle.fill",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     static let crown = UIImage(systemName: "crown.fill")
-    static let walking = UIImage(systemName: "figure.walk")
-    
+    static let walking = UIImage(systemName: "figure.walk",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let flag = UIImage(systemName: "flag.filled.and.flag.crossed", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     // Settings
     static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     static let settingsUnits =   UIImage(systemName: "ruler.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
