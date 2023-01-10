@@ -11,27 +11,44 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @Environment(\.openURL) private var openURL
-
-    @State var presentPedestrianPro: Bool = false
+    @AppStorage(.dailyStepGoal) var dailyStepGoal = 5000
+    @AppStorage(.preferMetricUnits) var preferMetricUnits = false
+    @AppStorage(.allowNotifications) var allowNotifications = false
     
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    HStack {
-                        SettingsButton(title: "Unlock Pedestrian Pro", icon: Image(systemName: "figure.walk"), color: .green, accessoryIcon: Image(systemName: "plus") ) {
-                            presentPedestrianPro.toggle()
+                    
+                    Stepper(value: $dailyStepGoal, in: 100...100_000, step: 100) {
+                        HStack {
+                            SettingsIcon(size: CGSize(width: 30, height: 30), icon: Image(systemName: "figure.walk"), color: determineColorRange(dailyStepGoal))
+                            
+                            VStack(alignment: .leading){
+                                Text("Daily Step Goal")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                
+                                Text(dailyStepGoal, format: .number)
+                                    .font(.system(.title, design: .monospaced, weight: .black))
+                                    .foregroundColor(determineColorRange(dailyStepGoal))
+                            }
+                            .padding([.leading], 5)
                         }
-                        .tint(.green)
                     }
-                    .padding([.top,.bottom], 5)
-                }
-                
-                Section {
-                    SettingsNavigationRow(title: "General", icon: Image(systemName: "gear"), color: .secondary) {
-                        // Navigate to the general settings view
-                        GeneralSettingsView()
+                    .padding(3)
+                    
+                    
+                    Toggle(isOn: $preferMetricUnits) {
+                        HStack {
+                            SettingsIcon(size: CGSize(width: 30, height: 30), icon: Image(systemName: "ruler.fill"), color: .purple, rotation: -45)
+                            Text("Prefer Metric Units")
+                                .font(.system(.subheadline, design: .default, weight: .semibold))
+                                .padding([.leading], 10)
+                        }
                     }
+                } header: {
+                    Text("General")
                 }
                 
                 
@@ -71,9 +88,17 @@ struct SettingsView: View {
                     }
                 }
             }
-            .sheet(isPresented: $presentPedestrianPro) {
-                PedestrianProView()
-            }
+        }
+    }
+    
+    func determineColorRange(_ value: Int) -> Color {
+        switch value {
+        case 0...5000 : return .red
+        case 5000...10000 : return .orange
+        case 10000...20000: return .green
+        
+        default:
+            return .green
         }
     }
 }

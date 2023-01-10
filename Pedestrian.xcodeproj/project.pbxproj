@@ -21,7 +21,6 @@
 		BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45F92968CE4800973B21 /* SettingsIcon.swift */; };
 		BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */; };
 		BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */; };
-		BE2D46002968CFE200973B21 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */; };
 		BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46012968D2D900973B21 /* SettingsManager.swift */; };
 		BE2D46052968D62300973B21 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46042968D62300973B21 /* String+Ext.swift */; };
 		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
@@ -58,7 +57,6 @@
 		BE2D45F92968CE4800973B21 /* SettingsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsIcon.swift; sourceTree = "<group>"; };
 		BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationRow.swift; sourceTree = "<group>"; };
 		BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
-		BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		BE2D46012968D2D900973B21 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		BE2D46042968D62300973B21 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 			children = (
 				BE2D45F72968CE2C00973B21 /* Components */,
 				BE2D45F52967F6FE00973B21 /* SettingsView.swift */,
-				BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */,
 				BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */,
 				BEED7E40296D0A050077DA71 /* HelpView.swift */,
 			);
@@ -394,7 +391,6 @@
 				BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
 				BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */,
-				BE2D46002968CFE200973B21 /* GeneralSettingsView.swift in Sources */,
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
