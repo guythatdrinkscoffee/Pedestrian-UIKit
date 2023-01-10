@@ -11,6 +11,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @Environment(\.openURL) private var openURL
+
     @State var presentPedestrianPro: Bool = false
     
     var body: some View {
@@ -33,11 +34,6 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section {
-                    SettingsNavigationRow(title: "Tip Jar", icon: Image(systemName: "app.gift.fill"), color: .purple) {
-                        // Navigate to the tip jar view
-                    }
-                }
                 
                 Section {
                     SettingsButton(title: "Twitter", icon: Image(systemName: "at"), color: .teal, ratio: 2) {
@@ -47,27 +43,17 @@ struct SettingsView: View {
                     }
                     .tint(.teal)
                     
-                    SettingsButton(title: "Email", icon: Image(systemName: "paperplane.fill"), color: .orange, ratio: 2) {
-                        
-                    }
-                    .tint(.orange)
-                    
-                    SettingsButton(title: "Rate in App Store ", icon: Image(systemName: "star.fill"), color: .blue, ratio: 2) {
-                        
-                    }
-                    .tint(.blue)
                 } header: {
                     Text("Feedback")
                 }
         
                 Section {
-                    SettingsNavigationRow(title: "Help", icon: Image(systemName: "questionmark.circle"), color: .pink) {
-                        
+                    SettingsButton(title: "Privacy Policy", icon: Image(systemName: "hand.raised.fill"), color: .gray) {
+                        if let url = URL(string:  "https://github.com/guythatdrinkscoffee") {
+                            openURL(url)
+                        }
                     }
-                    
-                    SettingsNavigationRow(title: "Privacy Policy", icon: Image(systemName: "hand.raised.fill")) {
-                        
-                    }
+                    .tint(.gray)
                 } header: {
                     Text("Support")
                 }

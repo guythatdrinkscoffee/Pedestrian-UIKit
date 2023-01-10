@@ -36,6 +36,7 @@
 		BE557679296CC31C00A0A927 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE557678296CC31C00A0A927 /* StoreManager.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
+		BEED7E41296D0A050077DA71 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E40296D0A050077DA71 /* HelpView.swift */; };
 		BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		BE557678296CC31C00A0A927 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
+		BEED7E40296D0A050077DA71 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianProView.swift; sourceTree = "<group>"; };
 		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,6 +180,7 @@
 				BE2D45F52967F6FE00973B21 /* SettingsView.swift */,
 				BE2D45FF2968CFE200973B21 /* GeneralSettingsView.swift */,
 				BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */,
+				BEED7E40296D0A050077DA71 /* HelpView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
+				BEED7E41296D0A050077DA71 /* HelpView.swift in Sources */,
 				BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */,
 				BE557677296CC11800A0A927 /* Entry+CoreDataProperties.swift in Sources */,
 				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,

@@ -112,16 +112,12 @@ class HomeScreen: UIViewController {
     }()
     
     private let stairsClimbedSection = InfoSection(
-        icon: UIImage(
-            systemName: "arrow.up.right",
-            withConfiguration: UIImage.SymbolConfiguration(scale: .large)),
+        icon: .arrowUp,
         body: "\(0)",
         detail: "Floors Climbed")
     
     private let distanceTraveledSection =  InfoSection(
-        icon: UIImage(
-            systemName: "figure.walk",
-            withConfiguration: UIImage.SymbolConfiguration(scale: .large)),
+        icon: .walking,
         body: "\(0)",
         detail: "Distance Traveled")
     
@@ -141,6 +137,7 @@ class HomeScreen: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
