@@ -194,14 +194,14 @@ private extension HomeScreen {
         infoRow.addSections([distanceTraveledSection, stairsClimbedSection])
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1.2),
             titleLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
-            titleLabel.heightAnchor.constraint(equalToConstant: 30),
+            titleLabel.heightAnchor.constraint(equalToConstant: 35),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.40),
+            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.38),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2),

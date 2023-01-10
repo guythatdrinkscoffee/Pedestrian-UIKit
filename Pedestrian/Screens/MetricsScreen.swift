@@ -122,8 +122,9 @@ class MetricsScreen: UIViewController {
         let line = ChartLimitLine(limit: limit, label: String(format: "%.0f", limit))
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = tintColor
-        line.labelPosition = .rightBottom
         line.valueTextColor = tintColor
+        line.labelPosition = .leftTop
+        line.lineWidth = 3.0
         line.lineDashLengths = [8.0, 6.0]
         return line
     }()
