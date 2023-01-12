@@ -21,19 +21,9 @@ class MetricsScreen: UIViewController {
     public var measurementFormatter: MeasurementFormatter?
     
     
-    public var unitDistance: UnitLength = .kilometers {
-        didSet {
-            aggregatedTotals(data)
-        }
-    }
-    
     // The max limit value which corresponds
     // to the daily user's step goal
-    public var limit : Double = 0 {
-        didSet {
-            updateMetrics(data)
-        }
-    }
+    public var stepGoal : Double = 4_000
     
     // MARK: - Private Properties
     
@@ -43,7 +33,6 @@ class MetricsScreen: UIViewController {
     private var minimumChartHeight: CGFloat {
         return  minimumOpeningHeight - ((safeAreaBottomHeight + settingsButtonHeight) * 2.0)
     }
-    
     
     // This height the maximum height allowed
     // for the current view after considering the
@@ -85,20 +74,8 @@ class MetricsScreen: UIViewController {
     
     private var sections: [MetricsInfo]?
     
-    private var shortFormat = "MMM d"
-    
-    private var mediumFormat = "EEEE, MMM d"
-    
-    private var data: [CMPedometerData] = [] {
-        didSet {
-            updateMetrics(data)
-            aggregatedTotals(data)
-        }
-    }
-    
     private var tintColor: UIColor = .systemTeal
-    
-    weak var delegate: MetricsDelegate?
+        
     // MARK: - UI
     private lazy var dragIndicator : UIView = {
         let view = UIView()
@@ -118,13 +95,30 @@ class MetricsScreen: UIViewController {
     }()
     
     private lazy var limitLine : ChartLimitLine = {
-        let line = ChartLimitLine(limit: limit)
+        let line = ChartLimitLine(limit: stepGoal)
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = tintColor
         line.valueTextColor = tintColor
         line.lineWidth = 3.0
         line.lineDashLengths = [8.0, 6.0]
         return line
+    }()
+    
+    // chart custom legend
+    private lazy var goalEntry : LegendEntry = {
+        // chart custom legend
+        let goalEntry = LegendEntry(label: "Daily Step Goal")
+        goalEntry.formColor = tintColor
+        goalEntry.form = .line
+        return goalEntry
+    }()
+    
+    
+    private lazy var infoEntry : LegendEntry = {
+        let infoEntry = LegendEntry(label: "Last 7 Days")
+        infoEntry.formColor = .systemPink
+        infoEntry.form = .square
+        return infoEntry
     }()
     
     private lazy var barChart : BarChartView = {
@@ -154,15 +148,6 @@ class MetricsScreen: UIViewController {
         xAxis.labelPosition = .bottom
         xAxis.labelFont = .systemFont(ofSize: 10, weight: .semibold)
         xAxis.drawGridLinesEnabled = false
-        
-        // chart custom legend
-        let goalEntry = LegendEntry(label: "Daily Goal")
-        goalEntry.formColor = tintColor
-        goalEntry.form = .line
-        
-        let infoEntry = LegendEntry(label: "Last 7 Days")
-        infoEntry.formColor = .systemPink
-        infoEntry.form = .square
         
         let legend = chart.legend
         legend.verticalAlignment = .top
@@ -203,8 +188,6 @@ class MetricsScreen: UIViewController {
         super.viewDidAppear(animated)
         
         origin = view.frame.origin
-        
-        self.delegate?.provideWeeklyData(self)
     }
 }
 
@@ -250,38 +233,8 @@ private extension MetricsScreen {
 // MARK: - Public Methods
 extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
-        self.data = data
-    }
-    
-    private func updateMetrics(_ data: [CMPedometerData]) {
-        var dataEntries: [BarChartDataEntry] = []
-        let maxDataPoint = data.max(by: {$0.numberOfSteps.intValue < $1.numberOfSteps.intValue})
-        let timeStamps : [TimeInterval] = data.map({$0.endDate.timeIntervalSince1970})
-        
-        for i in 0..<data.count {
-            let steps = data[i].numberOfSteps.doubleValue
-            let newEntry = BarChartDataEntry(x: Double(i), y: steps, data: data[i])
-            dataEntries.append(newEntry)
-        }
-        
-        barChart.xAxis.valueFormatter = XAxisChartFormatter(dateFormatter: dateFormatter, timestamps: timeStamps)
-        limitLine.limit = limit
-        
-        if let maxDataPoint = maxDataPoint {
-            let maxSteps = maxDataPoint.numberOfSteps.doubleValue
-            barChart.leftAxis.axisMaximum = maxSteps < limit ? limit * 1.2 : maxSteps * 2
-        } else {
-            barChart.leftAxis.axisMaximum = limit * 2
-        }
-        
-        let dataSet = BarChartDataSet(entries: dataEntries)
-        dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
-        dataSet.setColor(.systemPink)
-        
-        let chartData = BarChartData(dataSet: dataSet)
-        
-        barChart.data = chartData
-        barChart.notifyDataSetChanged()
+        updateMetrics(data)
+        aggregatedTotals(data)
     }
 }
 
@@ -291,8 +244,6 @@ private extension MetricsScreen {
     @objc
     private func handleSettingsTap(_ sender: UIButton){
         // Show the settings screen
-        let settingsHostingController = UIHostingController(rootView: SettingsView())
-        present(settingsHostingController, animated: true)
     }
     
     @objc func handleDragGesture(_ recognizer: UIPanGestureRecognizer) {
@@ -340,6 +291,36 @@ private extension MetricsScreen {
         
     }
     
+    private func updateMetrics(_ data: [CMPedometerData]) {
+        var dataEntries: [BarChartDataEntry] = []
+        let maxDataPoint = data.max(by: {$0.numberOfSteps.intValue < $1.numberOfSteps.intValue})
+        let timeStamps : [TimeInterval] = data.map({$0.endDate.timeIntervalSince1970})
+        
+        for i in 0..<data.count {
+            let steps = data[i].numberOfSteps.doubleValue
+            let newEntry = BarChartDataEntry(x: Double(i), y: steps, data: data[i])
+            dataEntries.append(newEntry)
+        }
+        
+        barChart.xAxis.valueFormatter = XAxisChartFormatter(dateFormatter: dateFormatter, timestamps: timeStamps)
+        limitLine.limit = stepGoal
+        if let maxDataPoint = maxDataPoint {
+            let maxSteps = maxDataPoint.numberOfSteps.doubleValue
+            barChart.leftAxis.axisMaximum = maxSteps < stepGoal ? stepGoal * 1.2 : maxSteps * 1.5
+        } else {
+            barChart.leftAxis.axisMaximum = stepGoal * 2
+        }
+        
+        let dataSet = BarChartDataSet(entries: dataEntries)
+        dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
+        dataSet.setColor(.systemPink)
+        
+        let chartData = BarChartData(dataSet: dataSet)
+        
+        barChart.data = chartData
+        barChart.notifyDataSetChanged()
+    }
+    
     private func snapTo(height: CGFloat) {
         UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0) {
             let frame = self.view.frame
@@ -348,17 +329,16 @@ private extension MetricsScreen {
     }
     
     private func aggregatedTotals(_ data: [CMPedometerData]) {
-
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
         let floorsDescended = data.reduce(0, {$0 + ($1.floorsDescended?.intValue ?? 0)})
         
-        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: unitDistance)
+        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
-
+        
         sections = [
-            .init(title: "Totals For Last 7 Days", data: [
+            .init(title: "Last 7 Days", data: [
                 .init(icon: .crown, description: "Step Count", value: steps.formatted(.number)),
                 .init(icon: .walking, description: "Distance Traveled", value: distanceString),
                 .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),

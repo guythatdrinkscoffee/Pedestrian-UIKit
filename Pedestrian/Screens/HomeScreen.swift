@@ -9,17 +9,12 @@ import UIKit
 import Combine
 import CoreMotion
 
-protocol MetricsDelegate: AnyObject {
-    func provideWeeklyData(_ viewController: UIViewController)
-}
+
 
 
 class HomeScreen: UIViewController {
     // MARK: - Private Properties
     private var pedometerManager: PedometerManager?
-    
-    private var settingsManager: SettingsManager?
-    
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -44,7 +39,7 @@ class HomeScreen: UIViewController {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "EEEE, MMM d"
+        formatter.dateFormat = "E, MMM d"
         return formatter
     }()
     
@@ -67,33 +62,17 @@ class HomeScreen: UIViewController {
             update(currentStepData)
         }
     }
-    
-    private var unitDistance: UnitLength = .kilometers {
-        didSet {
-            update(currentStepData)
-            metricsViewController.unitDistance = unitDistance
-        }
-    }
-    
-    private var dailyStepGoal: Int  = 5000 {
-        didSet {
-            stepProgressView.updateMax(dailyStepGoal)
-            metricsViewController.limit = Double(dailyStepGoal)
-        }
-    }
-    
     // MARK: - UI
     public lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
         controller.minimumOpeningHeight = minOpeningHeight
-        controller.delegate = self
         controller.measurementFormatter = measurementFormatter
         return controller
     }()
     
     private lazy var titleLabel : UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .monospacedDigitSystemFont(ofSize: 32, weight: .bold)
+        label.font = .monospacedDigitSystemFont(ofSize: 28, weight: .bold)
         label.text = title
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -105,14 +84,19 @@ class HomeScreen: UIViewController {
     }()
     
     private lazy var stepProgressView : StepProgressView = {
-        let view = StepProgressView(max: self.dailyStepGoal)
+        let view = StepProgressView(max: 4000)
         return view
     }()
     
-    private let stairsClimbedSection = InfoSection(
+    private let stairsAscendedSection = InfoSection(
         icon: .arrowUp,
         body: "\(0)",
-        detail: "Floors Climbed")
+        detail: "Floors Ascended")
+    
+    private let stairsDescendedSection = InfoSection(
+        icon: .arrowDown,
+        body: "\(0)",
+        detail: "Floors Descended")
     
     private let distanceTraveledSection =  InfoSection(
         icon: .walking,
@@ -124,10 +108,10 @@ class HomeScreen: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     // MARK: - Life cycle
-    init(pedometerManager: PedometerManager, settingsManager: SettingsManager){
+    init(pedometerManager: PedometerManager){
         self.pedometerManager = pedometerManager
-        self.settingsManager = settingsManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -146,7 +130,9 @@ class HomeScreen: UIViewController {
         layoutViews()
         
         // Add a new day observer
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNewDay(_:)), name: .NSCalendarDayChanged, object: nil)
+        NotificationCenter
+            .default
+            .addObserver(self, selector: #selector(handleNewDay(_:)), name: .NSCalendarDayChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -156,11 +142,11 @@ class HomeScreen: UIViewController {
         // additional config
         configureMetricsViewController()
         
-        // listen to changes
-        listenToSettingChanges()
-        
         // listen to progress
         listenToProgess()
+        
+        // request steps for week
+        updateForLastSevenDays()
     }
 }
 
@@ -168,7 +154,7 @@ class HomeScreen: UIViewController {
 private extension HomeScreen {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
-        title = dateFormatter.string(from: .now)
+        title = "Today"
     }
     
     private func configureProgressView() {
@@ -188,7 +174,7 @@ private extension HomeScreen {
         view.addSubview(infoRow)
         view.addSubview(confettiView)
         
-        infoRow.addSections([distanceTraveledSection, stairsClimbedSection])
+        infoRow.addSections([distanceTraveledSection, stairsAscendedSection, stairsDescendedSection])
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1.2),
@@ -240,25 +226,9 @@ private extension HomeScreen {
             .store(in: &cancellables)
     }
     
-    private func listenToSettingChanges() {
-        settingsManager?
-            .dailyStepGoal
-            .sink(receiveValue: { dailyStepGoal in
-                self.dailyStepGoal = dailyStepGoal
-            })
-            .store(in: &cancellables)
-        
-        settingsManager?
-            .preferMetricUnits
-            .sink(receiveValue: { preferMetricUnits in
-                self.unitDistance = preferMetricUnits ? .kilometers : .miles
-            })
-            .store(in: &cancellables)
-    }
-    
     private func resetViewsToZero()  {
         self.updateStepProgress(nil)
-        self.updateFloorsClimbed(0)
+        self.updatedFloorsAscended(0)
         self.updateDistanceTraveled(0)
     }
     
@@ -269,8 +239,9 @@ private extension HomeScreen {
         }
         
         self.updateStepProgress(pedometerData)
-        self.updateFloorsClimbed(pedometerData.floorsAscended)
+        self.updatedFloorsAscended(pedometerData.floorsAscended)
         self.updateDistanceTraveled(pedometerData.distance)
+        self.updatedFloorsAscended(pedometerData.floorsDescended)
     }
     
     private func updateForLastSevenDays() {
@@ -283,29 +254,45 @@ private extension HomeScreen {
             })
     }
     
+    private func updateForCurrentWeek() {
+        weeklydataCancellable = pedometerManager?
+            .getStepsForCurrentWeek()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in
+            }, receiveValue: { weeklyStepData in
+                self.weeklyStepData = weeklyStepData
+            })
+    }
+    
     private func updateStepProgress(_ pedometerData: CMPedometerData?) {
         stepProgressView.updateData(with: pedometerData)
     }
     
-    private func updateFloorsClimbed(_ value: NSNumber?) {
-        stairsClimbedSection.updateBodyLabel("\(value ?? 0.0)")
+    private func updatedFloorsAscended(_ value: NSNumber?) {
+        stairsAscendedSection.updateBodyLabel("\(value ?? 0.0)")
+    }
+    
+    private func updateFloorsDescended(_ value: NSNumber?){
+        stairsDescendedSection.updateBodyLabel("\(value ?? 0.0)")
     }
     
     private func updateDistanceTraveled(_ value: NSNumber?, preferMetricUnits: Bool? = false) {
         guard let distanceInMeters = value else { return }
         
-        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: unitDistance)
+        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: .kilometers)
         let formattedDistance = measurementFormatter.string(from: distance)
         
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
     
     private func updateCompletion(_ pedometerData: CMPedometerData) {
-        confettiView.startConfetti()
-        
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.confettiView.stopConfetti()
+        if stepProgressView.reachedMax() {
+            confettiView.startConfetti()
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.confettiView.stopConfetti()
+            }
         }
     }
     
@@ -318,17 +305,10 @@ private extension HomeScreen {
                 DispatchQueue.main.async {
                     self.currentStepData = nil
                     self.titleLabel.text = self.dateFormatter.string(from: .now)
-                    self.provideWeeklyData(self.metricsViewController)
+                    self.updateForLastSevenDays()
                 }
             }
         }
-    }
-}
-
-// MARK: - Metrics Delegate
-extension HomeScreen: MetricsDelegate {
-    func provideWeeklyData(_ viewController: UIViewController) {
-        updateForLastSevenDays()
     }
 }
 

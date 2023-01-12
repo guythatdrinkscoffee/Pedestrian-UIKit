@@ -12,11 +12,13 @@ import CoreMotion
 class StepProgressView: UIView {
     // MARK: - Public Properties
     public var didReachMax = CurrentValueSubject<CMPedometerData?,Never>(nil)
+    
     public var stepData: CMPedometerData? = nil{
         didSet {
             self.updateProgress(stepData?.numberOfSteps.intValue ?? -1)
         }
     }
+    
     // MARK: - Properties
     
     private var startPoint = CGFloat(-Double.pi * 0.5)
@@ -46,7 +48,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemTeal.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 18
+        layer.lineWidth = 19
         return layer
     }()
     
@@ -159,6 +161,7 @@ class StepProgressView: UIView {
             didCompleteImageView.tintColor = .clear
         }
     }
+    
     // MARK: - Public Methods
     public func updateMax(_ max: Int) {
         maxValue = CGFloat(max)
@@ -167,5 +170,9 @@ class StepProgressView: UIView {
     
     public func updateData(with pedometerData: CMPedometerData?){
         self.stepData = pedometerData
+    }
+    
+    public func reachedMax() -> Bool {
+        return Int(self.currentValue) >= Int(maxValue)
     }
 }

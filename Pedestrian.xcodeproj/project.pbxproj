@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F912C0F8C33A5FA45575B94 /* Pods_Pedestrian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */; };
+		3F7FB10143D599B96D3EBD98 /* Pods_Pedestrian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13AB8EB51DB96636F7334C80 /* Pods_Pedestrian.framework */; };
 		BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF36296134C8007D4D23 /* AppDelegate.swift */; };
 		BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF38296134C8007D4D23 /* SceneDelegate.swift */; };
 		BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeScreen.swift */; };
@@ -17,11 +17,7 @@
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
-		BE2D45F62967F6FE00973B21 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45F52967F6FE00973B21 /* SettingsView.swift */; };
-		BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45F92968CE4800973B21 /* SettingsIcon.swift */; };
-		BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */; };
-		BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */; };
-		BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46012968D2D900973B21 /* SettingsManager.swift */; };
+		BE24654D296E663100CF6EA5 /* UIFont+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */; };
 		BE2D46052968D62300973B21 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46042968D62300973B21 /* String+Ext.swift */; };
 		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
 		BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C22966597E00B67D8A /* InfoCell.swift */; };
@@ -32,12 +28,12 @@
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
 		BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E44296D32850077DA71 /* UIImage+Ext.swift */; };
-		BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pedestrian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.debug.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.debug.xcconfig"; sourceTree = "<group>"; };
+		13AB8EB51DB96636F7334C80 /* Pods_Pedestrian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pedestrian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DE967FCDA1F8A35AEEDD0FD /* Pods-Pedestrian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.debug.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.debug.xcconfig"; sourceTree = "<group>"; };
+		9C9E5627531AB7894F7C1EBF /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 		BE15AF33296134C8007D4D23 /* Pedestrian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pedestrian.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE15AF36296134C8007D4D23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE15AF38296134C8007D4D23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,11 +45,7 @@
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
-		BE2D45F52967F6FE00973B21 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		BE2D45F92968CE4800973B21 /* SettingsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsIcon.swift; sourceTree = "<group>"; };
-		BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationRow.swift; sourceTree = "<group>"; };
-		BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
-		BE2D46012968D2D900973B21 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIFont+Ext.swift"; path = "../../../BaseWeight/BaseWeight/Utils/Extensions/UIFont+Ext.swift"; sourceTree = "<group>"; };
 		BE2D46042968D62300973B21 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
 		BE3707C22966597E00B67D8A /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
@@ -64,8 +56,6 @@
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
 		BEED7E44296D32850077DA71 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
-		BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianProView.swift; sourceTree = "<group>"; };
-		D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,20 +63,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F912C0F8C33A5FA45575B94 /* Pods_Pedestrian.framework in Frameworks */,
+				3F7FB10143D599B96D3EBD98 /* Pods_Pedestrian.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AAF44DDBDC5027C9CD8766D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				13AB8EB51DB96636F7334C80 /* Pods_Pedestrian.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BE15AF2A296134C8007D4D23 = {
 			isa = PBXGroup;
 			children = (
 				BE15AF35296134C8007D4D23 /* Pedestrian */,
 				BE15AF34296134C8007D4D23 /* Products */,
 				DAEAD486A0AE2B716F35EF09 /* Pods */,
-				EA0991CA1E1F4808C7AF34FC /* Frameworks */,
+				AAF44DDBDC5027C9CD8766D3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,7 +132,6 @@
 		BE15AF4C29621628007D4D23 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				BE2D45F42967F6F000973B21 /* SwiftUI */,
 				BE15AF3A296134C8007D4D23 /* HomeScreen.swift */,
 				BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */,
 				BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */,
@@ -147,7 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				BE15AF4E2962168D007D4D23 /* PedometerManager.swift */,
-				BE2D46012968D2D900973B21 /* SettingsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -161,37 +157,10 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		BE2D45F42967F6F000973B21 /* SwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				BE2D45F72968CE2C00973B21 /* Components */,
-				BE2D45F52967F6FE00973B21 /* SettingsView.swift */,
-				BEFACF9D2969714F00C8F977 /* PedestrianProView.swift */,
-			);
-			path = SwiftUI;
-			sourceTree = "<group>";
-		};
-		BE2D45F72968CE2C00973B21 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				BE2D45F82968CE3100973B21 /* Settings */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		BE2D45F82968CE3100973B21 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				BE2D45F92968CE4800973B21 /* SettingsIcon.swift */,
-				BE2D45FB2968CEF200973B21 /* SettingsNavigationRow.swift */,
-				BE2D45FD2968CF6D00973B21 /* SettingsButton.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
 		BE2D46032968D61900973B21 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */,
 				BE2D46042968D62300973B21 /* String+Ext.swift */,
 				BEED7E44296D32850077DA71 /* UIImage+Ext.swift */,
 			);
@@ -230,18 +199,10 @@
 		DAEAD486A0AE2B716F35EF09 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */,
-				D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */,
+				3DE967FCDA1F8A35AEEDD0FD /* Pods-Pedestrian.debug.xcconfig */,
+				9C9E5627531AB7894F7C1EBF /* Pods-Pedestrian.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		EA0991CA1E1F4808C7AF34FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				078DDB54DBCCB2A7EE4A8956 /* Pods_Pedestrian.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,11 +212,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE15AF47296134C9007D4D23 /* Build configuration list for PBXNativeTarget "Pedestrian" */;
 			buildPhases = (
-				CDD4C03AFBBADCAD77309B6A /* [CP] Check Pods Manifest.lock */,
+				C225FEEB129611982C7E58CD /* [CP] Check Pods Manifest.lock */,
 				BE15AF2F296134C8007D4D23 /* Sources */,
 				BE15AF30296134C8007D4D23 /* Frameworks */,
 				BE15AF31296134C8007D4D23 /* Resources */,
-				E3F9E510CB97D34BC1AC94CF /* [CP] Embed Pods Frameworks */,
+				AA97A2139D8199B978E03B46 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -312,7 +273,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CDD4C03AFBBADCAD77309B6A /* [CP] Check Pods Manifest.lock */ = {
+		AA97A2139D8199B978E03B46 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C225FEEB129611982C7E58CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -334,23 +312,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E3F9E510CB97D34BC1AC94CF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Pedestrian/Pods-Pedestrian-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -365,10 +326,7 @@
 				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
 				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
-				BE2D45FA2968CE4800973B21 /* SettingsIcon.swift in Sources */,
-				BE2D45FC2968CEF200973B21 /* SettingsNavigationRow.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
-				BE2D45FE2968CF6D00973B21 /* SettingsButton.swift in Sources */,
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,
@@ -376,10 +334,8 @@
 				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
 				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
-				BE2D46022968D2D900973B21 /* SettingsManager.swift in Sources */,
+				BE24654D296E663100CF6EA5 /* UIFont+Ext.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
-				BEFACF9E2969714F00C8F977 /* PedestrianProView.swift in Sources */,
-				BE2D45F62967F6FE00973B21 /* SettingsView.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,7 +470,7 @@
 		};
 		BE15AF48296134C9007D4D23 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F3A10F6D68BA00F32BB2F14 /* Pods-Pedestrian.debug.xcconfig */;
+			baseConfigurationReference = 3DE967FCDA1F8A35AEEDD0FD /* Pods-Pedestrian.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -528,6 +484,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,7 +500,7 @@
 		};
 		BE15AF49296134C9007D4D23 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D55455F51E10EEF66C22087E /* Pods-Pedestrian.release.xcconfig */;
+			baseConfigurationReference = 9C9E5627531AB7894F7C1EBF /* Pods-Pedestrian.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -557,6 +514,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

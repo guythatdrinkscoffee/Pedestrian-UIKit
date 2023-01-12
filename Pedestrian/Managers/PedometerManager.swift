@@ -83,6 +83,23 @@ final class PedometerManager {
         return dates
     }
     
+    private func getCurrentWeek(from date: Date = .now) -> [Date] {
+        let weekInterval = calendar.dateInterval(of: .weekOfMonth, for: date)
+        var dates = [Date]()
+        
+        guard let startOfWeek = weekInterval?.start else {
+            return []
+        }
+        
+        for i in 0..<7 {
+            if let nextDay = calendar.date(byAdding: .day,value: i, to: startOfWeek){
+                dates.append(nextDay)
+            }
+        }
+        
+        return dates
+    }
+    
     // MARK: - Public Methods
     public func determineAuthorizationStatus() -> CMAuthorizationStatus {
         return CMPedometer.authorizationStatus()
@@ -113,6 +130,14 @@ final class PedometerManager {
         return mergeData(lastSevenDays)
             .collect()
             .map({$0.reversed()})
+            .eraseToAnyPublisher()
+    }
+    
+    public func getStepsForCurrentWeek() -> AnyPublisher<[CMPedometerData], Error> {
+        let currentWeek = getCurrentWeek()
+        
+        return mergeData(currentWeek)
+            .collect()
             .eraseToAnyPublisher()
     }
 }

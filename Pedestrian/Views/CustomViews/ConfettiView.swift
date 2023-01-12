@@ -65,7 +65,7 @@ private extension ConfettiView {
 // MARK: - Public Methods
 extension ConfettiView {
     public func startConfetti() {
-        feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
         feedbackGenerator?.prepare()
         
         emitter = CAEmitterLayer()
