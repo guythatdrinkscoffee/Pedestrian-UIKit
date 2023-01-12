@@ -20,7 +20,6 @@ class StepProgressView: UIView {
     }
     
     // MARK: - Properties
-    
     private var startPoint = CGFloat(-Double.pi * 0.5)
     
     private var endPoint: CGFloat {
@@ -38,7 +37,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.25).cgColor
         layer.strokeEnd = 1.0
         layer.lineCap = .round
-        layer.lineWidth = 25
+        layer.lineWidth = 32
         return layer
     }()
    
@@ -48,7 +47,7 @@ class StepProgressView: UIView {
         layer.strokeColor = UIColor.systemTeal.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 19
+        layer.lineWidth = 25
         return layer
     }()
     
@@ -70,17 +69,28 @@ class StepProgressView: UIView {
     }()
     
     private lazy var didCompleteImageView : UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "crown.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)))
+        let imageView = UIImageView()
+        imageView.image = UIImage(
+            systemName: "crown.fill",
+            withConfiguration: UIImage.SymbolConfiguration(textStyle: .title1, scale: .large))
         imageView.tintColor = .clear
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private lazy var labelsStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [ didCompleteImageView,topLabel, bottomLabel])
+        let stackView = UIStackView(arrangedSubviews: [topLabel, bottomLabel])
         stackView.axis = .vertical
-        stackView.spacing = 5
         stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var rootStackView : UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [didCompleteImageView, labelsStackView])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -123,11 +133,11 @@ class StepProgressView: UIView {
     }
     
     private func layoutLabels() {
-        addSubview(labelsStackView)
+        addSubview(rootStackView)
         
         NSLayoutConstraint.activate([
-            labelsStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            labelsStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            rootStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            rootStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     
@@ -156,7 +166,7 @@ class StepProgressView: UIView {
     private func checkIfMaxReached() {
         if Int(currentValue) >= Int(maxValue) {
             didReachMax.send(stepData)
-            didCompleteImageView.tintColor = .systemPink
+            didCompleteImageView.tintColor = .systemOrange
         } else {
             didCompleteImageView.tintColor = .clear
         }
@@ -170,9 +180,5 @@ class StepProgressView: UIView {
     
     public func updateData(with pedometerData: CMPedometerData?){
         self.stepData = pedometerData
-    }
-    
-    public func reachedMax() -> Bool {
-        return Int(self.currentValue) >= Int(maxValue)
     }
 }

@@ -11,6 +11,12 @@ struct MetricsData {
     let icon: UIImage?
     let description: String?
     let value: Any?
+    
+    init(icon: UIImage? = nil, description: String?, value: Any?) {
+        self.icon = icon
+        self.description = description
+        self.value = value
+    }
 }
 
 struct MetricsInfo {
@@ -33,13 +39,13 @@ class InfoCell: UICollectionViewCell {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        imageView.tintColor = .systemTeal
+        imageView.tintColor = .systemGray
         return imageView
     }()
     
     private lazy var bodyLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 18, weight: .bold)
+        label.font = .monospacedSystemFont(ofSize: 20, weight: .bold)
         return label
     }()
     

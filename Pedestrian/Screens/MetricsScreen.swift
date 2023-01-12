@@ -65,7 +65,6 @@ class MetricsScreen: UIViewController {
         return formatter
     }()
     
-    
     private var animationDuration: TimeInterval = 0.6
     
     private var origin: CGPoint = .zero
@@ -74,8 +73,14 @@ class MetricsScreen: UIViewController {
     
     private var sections: [MetricsInfo]?
     
-    private var tintColor: UIColor = .systemTeal
+    private var tintColor: UIColor = .systemOrange
         
+    private var data: [CMPedometerData] = [] {
+        didSet {
+            updateData(data)
+            aggregateData(data)
+        }
+    }
     // MARK: - UI
     private lazy var dragIndicator : UIView = {
         let view = UIView()
@@ -99,7 +104,7 @@ class MetricsScreen: UIViewController {
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = tintColor
         line.valueTextColor = tintColor
-        line.lineWidth = 3.0
+        line.lineWidth = 2.5
         line.lineDashLengths = [8.0, 6.0]
         return line
     }()
@@ -113,14 +118,6 @@ class MetricsScreen: UIViewController {
         return goalEntry
     }()
     
-    
-    private lazy var infoEntry : LegendEntry = {
-        let infoEntry = LegendEntry(label: "Last 7 Days")
-        infoEntry.formColor = .systemPink
-        infoEntry.form = .square
-        return infoEntry
-    }()
-    
     private lazy var barChart : BarChartView = {
         let chart = BarChartView()
         chart.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +125,7 @@ class MetricsScreen: UIViewController {
         chart.setScaleEnabled(false)
         chart.doubleTapToZoomEnabled = false
         chart.isUserInteractionEnabled = false
+        chart.delegate = self
         
         // chart highlight
         chart.highlightPerDragEnabled = false
@@ -152,7 +150,10 @@ class MetricsScreen: UIViewController {
         let legend = chart.legend
         legend.verticalAlignment = .top
         legend.horizontalAlignment = .left
-        legend.setCustom(entries: [infoEntry, goalEntry])
+        legend.setCustom(entries: [goalEntry])
+        
+        //animation
+        chart.animate(yAxisDuration: 0.3, easingOption: .linear)
         
         return chart
     }()
@@ -233,8 +234,7 @@ private extension MetricsScreen {
 // MARK: - Public Methods
 extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
-        updateMetrics(data)
-        aggregatedTotals(data)
+        self.data = data
     }
 }
 
@@ -282,8 +282,12 @@ private extension MetricsScreen {
             
             if velocity.y >= 0 {
                 snapTo(height: minimumOpeningHeight)
+                barChart.isUserInteractionEnabled = false
+                barChart.highlightValue(nil)
+                chartValueNothingSelected(barChart)
             } else {
                 snapTo(height: maxOpeningHeight)
+                barChart.isUserInteractionEnabled = true
             }
             
         default : break
@@ -291,7 +295,7 @@ private extension MetricsScreen {
         
     }
     
-    private func updateMetrics(_ data: [CMPedometerData]) {
+    private func updateData(_ data: [CMPedometerData]) {
         var dataEntries: [BarChartDataEntry] = []
         let maxDataPoint = data.max(by: {$0.numberOfSteps.intValue < $1.numberOfSteps.intValue})
         let timeStamps : [TimeInterval] = data.map({$0.endDate.timeIntervalSince1970})
@@ -314,6 +318,7 @@ private extension MetricsScreen {
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
         dataSet.setColor(.systemPink)
+        dataSet.highlightColor = .systemYellow
         
         let chartData = BarChartData(dataSet: dataSet)
         
@@ -328,7 +333,7 @@ private extension MetricsScreen {
         }
     }
     
-    private func aggregatedTotals(_ data: [CMPedometerData]) {
+    private func aggregateData(_ data: [CMPedometerData]) {
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
@@ -337,12 +342,26 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
+        var title: String
+        
+        if data.count == 1 {
+            let dateString = data.first?.endDate
+                .formatted(
+                    .dateTime
+                    .month(.abbreviated)
+                    .weekday(.wide)
+                    .day(.twoDigits)) ?? "Today"
+            title = "Totals for \(dateString)"
+        } else {
+            title = "Totals for last 7 days"
+        }
+        
         sections = [
-            .init(title: "Last 7 Days", data: [
-                .init(icon: .crown, description: "Step Count", value: steps.formatted(.number)),
-                .init(icon: .walking, description: "Distance Traveled", value: distanceString),
-                .init(icon: .arrowUp, description: "Floors Ascended", value: floorsAscended),
-                .init(icon: .arrowDown, description: "Floors Descended", value: floorsDescended)
+            .init(title: title, data: [
+                .init(description: "Step Count", value: steps.formatted(.number)),
+                .init(description: "Distance Traveled", value: distanceString),
+                .init(description: "Floors Ascended", value: floorsAscended),
+                .init(description: "Floors Descended", value: floorsDescended)
             ]),
         ]
         
@@ -350,6 +369,20 @@ private extension MetricsScreen {
     }
 }
 
+// MARK: - ChartView Delegate
+extension MetricsScreen: ChartViewDelegate {
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        if let pedometerData = entry.data as? CMPedometerData {
+            aggregateData([pedometerData])
+        }
+    }
+    
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        aggregateData(data)
+    }
+}
+
+// MARK: - XAxisChartFormatter
 class XAxisChartFormatter: IndexAxisValueFormatter {
     private var dateFormatter : DateFormatter?
     private var timestamps: [TimeInterval]?
@@ -408,25 +441,5 @@ extension MetricsScreen: UICollectionViewDataSource {
         default:
             fatalError("reusable header of \(kind) is not yet supported")
         }
-        
-    }
-}
-
-extension UICollectionViewLayout {
-    static func twoColumnLayout(for view: UIView) -> UICollectionViewFlowLayout {
-        let totalWidth = view.bounds.width
-        let padding: CGFloat = 10
-        let itemSpacing: CGFloat = 10
-        
-        let availableWidth = totalWidth - (padding * 2) - (itemSpacing)
-        
-        let itemWidth = availableWidth / 2
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 30)
-        layout.sectionInset = UIEdgeInsets(top: padding / 2, left: padding, bottom: padding / 2, right: padding)
-        layout.itemSize = CGSize(width: itemWidth, height: 80)
-        
-        return layout
     }
 }

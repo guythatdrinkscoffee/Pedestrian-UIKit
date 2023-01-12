@@ -44,11 +44,28 @@ class HomeScreen: UIViewController {
     }()
     
     private var minOpeningHeight: CGFloat {
+        // height of system spacing
+        let systemSpacing: CGFloat = 8.0
+        
+        // total height of the view's frame
         let height = view.frame.height
-        let safeAreaTop = view.safeAreaInsets.top
-        let titleLabelHeigth = titleLabel.frame.height
-        let padding = 16.0 * 2.5
-        return height - (stepProgressView.frame.height + infoRow.frame.height + padding + safeAreaTop + titleLabelHeigth)
+        
+        // height of the title label
+        let titleLabelHeight = titleLabel.frame.height + (systemSpacing * 1.2)
+        
+        // height of the progress view
+        let progressViewHeight = stepProgressView.frame.height + (systemSpacing)
+        
+        // height of the infoRow stack view
+        let infoRowViewHeight = infoRow.frame.height + (systemSpacing * 2.5)
+        
+        // height of the top safe area
+        let viewSafeAreaTop = view.safeAreaInsets.top
+        
+        // padding from bottom
+        let paddingFromBottom: CGFloat = 15
+        
+        return height - (titleLabelHeight + progressViewHeight + infoRowViewHeight + viewSafeAreaTop + paddingFromBottom)
     }
     
     private var weeklyStepData: [CMPedometerData] = [] {
@@ -62,6 +79,8 @@ class HomeScreen: UIViewController {
             update(currentStepData)
         }
     }
+    
+    private var showConfetti : Bool = false
     // MARK: - UI
     public lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
@@ -184,10 +203,10 @@ private extension HomeScreen {
             
             stepProgressView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
             stepProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.38),
+            stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2),
+            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2.5),
             infoRow.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -286,11 +305,11 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ pedometerData: CMPedometerData) {
-        if stepProgressView.reachedMax() {
+        if !showConfetti {
             confettiView.startConfetti()
+            showConfetti = true
             
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.confettiView.stopConfetti()
             }
         }
