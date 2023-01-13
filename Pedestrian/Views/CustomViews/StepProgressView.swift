@@ -179,7 +179,8 @@ class StepProgressView: UIView {
             didCompleteImageView.isHidden = false
             goalReachedLabel.isHidden = false
         } else {
-            goalReachedLabel.isHidden = false
+            goalReachedLabel.isHidden = true
+            didCompleteImageView.isHidden = true
         }
     }
     

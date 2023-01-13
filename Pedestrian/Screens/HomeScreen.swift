@@ -88,7 +88,7 @@ class HomeScreen: UIViewController {
     
     private lazy var titleLabel : UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .monospacedDigitSystemFont(ofSize: 28, weight: .bold)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
         label.text = title
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -101,6 +101,7 @@ class HomeScreen: UIViewController {
     
     private lazy var stepProgressView : StepProgressView = {
         let view = StepProgressView(max: 4000)
+        view.setProgressColor(.systemTeal)
         return view
     }()
     
@@ -170,7 +171,7 @@ class HomeScreen: UIViewController {
 private extension HomeScreen {
     private func configureViewController() {
         view.backgroundColor = .systemGray6
-        title = "Today"
+        self.titleLabel.text = self.dateFormatter.string(from: .now)
     }
     
     private func configureProgressView() {
@@ -282,7 +283,11 @@ private extension HomeScreen {
     }
     
     private func updateStepProgress(_ pedometerData: CMPedometerData?) {
-        stepProgressView.updateValue(pedometerData?.numberOfSteps.intValue ?? 0)
+        guard let pedometerData = pedometerData else {
+            stepProgressView.updateValue(-1)
+            return
+        }
+        stepProgressView.updateValue(pedometerData.numberOfSteps.intValue)
     }
     
     private func updatedFloorsAscended(_ value: NSNumber?) {
