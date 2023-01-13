@@ -266,28 +266,28 @@ private extension HomeScreen {
         weeklydataCancellable = pedometerManager?
             .getStepsForLastSevenDays()
             .receive(on: DispatchQueue.main)
+            .map({ weeklyPedometerData in
+                for pedometerData in weeklyPedometerData {
+                    self.shouldSave(pedometerData)
+                }
+                return weeklyPedometerData
+            })
             .sink(receiveCompletion: { _ in
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })
     }
-    
-    private func updateForCurrentWeek() {
-        weeklydataCancellable = pedometerManager?
-            .getStepsForCurrentWeek()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
-            }, receiveValue: { weeklyStepData in
-                self.weeklyStepData = weeklyStepData
-            })
-    }
-    
+
     private func updateStepProgress(_ pedometerData: CMPedometerData?) {
         guard let pedometerData = pedometerData else {
             stepProgressView.updateValue(-1)
             return
         }
         stepProgressView.updateValue(pedometerData.numberOfSteps.intValue)
+    }
+    
+    private func shouldSave(_ pedometerData: CMPedometerData) {
+        PesistenceManager.shared.save(pedometerData)
     }
     
     private func updatedFloorsAscended(_ value: NSNumber?) {

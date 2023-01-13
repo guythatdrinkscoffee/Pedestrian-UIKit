@@ -68,6 +68,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
         if let homeViewController = window?.rootViewController as? HomeScreen {
             homeViewController.stopUpdatingSteps()
+            
+            PesistenceManager.shared.saveChanges()
         }
     }
     
