@@ -73,7 +73,7 @@ class MetricsScreen: UIViewController {
     
     private var sections: [MetricsInfo]?
     
-    private var tintColor: UIColor = .systemOrange
+    private var tintColor: UIColor = .systemTeal
         
     private var data: [CMPedometerData] = [] {
         didSet {
@@ -104,7 +104,7 @@ class MetricsScreen: UIViewController {
         line.valueFont = .monospacedSystemFont(ofSize: 12 , weight: .bold)
         line.lineColor = tintColor
         line.valueTextColor = tintColor
-        line.lineWidth = 2.5
+        line.lineWidth = 3
         line.lineDashLengths = [8.0, 6.0]
         return line
     }()
@@ -318,7 +318,6 @@ private extension MetricsScreen {
         let dataSet = BarChartDataSet(entries: dataEntries)
         dataSet.valueFont = .monospacedSystemFont(ofSize: 12, weight: .bold)
         dataSet.setColor(.systemPink)
-        dataSet.highlightColor = .systemYellow
         
         let chartData = BarChartData(dataSet: dataSet)
         

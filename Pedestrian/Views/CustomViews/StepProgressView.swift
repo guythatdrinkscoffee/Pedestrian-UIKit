@@ -11,13 +11,7 @@ import CoreMotion
 
 class StepProgressView: UIView {
     // MARK: - Public Properties
-    public var didReachMax = CurrentValueSubject<CMPedometerData?,Never>(nil)
-    
-    public var stepData: CMPedometerData? = nil{
-        didSet {
-            self.updateProgress(stepData?.numberOfSteps.intValue ?? -1)
-        }
-    }
+    public var didReachMax = CurrentValueSubject<Bool, Never>(false)
     
     // MARK: - Properties
     private var startPoint = CGFloat(-Double.pi * 0.5)
@@ -34,24 +28,24 @@ class StepProgressView: UIView {
     private lazy var bottomLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.25).cgColor
+        layer.strokeColor = UIColor.systemPink.withAlphaComponent(0.25).cgColor
         layer.strokeEnd = 1.0
         layer.lineCap = .round
-        layer.lineWidth = 32
+        layer.lineWidth = 33
         return layer
     }()
    
     private lazy var progressLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemTeal.cgColor
+        layer.strokeColor = UIColor.systemPink.cgColor
         layer.strokeEnd = 0.0
         layer.lineCap = .round
-        layer.lineWidth = 25
+        layer.lineWidth = 23
         return layer
     }()
     
-    public lazy var topLabel : UILabel = {
+    public lazy var stepCountLabel : UILabel = {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 36, weight: .black)
         label.minimumScaleFactor = 0.5
@@ -60,37 +54,45 @@ class StepProgressView: UIView {
         return label
     }()
     
-    public lazy var bottomLabel : UILabel = {
+    public lazy var stepsLabel : UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.textAlignment = .center
         label.text = "steps"
+        return label
+    }()
+    
+    public lazy var goalReachedLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Goal Reached"
         label.font = .preferredFont(forTextStyle: .headline)
         label.textAlignment = .center
+        label.isHidden = true
         return label
     }()
     
     private lazy var didCompleteImageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(
-            systemName: "crown.fill",
-            withConfiguration: UIImage.SymbolConfiguration(textStyle: .title1, scale: .large))
-        imageView.tintColor = .clear
+        let imageView = UIImageView(image:  UIImage(systemName: "crown.fill"))
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .systemYellow
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        imageView.isHidden = true
         return imageView
     }()
     
-    private lazy var labelsStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [topLabel, bottomLabel])
-        stackView.axis = .vertical
+    private lazy var bottomStackView : UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [didCompleteImageView, goalReachedLabel])
         stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
     private lazy var rootStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [didCompleteImageView, labelsStackView])
+        let stackView = UIStackView(arrangedSubviews: [stepCountLabel, stepsLabel])
         stackView.axis = .vertical
         stackView.distribution = .fill
-        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -116,11 +118,12 @@ class StepProgressView: UIView {
         layoutLabels()
     }
     
-    // MARK: - Private Methods
+    // MARK: - Layout
     private func makePath() {
+        let radius = (frame.width - 1.5) * 0.33
         let path = UIBezierPath(
             arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-            radius: (frame.width - 1.5) * 0.35,
+            radius: radius,
             startAngle: startPoint,
             endAngle: endPoint,
             clockwise: true)
@@ -134,51 +137,61 @@ class StepProgressView: UIView {
     
     private func layoutLabels() {
         addSubview(rootStackView)
-        
+        addSubview(bottomStackView)
         NSLayoutConstraint.activate([
             rootStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            rootStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            rootStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            bottomStackView.topAnchor.constraint(equalToSystemSpacingBelow: rootStackView.bottomAnchor, multiplier: 2.5),
+            bottomStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
     
-    
-    private func updateProgress( _ value: Int) {
-        self.topLabel.text = "\(value == -1 ? 0 : value)"
+    // MARK: - Private Methods
+    private func updateProgress(_ value: CGFloat) {
+        let endPosition = value / maxValue
+        let startPosition = currentValue / maxValue
         
-        let fValue = CGFloat(value)
-        let basicProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        let newStrokeEndPosition = fValue / maxValue
-        basicProgressAnimation.fillMode = .forwards
-        basicProgressAnimation.isRemovedOnCompletion = false
-        basicProgressAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
-        basicProgressAnimation.duration = 0.9
-        basicProgressAnimation.fromValue = currentValue / maxValue
-        basicProgressAnimation.toValue = newStrokeEndPosition
+        setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressLayer)
         
-        progressLayer.strokeEnd = newStrokeEndPosition
-        progressLayer.add(basicProgressAnimation, forKey: "progressAnimation")
         
-        self.currentValue = fValue
-        
-        self.checkIfMaxReached()
+        self.stepCountLabel.text = Int(value).formatted(.number)
+        self.currentValue = value
+        self.didReachMax(value: value)
     }
     
-    private func checkIfMaxReached() {
-        if Int(currentValue) >= Int(maxValue) {
-            didReachMax.send(stepData)
-            didCompleteImageView.tintColor = .systemOrange
+    private func setStrokeEndAnimation(start: CGFloat, end: CGFloat, in layer: CAShapeLayer){
+        let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+        
+        strokeEnd.fillMode = .forwards
+        strokeEnd.isRemovedOnCompletion = false
+        strokeEnd.timingFunction = CAMediaTimingFunction(name: .linear)
+        strokeEnd.duration = 1.5
+        strokeEnd.fromValue  = start
+        strokeEnd.toValue = end
+        
+        layer.strokeEnd = end
+        layer.add(strokeEnd, forKey: "progressAnim")
+    }
+    
+    private func didReachMax(value: CGFloat) {
+        if Int(value) >= Int(maxValue){
+            didReachMax.send(true)
+            didCompleteImageView.isHidden = false
+            goalReachedLabel.isHidden = false
         } else {
-            didCompleteImageView.tintColor = .clear
+            goalReachedLabel.isHidden = false
         }
     }
     
     // MARK: - Public Methods
-    public func updateMax(_ max: Int) {
-        maxValue = CGFloat(max)
-        updateProgress(Int(currentValue))
+    public func updateValue(_ value: Int){
+        let progressValue: CGFloat = CGFloat(value)
+        print(progressValue)
+        updateProgress(progressValue)
     }
     
-    public func updateData(with pedometerData: CMPedometerData?){
-        self.stepData = pedometerData
+    public func setProgressColor(_ color: UIColor){
+        bottomLayer.strokeColor = color.withAlphaComponent(0.25).cgColor
+        progressLayer.strokeColor = color.cgColor
     }
 }

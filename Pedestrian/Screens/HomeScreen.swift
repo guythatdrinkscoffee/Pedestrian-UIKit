@@ -9,9 +9,6 @@ import UIKit
 import Combine
 import CoreMotion
 
-
-
-
 class HomeScreen: UIViewController {
     // MARK: - Private Properties
     private var pedometerManager: PedometerManager?
@@ -206,7 +203,7 @@ private extension HomeScreen {
             stepProgressView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
             stepProgressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 2.5),
+            infoRow.topAnchor.constraint(equalToSystemSpacingBelow: stepProgressView.bottomAnchor, multiplier: 3),
             infoRow.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -238,9 +235,10 @@ private extension HomeScreen {
     private func listenToProgess() {
         stepProgressView
             .didReachMax
-            .compactMap({$0})
-            .sink { completedStepData in
-                self.updateCompletion(completedStepData)
+            .sink { didComplete in
+                if  didComplete {
+                    self.updateCompletionForCurrentStepData()
+                }
             }
             .store(in: &cancellables)
     }
@@ -284,7 +282,7 @@ private extension HomeScreen {
     }
     
     private func updateStepProgress(_ pedometerData: CMPedometerData?) {
-        stepProgressView.updateData(with: pedometerData)
+        stepProgressView.updateValue(pedometerData?.numberOfSteps.intValue ?? 0)
     }
     
     private func updatedFloorsAscended(_ value: NSNumber?) {
@@ -304,7 +302,10 @@ private extension HomeScreen {
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
     
-    private func updateCompletion(_ pedometerData: CMPedometerData) {
+    private func updateCompletionForCurrentStepData() {
+        guard let currentStepData = currentStepData else { return }
+        
+        print(currentStepData)
         if !showConfetti {
             confettiView.startConfetti()
             showConfetti = true
