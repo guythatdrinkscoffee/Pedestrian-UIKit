@@ -44,7 +44,7 @@ extension PedestrianDay {
         }
     }
     
-    static func getAll(in context: NSManagedObjectContext) -> [PedestrianDay] {
+    static func all(in context: NSManagedObjectContext) -> [PedestrianDay] {
         let fetchRequest: NSFetchRequest<PedestrianDay> = PedestrianDay.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: true)]
         

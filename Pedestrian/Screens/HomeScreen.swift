@@ -77,7 +77,7 @@ class HomeScreen: UIViewController {
         }
     }
     
-    private var showConfetti : Bool = false
+    private var showConfetti : Bool = true
     // MARK: - UI
     public lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
@@ -308,12 +308,9 @@ private extension HomeScreen {
     }
     
     private func updateCompletionForCurrentStepData() {
-        guard let currentStepData = currentStepData else { return }
-        
-        print(currentStepData)
-        if !showConfetti {
+        if showConfetti {
             confettiView.startConfetti()
-            showConfetti = true
+            showConfetti = false
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.confettiView.stopConfetti()

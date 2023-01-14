@@ -34,9 +34,9 @@ final class PersistenceManager {
             entry.goalReached = pedometerData.numberOfSteps.intValue >= 4000
         }
     }
-    
+
     public func getAll() -> [PedestrianDay] {
-        let allEntries: [PedestrianDay] = PedestrianDay.getAll(in: dataStore.managedContext)
+        let allEntries: [PedestrianDay] = PedestrianDay.all(in: dataStore.managedContext)
         return allEntries
     }
     
