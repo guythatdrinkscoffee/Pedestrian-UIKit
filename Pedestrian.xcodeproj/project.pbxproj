@@ -21,6 +21,7 @@
 		BE24654D296E663100CF6EA5 /* UIFont+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */; };
 		BE28523A297214A8004201EE /* PedestrianDay+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE285238297214A8004201EE /* PedestrianDay+CoreDataClass.swift */; };
 		BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE285239297214A8004201EE /* PedestrianDay+CoreDataProperties.swift */; };
+		BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE28523C2972662D004201EE /* ReusableFooterView.swift */; };
 		BE2D46052968D62300973B21 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46042968D62300973B21 /* String+Ext.swift */; };
 		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
 		BE36080F2972071F00A6C0AD /* PedestrianDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE36080E2972071F00A6C0AD /* PedestrianDataStore.swift */; };
@@ -55,6 +56,7 @@
 		BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIFont+Ext.swift"; path = "../../../BaseWeight/BaseWeight/Utils/Extensions/UIFont+Ext.swift"; sourceTree = "<group>"; };
 		BE285238297214A8004201EE /* PedestrianDay+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PedestrianDay+CoreDataClass.swift"; path = "Pedestrian/Coredata/PedestrianDay+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BE285239297214A8004201EE /* PedestrianDay+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PedestrianDay+CoreDataProperties.swift"; path = "Pedestrian/Coredata/PedestrianDay+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		BE28523C2972662D004201EE /* ReusableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableFooterView.swift; sourceTree = "<group>"; };
 		BE2D46042968D62300973B21 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
 		BE36080E2972071F00A6C0AD /* PedestrianDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianDataStore.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 			children = (
 				BE3707C22966597E00B67D8A /* InfoCell.swift */,
 				BE3707C42966738000B67D8A /* ReusableHeaderView.swift */,
+				BE28523C2972662D004201EE /* ReusableFooterView.swift */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */,
 				BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
+				BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */,
 				BE39EF6C2971F6E600999697 /* Pedestrian.xcdatamodeld in Sources */,
 				BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,

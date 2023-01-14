@@ -19,7 +19,6 @@ extension UICollectionViewLayout {
         let itemWidth = availableWidth / 2
         
         let layout = UICollectionViewFlowLayout()
-        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 30)
         layout.sectionInset = UIEdgeInsets(top: padding / 2, left: padding, bottom: padding / 2, right: padding)
         layout.itemSize = CGSize(width: itemWidth, height: 80)
         

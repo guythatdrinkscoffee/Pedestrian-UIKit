@@ -1,21 +1,22 @@
 //
-//  ReusableHeaderView.swift
+//  ReusableFooterView.swift
 //  Pedestrian
 //
-//  Created by J Manuel Zaragoza on 1/4/23.
+//  Created by J Manuel Zaragoza on 1/13/23.
 //
 
 import UIKit
 
-class ReusableHeaderView: UICollectionReusableView {
+class ReusableFooterView: UICollectionReusableView {
     // MARK: - Properties
-    static let reuseIdentifier = "ReusableHeaderView"
+    static let reuseIdentifier = "ReusableFooterView"
     
     // MARK: - UI
-    private lazy var headerLabel : UILabel = {
+    private lazy var footerLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .headline)
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.textColor = .systemGray
         return label
     }()
 
@@ -31,18 +32,18 @@ class ReusableHeaderView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        addSubview(headerLabel)
+        addSubview(footerLabel)
         
         NSLayoutConstraint.activate([
-            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            headerLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
+            footerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            footerLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
 
 // MARK: - Configuration
-extension ReusableHeaderView {
+extension ReusableFooterView {
     public func configure(with title: String?){
-        headerLabel.text = title
+        footerLabel.text = title
     }
 }

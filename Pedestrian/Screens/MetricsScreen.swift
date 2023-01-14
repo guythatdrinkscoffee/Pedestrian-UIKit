@@ -65,6 +65,8 @@ class MetricsScreen: UIViewController {
         return formatter
     }()
     
+    private var lifetimeStartDate: Date?
+    
     private var animationDuration: TimeInterval = 0.6
     
     private var origin: CGPoint = .zero
@@ -159,12 +161,17 @@ class MetricsScreen: UIViewController {
     }()
     
     private lazy var metricsCollectionView : UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .twoColumnLayout(for: view))
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10 / 2, left: 10, bottom: 10 / 2, right: 10)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.resuseIdentifier)
         collectionView.register(ReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableHeaderView.reuseIdentifier)
+        collectionView.register(ReusableFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ReusableFooterView.reuseIdentifier)
         return collectionView
     }()
     
@@ -373,7 +380,7 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: data.distance?.doubleValue ?? 0.0, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
-        sections[0] = MetricsInfo(title: "Totals for \(dateString)", data: [
+        sections[0] = MetricsInfo(title: dateString, data: [
             .init(description: "Step Count", value: data.numberOfSteps.intValue.formatted(.number)),
                 .init(description: "Distance Traveled", value: distanceString),
                 .init(description: "Floors Ascended", value: data.floorsAscended),
@@ -395,6 +402,8 @@ private extension MetricsScreen {
             .init(icon: .crown, description: "Step Count", value: totalSteps.formatted(.number)),
             .init(icon: .walking, description: "Distance Traveled", value: distanceString)
         ])
+        
+        lifetimeStartDate = allEntries.first?.startDate
         
         return lifetimeSection
     }
@@ -440,13 +449,10 @@ class XAxisChartFormatter: IndexAxisValueFormatter {
 // MARK: - UICollectionViewDataSource
 extension MetricsScreen: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        guard let sections = sections else { return 0 }
         return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        guard let sections = sections else { return 0 }
-        
         return sections[section].data.count
     }
     
@@ -468,13 +474,57 @@ extension MetricsScreen: UICollectionViewDataSource {
             guard let titledHeader = header as? ReusableHeaderView else {
                 return header
             }
-            
-            let sectionTitle = sections[indexPath.section].title
-            titledHeader.configure(with: sectionTitle)
-            
+            let title = sections[indexPath.section].title
+            titledHeader.configure(with: title)
             return titledHeader
+        case UICollectionView.elementKindSectionFooter :
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableFooterView.reuseIdentifier, for: indexPath)
+            
+            guard let titledFooter = footer as? ReusableFooterView else {
+                return footer
+            }
+            
+            if indexPath.section == 1 {
+                let title = lifetimeStartDate?
+                    .formatted(
+                        .dateTime
+                        .month(.abbreviated)
+                        .weekday(.wide)
+                        .day(.twoDigits)) ?? "Now"
+                
+                titledFooter.configure(with: "Since \(title)")
+            }
+            
+            return titledFooter
         default:
             fatalError("reusable header of \(kind) is not yet supported")
         }
+    }
+    
+    
+}
+
+// MARK: - UICollectionView Delegate
+extension MetricsScreen: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        return section == 0 ? .zero : CGSize(width: view.frame.width, height: 30)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.height, height: 30)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalWidth = view.bounds.width
+        let padding: CGFloat = 10
+        let itemSpacing: CGFloat = 10
+        
+        let availableWidth = totalWidth - (padding * 2) - (itemSpacing)
+        
+        let itemWidth = availableWidth / 2
+        
+        return  CGSize(width: itemWidth, height: 80)
     }
 }
