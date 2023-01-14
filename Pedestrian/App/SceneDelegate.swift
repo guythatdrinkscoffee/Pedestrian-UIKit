@@ -69,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let homeViewController = window?.rootViewController as? HomeScreen {
             homeViewController.stopUpdatingSteps()
             
-            PesistenceManager.shared.saveChanges()
+            PersistenceManager.shared.saveChanges()
         }
     }
     

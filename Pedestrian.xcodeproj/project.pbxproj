@@ -24,7 +24,7 @@
 		BE2D46052968D62300973B21 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D46042968D62300973B21 /* String+Ext.swift */; };
 		BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */; };
 		BE36080F2972071F00A6C0AD /* PedestrianDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE36080E2972071F00A6C0AD /* PedestrianDataStore.swift */; };
-		BE36081129720CCE00A6C0AD /* PesistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE36081029720CCE00A6C0AD /* PesistenceManager.swift */; };
+		BE36081129720CCE00A6C0AD /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE36081029720CCE00A6C0AD /* PersistenceManager.swift */; };
 		BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C22966597E00B67D8A /* InfoCell.swift */; };
 		BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707C42966738000B67D8A /* ReusableHeaderView.swift */; };
 		BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */; };
@@ -58,7 +58,7 @@
 		BE2D46042968D62300973B21 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		BE33E59429678EB400E1C77F /* UIViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPreview.swift; sourceTree = "<group>"; };
 		BE36080E2972071F00A6C0AD /* PedestrianDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedestrianDataStore.swift; sourceTree = "<group>"; };
-		BE36081029720CCE00A6C0AD /* PesistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PesistenceManager.swift; sourceTree = "<group>"; };
+		BE36081029720CCE00A6C0AD /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		BE3707C22966597E00B67D8A /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
 		BE3707C42966738000B67D8A /* ReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableHeaderView.swift; sourceTree = "<group>"; };
 		BE3707CA2966B2C400B67D8A /* OpenSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSettingsScreen.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 		BE15AF4D29621684007D4D23 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				BE36081029720CCE00A6C0AD /* PesistenceManager.swift */,
+				BE36081029720CCE00A6C0AD /* PersistenceManager.swift */,
 				BE15AF4E2962168D007D4D23 /* PedometerManager.swift */,
 			);
 			path = Managers;
@@ -354,7 +354,7 @@
 				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
 				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
 				BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */,
-				BE36081129720CCE00A6C0AD /* PesistenceManager.swift in Sources */,
+				BE36081129720CCE00A6C0AD /* PersistenceManager.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSettingsScreen.swift in Sources */,

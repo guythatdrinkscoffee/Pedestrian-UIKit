@@ -287,7 +287,7 @@ private extension HomeScreen {
     }
     
     private func shouldSave(_ pedometerData: CMPedometerData) {
-        PesistenceManager.shared.save(pedometerData)
+        PersistenceManager.shared.save(pedometerData)
     }
     
     private func updatedFloorsAscended(_ value: NSNumber?) {

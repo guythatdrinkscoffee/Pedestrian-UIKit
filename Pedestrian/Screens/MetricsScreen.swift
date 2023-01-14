@@ -71,7 +71,7 @@ class MetricsScreen: UIViewController {
     
     private var feedbackGenerator: UIImpactFeedbackGenerator?
     
-    private var sections: [MetricsInfo]?
+    private var sections: [MetricsInfo] = []
     
     private var tintColor: UIColor = .systemTeal
         
@@ -333,6 +333,16 @@ private extension MetricsScreen {
     }
     
     private func aggregateData(_ data: [CMPedometerData]) {
+       
+        sections = [
+            aggregateCurrentData(data),
+            aggregateLifeTimeData()
+        ]
+        
+        metricsCollectionView.reloadData()
+    }
+    
+    private func aggregateCurrentData(_ data: [CMPedometerData]) -> MetricsInfo {
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
@@ -341,30 +351,57 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
-        var title: String
         
-        if data.count == 1 {
-            let dateString = data.first?.endDate
-                .formatted(
-                    .dateTime
-                    .month(.abbreviated)
-                    .weekday(.wide)
-                    .day(.twoDigits)) ?? "Today"
-            title = "Totals for \(dateString)"
-        } else {
-            title = "Totals for last 7 days"
-        }
+        let weeklyData = MetricsInfo(title: "Last 7 Days", data: [
+            .init(description: "Step Count", value: steps.formatted(.number)),
+            .init(description: "Distance Traveled", value: distanceString),
+            .init(description: "Floors Ascended", value: floorsAscended),
+            .init(description: "Floors Descended", value: floorsDescended)
+        ])
         
-        sections = [
-            .init(title: title, data: [
-                .init(description: "Step Count", value: steps.formatted(.number)),
+        return weeklyData
+    }
+    
+    private func aggregateForSelection(_ data: CMPedometerData) {
+        let dateString = data.endDate
+            .formatted(
+                .dateTime
+                .month(.abbreviated)
+                .weekday(.wide)
+                .day(.twoDigits))
+        
+        let distanceInLength = Measurement<UnitLength>(value: data.distance?.doubleValue ?? 0.0, unit: .meters).converted(to: .kilometers)
+        let distanceString = measurementFormatter?.string(from: distanceInLength)
+        
+        sections[0] = MetricsInfo(title: "Totals for \(dateString)", data: [
+            .init(description: "Step Count", value: data.numberOfSteps.intValue.formatted(.number)),
                 .init(description: "Distance Traveled", value: distanceString),
-                .init(description: "Floors Ascended", value: floorsAscended),
-                .init(description: "Floors Descended", value: floorsDescended)
-            ]),
-        ]
+                .init(description: "Floors Ascended", value: data.floorsAscended),
+                .init(description: "Floors Descended", value: data.floorsDescended)
+            ])
         
-        metricsCollectionView.reloadData()
+        metricsCollectionView.reloadSections(IndexSet(integer: 0))
+    }
+    
+    private func aggregateLifeTimeData() -> MetricsInfo {
+        let allEntries = PersistenceManager.shared.getAll()
+        let totalSteps = allEntries.reduce(0, {$0 + $1.numberOfSteps})
+        let totalDistanceInMeters = allEntries.reduce(0.0, {$0 + $1.distanceInMeters})
+        
+        let distanceInLength = Measurement<UnitLength>(value: totalDistanceInMeters, unit: .meters).converted(to: .kilometers)
+        let distanceString = measurementFormatter?.string(from: distanceInLength)
+        
+        let lifetimeSection = MetricsInfo(title: "Lifetime Totals", data: [
+            .init(icon: .crown, description: "Step Count", value: totalSteps.formatted(.number)),
+            .init(icon: .walking, description: "Distance Traveled", value: distanceString)
+        ])
+        
+        return lifetimeSection
+    }
+    
+    private func resetSelection() {
+        sections[0] = aggregateCurrentData(self.data)
+        metricsCollectionView.reloadSections(IndexSet(integer: 0))
     }
 }
 
@@ -372,12 +409,12 @@ private extension MetricsScreen {
 extension MetricsScreen: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         if let pedometerData = entry.data as? CMPedometerData {
-            aggregateData([pedometerData])
+            aggregateForSelection(pedometerData)
         }
     }
     
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        aggregateData(data)
+        resetSelection()
     }
 }
 
@@ -403,19 +440,18 @@ class XAxisChartFormatter: IndexAxisValueFormatter {
 // MARK: - UICollectionViewDataSource
 extension MetricsScreen: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        guard let sections = sections else { return 0 }
+//        guard let sections = sections else { return 0 }
         return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let sections = sections else { return 0 }
+//        guard let sections = sections else { return 0 }
         
         return sections[section].data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCell.resuseIdentifier, for: indexPath) as? InfoCell,
-              let sections = sections else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCell.resuseIdentifier, for: indexPath) as? InfoCell else {
             fatalError("failed to dequeue a resuable cell")
         }
         
@@ -433,7 +469,7 @@ extension MetricsScreen: UICollectionViewDataSource {
                 return header
             }
             
-            let sectionTitle = sections?[indexPath.section].title
+            let sectionTitle = sections[indexPath.section].title
             titledHeader.configure(with: sectionTitle)
             
             return titledHeader

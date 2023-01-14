@@ -91,6 +91,13 @@ class InfoCell: UICollectionViewCell {
         
         layoutContentViews()
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        bodyLabel.text = nil
+        detailLabel.text = nil
+    }
 }
 
 // MARK: - Configuration

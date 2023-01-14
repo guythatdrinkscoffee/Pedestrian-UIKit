@@ -9,9 +9,9 @@ import Foundation
 import CoreMotion
 import CoreData
 
-final class PesistenceManager {
+final class PersistenceManager {
     // MARK: - Public Instance
-    static let shared = PesistenceManager()
+    static let shared = PersistenceManager()
     
     // MARK: - Private Properties
     private var dataStore: PedestrianDataStore
@@ -30,8 +30,14 @@ final class PesistenceManager {
             entry.startDate = pedometerData.startDate
             entry.endDate = pedometerData.endDate
             entry.numberOfSteps = pedometerData.numberOfSteps.int16Value
+            entry.distanceInMeters = pedometerData.distance?.doubleValue ?? 0.0
             entry.goalReached = pedometerData.numberOfSteps.intValue >= 4000
         }
+    }
+    
+    public func getAll() -> [PedestrianDay] {
+        let allEntries: [PedestrianDay] = PedestrianDay.getAll(in: dataStore.managedContext)
+        return allEntries
     }
     
     public  func saveChanges() {
