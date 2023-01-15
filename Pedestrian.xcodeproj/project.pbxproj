@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3F7FB10143D599B96D3EBD98 /* Pods_Pedestrian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13AB8EB51DB96636F7334C80 /* Pods_Pedestrian.framework */; };
-		BE09198D296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE09198C296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift */; };
 		BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF36296134C8007D4D23 /* AppDelegate.swift */; };
 		BE15AF39296134C8007D4D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF38296134C8007D4D23 /* SceneDelegate.swift */; };
 		BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF3A296134C8007D4D23 /* HomeScreen.swift */; };
@@ -41,7 +40,6 @@
 		13AB8EB51DB96636F7334C80 /* Pods_Pedestrian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pedestrian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DE967FCDA1F8A35AEEDD0FD /* Pods-Pedestrian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.debug.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.debug.xcconfig"; sourceTree = "<group>"; };
 		9C9E5627531AB7894F7C1EBF /* Pods-Pedestrian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pedestrian.release.xcconfig"; path = "Target Support Files/Pods-Pedestrian/Pods-Pedestrian.release.xcconfig"; sourceTree = "<group>"; };
-		BE09198C296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+Ext.swift"; sourceTree = "<group>"; };
 		BE15AF33296134C8007D4D23 /* Pedestrian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pedestrian.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE15AF36296134C8007D4D23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE15AF38296134C8007D4D23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 			children = (
 				BE2D46042968D62300973B21 /* String+Ext.swift */,
 				BEED7E44296D32850077DA71 /* UIImage+Ext.swift */,
-				BE09198C296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -369,7 +366,6 @@
 				BE28523A297214A8004201EE /* PedestrianDay+CoreDataClass.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
 				BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */,
-				BE09198D296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift in Sources */,
 				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
