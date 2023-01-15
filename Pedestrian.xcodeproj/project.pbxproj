@@ -29,6 +29,8 @@
 		BE3707CB2966B2C400B67D8A /* OpenSystemSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CA2966B2C400B67D8A /* OpenSystemSettingsScreen.swift */; };
 		BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */; };
 		BE39EF6C2971F6E600999697 /* Pedestrian.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE39EF6A2971F6E600999697 /* Pedestrian.xcdatamodeld */; };
+		BE3CEEF52973ADAD005B78ED /* MetricsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3CEEF42973ADAD005B78ED /* MetricsSection.swift */; };
+		BE3CEEF72973ADCF005B78ED /* MetricsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3CEEF62973ADCF005B78ED /* MetricsData.swift */; };
 		BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55766E296A06A100A0A927 /* ConfettiView.swift */; };
 		BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED6A802297342D6004142EC /* SettingsScreen.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
@@ -63,6 +65,8 @@
 		BE3707CA2966B2C400B67D8A /* OpenSystemSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSystemSettingsScreen.swift; sourceTree = "<group>"; };
 		BE3707CC2966B74F00B67D8A /* LoadingStatusScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusScreen.swift; sourceTree = "<group>"; };
 		BE39EF6B2971F6E600999697 /* Pedestrian.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pedestrian.xcdatamodel; sourceTree = "<group>"; };
+		BE3CEEF42973ADAD005B78ED /* MetricsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsSection.swift; sourceTree = "<group>"; };
+		BE3CEEF62973ADCF005B78ED /* MetricsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsData.swift; sourceTree = "<group>"; };
 		BE55766E296A06A100A0A927 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		BED6A802297342D6004142EC /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 		BE15AF35296134C8007D4D23 /* Pedestrian */ = {
 			isa = PBXGroup;
 			children = (
+				BE3CEEF22973AB3A005B78ED /* Data */,
 				BE39EF662971F66400999697 /* Coredata */,
 				BE2D46032968D61900973B21 /* Extensions */,
 				BEED0E03296245FF00C6656D /* Helpers */,
@@ -211,6 +216,23 @@
 				BE36080E2972071F00A6C0AD /* PedestrianDataStore.swift */,
 			);
 			path = Coredata;
+			sourceTree = "<group>";
+		};
+		BE3CEEF22973AB3A005B78ED /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BE3CEEF32973ADA4005B78ED /* Metrics */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		BE3CEEF32973ADA4005B78ED /* Metrics */ = {
+			isa = PBXGroup;
+			children = (
+				BE3CEEF42973ADAD005B78ED /* MetricsSection.swift */,
+				BE3CEEF62973ADCF005B78ED /* MetricsData.swift */,
+			);
+			path = Metrics;
 			sourceTree = "<group>";
 		};
 		BEED0E03296245FF00C6656D /* Helpers */ = {
@@ -346,6 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */,
+				BE3CEEF72973ADCF005B78ED /* MetricsData.swift in Sources */,
 				BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */,
@@ -368,6 +391,7 @@
 				BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */,
 				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
+				BE3CEEF52973ADAD005B78ED /* MetricsSection.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

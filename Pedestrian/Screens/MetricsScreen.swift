@@ -73,7 +73,7 @@ class MetricsScreen: UIViewController {
     
     private var feedbackGenerator: UIImpactFeedbackGenerator?
     
-    private var sections: [MetricsInfo] = []
+    private var sections: [MetricsSection] = []
     
     private var tintColor: UIColor = .systemTeal
         
@@ -351,7 +351,7 @@ private extension MetricsScreen {
         metricsCollectionView.reloadData()
     }
     
-    private func aggregateCurrentData(_ data: [CMPedometerData]) -> MetricsInfo {
+    private func aggregateCurrentData(_ data: [CMPedometerData]) -> MetricsSection {
         let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
         let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
         let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
@@ -361,7 +361,7 @@ private extension MetricsScreen {
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
         
-        let weeklyData = MetricsInfo(title: "Last 7 Days", data: [
+        let weeklyData = MetricsSection(title: "Last 7 Days", data: [
             .init(description: "Step Count", value: steps.formatted(.number)),
             .init(description: "Distance Traveled", value: distanceString),
             .init(description: "Floors Ascended", value: floorsAscended),
@@ -382,7 +382,7 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: data.distance?.doubleValue ?? 0.0, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
-        sections[0] = MetricsInfo(title: dateString, data: [
+        sections[0] = MetricsSection(title: dateString, data: [
             .init(description: "Step Count", value: data.numberOfSteps.intValue.formatted(.number)),
                 .init(description: "Distance Traveled", value: distanceString),
                 .init(description: "Floors Ascended", value: data.floorsAscended),
@@ -392,7 +392,7 @@ private extension MetricsScreen {
         metricsCollectionView.reloadSections(IndexSet(integer: 0))
     }
     
-    private func aggregateLifeTimeData() -> MetricsInfo {
+    private func aggregateLifeTimeData() -> MetricsSection {
         let allEntries = PersistenceManager.shared.getAll()
         let totalSteps = allEntries.reduce(0, {$0 + $1.numberOfSteps})
         let totalDistanceInMeters = allEntries.reduce(0.0, {$0 + $1.distanceInMeters})
@@ -400,9 +400,9 @@ private extension MetricsScreen {
         let distanceInLength = Measurement<UnitLength>(value: totalDistanceInMeters, unit: .meters).converted(to: .kilometers)
         let distanceString = measurementFormatter?.string(from: distanceInLength)
         
-        let lifetimeSection = MetricsInfo(title: "Lifetime Totals", data: [
-            .init(icon: .crown, description: "Step Count", value: totalSteps.formatted(.number)),
-            .init(icon: .walking, description: "Distance Traveled", value: distanceString)
+        let lifetimeSection = MetricsSection(title: "Lifetime Totals", data: [
+            .init(icon: .crown, description: "Step Count", value: totalSteps.formatted(.number), color: .systemTeal),
+            .init(icon: .walking, description: "Distance Traveled", value: distanceString, color: .systemTeal)
         ])
         
         if let firstStepDay = allEntries.first?.startDate {

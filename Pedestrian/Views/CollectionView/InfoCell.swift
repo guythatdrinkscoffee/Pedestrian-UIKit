@@ -7,23 +7,6 @@
 
 import UIKit
 
-struct MetricsData {
-    let icon: UIImage?
-    let description: String?
-    let value: Any?
-    
-    init(icon: UIImage? = nil, description: String?, value: Any?) {
-        self.icon = icon
-        self.description = description
-        self.value = value
-    }
-}
-
-struct MetricsInfo {
-    let title: String
-    let data: [MetricsData]
-}
-
 class InfoCell: UICollectionViewCell {
     // MARK: -  Properties
     static let resuseIdentifier = String(describing: InfoCell.self)
@@ -119,6 +102,7 @@ extension InfoCell {
         }
         
         iconImageView.image = data.icon
+        iconImageView.tintColor = data.color
         detailLabel.text = data.description
     }
 }
