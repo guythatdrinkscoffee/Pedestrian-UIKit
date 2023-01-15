@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         pedometerManager = PedometerManager()
         
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont.rounded(ofSize: 32, weight: .bold)]
         
         return true
     }

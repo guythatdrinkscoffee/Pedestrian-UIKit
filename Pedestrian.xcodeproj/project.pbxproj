@@ -18,7 +18,6 @@
 		BE15AF5229622F38007D4D23 /* StepProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5129622F38007D4D23 /* StepProgressView.swift */; };
 		BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5529623EB3007D4D23 /* InfoSection.swift */; };
 		BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15AF5729624110007D4D23 /* InfoRow.swift */; };
-		BE24654D296E663100CF6EA5 /* UIFont+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */; };
 		BE28523A297214A8004201EE /* PedestrianDay+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE285238297214A8004201EE /* PedestrianDay+CoreDataClass.swift */; };
 		BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE285239297214A8004201EE /* PedestrianDay+CoreDataProperties.swift */; };
 		BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE28523C2972662D004201EE /* ReusableFooterView.swift */; };
@@ -54,7 +53,6 @@
 		BE15AF5129622F38007D4D23 /* StepProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepProgressView.swift; sourceTree = "<group>"; };
 		BE15AF5529623EB3007D4D23 /* InfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSection.swift; sourceTree = "<group>"; };
 		BE15AF5729624110007D4D23 /* InfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRow.swift; sourceTree = "<group>"; };
-		BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIFont+Ext.swift"; path = "../../../BaseWeight/BaseWeight/Utils/Extensions/UIFont+Ext.swift"; sourceTree = "<group>"; };
 		BE285238297214A8004201EE /* PedestrianDay+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PedestrianDay+CoreDataClass.swift"; path = "Pedestrian/Coredata/PedestrianDay+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BE285239297214A8004201EE /* PedestrianDay+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PedestrianDay+CoreDataProperties.swift"; path = "Pedestrian/Coredata/PedestrianDay+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BE28523C2972662D004201EE /* ReusableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableFooterView.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 		BE2D46032968D61900973B21 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BE24654C296E663100CF6EA5 /* UIFont+Ext.swift */,
 				BE2D46042968D62300973B21 /* String+Ext.swift */,
 				BEED7E44296D32850077DA71 /* UIImage+Ext.swift */,
 				BE09198C296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift */,
@@ -374,7 +371,6 @@
 				BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */,
 				BE09198D296FC22300E1CE13 /* UICollectionViewLayout+Ext.swift in Sources */,
 				BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */,
-				BE24654D296E663100CF6EA5 /* UIFont+Ext.swift in Sources */,
 				BE3707C32966597E00B67D8A /* InfoCell.swift in Sources */,
 				BE3707CD2966B74F00B67D8A /* LoadingStatusScreen.swift in Sources */,
 			);
