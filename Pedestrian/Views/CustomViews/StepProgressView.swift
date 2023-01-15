@@ -187,7 +187,6 @@ class StepProgressView: UIView {
     // MARK: - Public Methods
     public func updateValue(_ value: Int){
         let progressValue: CGFloat = CGFloat(value)
-        print(progressValue)
         updateProgress(progressValue)
     }
     

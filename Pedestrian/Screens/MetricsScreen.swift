@@ -65,7 +65,7 @@ class MetricsScreen: UIViewController {
         return formatter
     }()
     
-    private var lifetimeStartDate: Date?
+    private var lifetimeStartDate: Date = .now
     
     private var animationDuration: TimeInterval = 0.6
     
@@ -146,7 +146,7 @@ class MetricsScreen: UIViewController {
         // chart x-axis
         let xAxis = chart.xAxis
         xAxis.labelPosition = .bottom
-        xAxis.labelFont = .systemFont(ofSize: 10, weight: .semibold)
+        xAxis.labelFont = .systemFont(ofSize: 12, weight: .semibold)
         xAxis.drawGridLinesEnabled = false
         
         let legend = chart.legend
@@ -162,7 +162,7 @@ class MetricsScreen: UIViewController {
     
     private lazy var metricsCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10 / 2, left: 10, bottom: 10 / 2, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 15, right: 10)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -250,7 +250,9 @@ private extension MetricsScreen {
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
-        // Show the settings screen
+        let settingsScreen = SettingsScreen()
+        let navigationContainer = UINavigationController(rootViewController: settingsScreen)
+        present(navigationContainer, animated: true)
     }
     
     @objc func handleDragGesture(_ recognizer: UIPanGestureRecognizer) {
@@ -403,7 +405,9 @@ private extension MetricsScreen {
             .init(icon: .walking, description: "Distance Traveled", value: distanceString)
         ])
         
-        lifetimeStartDate = allEntries.first?.startDate
+        if let firstStepDay = allEntries.first?.startDate {
+            self.lifetimeStartDate = firstStepDay
+        }
         
         return lifetimeSection
     }
@@ -485,13 +489,14 @@ extension MetricsScreen: UICollectionViewDataSource {
             }
             
             if indexPath.section == 1 {
-                let title = lifetimeStartDate?
+                let title = lifetimeStartDate
                     .formatted(
                         .dateTime
-                        .month(.abbreviated)
-                        .weekday(.wide)
-                        .day(.twoDigits)) ?? "Now"
-                
+                        .month()
+                        .weekday()
+                        .day()
+                        .year())
+
                 titledFooter.configure(with: "Since \(title)")
             }
             

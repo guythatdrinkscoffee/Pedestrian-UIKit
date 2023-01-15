@@ -81,7 +81,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case .restricted:
             return UIViewController()
         case .denied:
-            return OpenSettingsScreen()
+            return OpenSystemSettingsScreen()
         case .authorized:
             return HomeScreen(pedometerManager: manager)
         @unknown default:
@@ -91,7 +91,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager) {
         if status == .denied {
-            self.window?.rootViewController = OpenSettingsScreen()
+            self.window?.rootViewController = OpenSystemSettingsScreen()
         } else if status == .authorized {
             let homeScreen = HomeScreen(pedometerManager: manager)
             self.window?.rootViewController = homeScreen

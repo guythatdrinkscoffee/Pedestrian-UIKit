@@ -7,12 +7,12 @@
 
 import UIKit
 
-class OpenSettingsScreen: UIViewController {
+class OpenSystemSettingsScreen: UIViewController {
     
     // MARK: - UI
     private lazy var settingsLabel : UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = .preferredFont(forTextStyle: .title1)
         label.text = "Enable Motion & Fitness"
         return label
     }()
