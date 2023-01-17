@@ -13,6 +13,8 @@ class HomeScreen: UIViewController {
     // MARK: - Private Properties
     private var pedometerManager: PedometerManager?
     
+    private var settingsManager: SettingsManager?
+    
     private var cancellables = Set<AnyCancellable>()
     
     private var stepDataCancellable: AnyCancellable?
@@ -127,8 +129,9 @@ class HomeScreen: UIViewController {
     }()
     
     // MARK: - Life cycle
-    init(pedometerManager: PedometerManager){
+    init(pedometerManager: PedometerManager, settingsManager: SettingsManager){
         self.pedometerManager = pedometerManager
+        self.settingsManager = settingsManager
         super.init(nibName: nil, bundle: nil)
     }
     

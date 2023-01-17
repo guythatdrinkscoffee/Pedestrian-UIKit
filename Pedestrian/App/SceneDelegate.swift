@@ -17,7 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene),
-               let pedometerManager = (UIApplication.shared.delegate as? AppDelegate)?.pedometerManager
+               let pedometerManager = (UIApplication.shared.delegate as? AppDelegate)?.pedometerManager,
+              let settingsManager = (UIApplication.shared.delegate as? AppDelegate)?.settingsManager
         else {
             return
         }
@@ -29,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = scene
         
         // assign the root view controller
-        let rootViewController =  determineRootViewController(for: pedometerManager.determineAuthorizationStatus(), with: pedometerManager)
+        let rootViewController =  determineRootViewController(for: pedometerManager.determineAuthorizationStatus(), with: pedometerManager, with: settingsManager)
         window?.rootViewController = rootViewController
         
         // make the window visible
@@ -73,35 +74,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    func determineRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager) -> UIViewController {
+    func determineRootViewController(
+        for status: CMAuthorizationStatus,
+        with pedometerManager: PedometerManager,
+        with settingsManager: SettingsManager) -> UIViewController {
         switch status {
         case .notDetermined:
-            makeAuthorizationRequest(with: manager)
+            makeAuthorizationRequest(with: pedometerManager, settings: settingsManager)
             return LoadingStatusScreen()
         case .restricted:
             return UIViewController()
         case .denied:
             return OpenSystemSettingsScreen()
         case .authorized:
-            return HomeScreen(pedometerManager: manager)
+            return HomeScreen(pedometerManager: pedometerManager, settingsManager: settingsManager)
         @unknown default:
             fatalError("failed to make a root view controller")
         }
     }
     
-    func makeRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager) {
+    func makeRootViewController(for status: CMAuthorizationStatus, with manager: PedometerManager, with settings: SettingsManager) {
         if status == .denied {
             self.window?.rootViewController = OpenSystemSettingsScreen()
         } else if status == .authorized {
-            let homeScreen = HomeScreen(pedometerManager: manager)
+            let homeScreen = HomeScreen(pedometerManager: manager, settingsManager: settings)
             self.window?.rootViewController = homeScreen
         }
     }
     
-    func makeAuthorizationRequest(with manager: PedometerManager){
+    func makeAuthorizationRequest(with manager: PedometerManager, settings: SettingsManager){
         manager.makeAuthorizationRequest {
             DispatchQueue.main.async {
-                self.makeRootViewController(for: manager.determineAuthorizationStatus(), with: manager)
+                self.makeRootViewController(for: manager.determineAuthorizationStatus(), with: manager, with: settings)
                 return
             }
         }

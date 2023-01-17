@@ -12,11 +12,12 @@ import Combine
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var pedometerManager: PedometerManager!
+    var settingsManager: SettingsManager!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         pedometerManager = PedometerManager()
-        
+        settingsManager = SettingsManager()
         
         return true
     }
