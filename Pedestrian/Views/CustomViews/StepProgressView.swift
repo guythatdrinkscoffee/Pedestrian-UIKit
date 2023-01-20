@@ -153,8 +153,7 @@ class StepProgressView: UIView {
         
         setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressLayer)
         
-        
-        self.stepCountLabel.text = Int(value).formatted(.number)
+        self.stepCountLabel.text = value == -1 ? Int(0).formatted(.number) : Int(value).formatted(.number)
         self.currentValue = value
         self.didReachMax(value: value)
     }
