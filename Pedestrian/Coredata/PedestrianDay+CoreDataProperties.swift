@@ -20,7 +20,7 @@ extension PedestrianDay {
     @NSManaged public var endDate: Date?
     @NSManaged public var goalReached: Bool
     @NSManaged public var identifier: UUID?
-    @NSManaged public var numberOfSteps: Int16
+    @NSManaged public var numberOfSteps: Int32
     @NSManaged public var startDate: Date?
 
 }

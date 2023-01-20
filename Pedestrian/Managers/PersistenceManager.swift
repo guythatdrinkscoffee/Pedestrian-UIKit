@@ -29,7 +29,7 @@ final class PersistenceManager {
             // The pedometerData object has not yet been saved
             entry.startDate = pedometerData.startDate
             entry.endDate = pedometerData.endDate
-            entry.numberOfSteps = pedometerData.numberOfSteps.int16Value
+            entry.numberOfSteps = pedometerData.numberOfSteps.int32Value
             entry.distanceInMeters = pedometerData.distance?.doubleValue ?? 0.0
             entry.goalReached = pedometerData.numberOfSteps.intValue >= 4000
         }
