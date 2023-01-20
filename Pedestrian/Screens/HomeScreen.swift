@@ -262,7 +262,7 @@ private extension HomeScreen {
         self.updateStepProgress(pedometerData)
         self.updatedFloorsAscended(pedometerData.floorsAscended)
         self.updateDistanceTraveled(pedometerData.distance)
-        self.updatedFloorsAscended(pedometerData.floorsDescended)
+        self.updateFloorsDescended(pedometerData.floorsDescended)
     }
     
     private func updateForLastSevenDays() {

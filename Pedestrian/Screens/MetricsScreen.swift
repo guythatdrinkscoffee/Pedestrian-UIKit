@@ -80,7 +80,6 @@ class MetricsScreen: UIViewController {
     private var data: [CMPedometerData] = [] {
         didSet {
             updateData(data)
-            aggregateData(data)
         }
     }
     // MARK: - UI
@@ -160,21 +159,6 @@ class MetricsScreen: UIViewController {
         return chart
     }()
     
-    private lazy var metricsCollectionView : UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 15, right: 10)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.isScrollEnabled = false
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.resuseIdentifier)
-        collectionView.register(ReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableHeaderView.reuseIdentifier)
-        collectionView.register(ReusableFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ReusableFooterView.reuseIdentifier)
-        return collectionView
-    }()
-    
     private lazy var panGesture : UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture(_:)))
         return gesture
@@ -213,7 +197,6 @@ private extension MetricsScreen {
         view.addSubview(dragIndicator)
         view.addSubview(settingsButton)
         view.addSubview(barChart)
-        view.addSubview(metricsCollectionView)
         view.addGestureRecognizer(panGesture)
         
         NSLayoutConstraint.activate([
@@ -229,11 +212,6 @@ private extension MetricsScreen {
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight),
-            
-            metricsCollectionView.topAnchor.constraint(equalTo: barChart.bottomAnchor, constant: safeAreaBottomHeight),
-            metricsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            metricsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            metricsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -safeAreaBottomHeight)
         ])
     }
 }
@@ -340,94 +318,16 @@ private extension MetricsScreen {
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
     }
-    
-    private func aggregateData(_ data: [CMPedometerData]) {
-       
-        sections = [
-            aggregateCurrentData(data),
-            aggregateLifeTimeData()
-        ]
-        
-        metricsCollectionView.reloadData()
-    }
-    
-    private func aggregateCurrentData(_ data: [CMPedometerData]) -> MetricsSection {
-        let steps = data.reduce(0, {$0 + $1.numberOfSteps.intValue })
-        let distance = data.reduce(0.0, {$0 + ($1.distance?.doubleValue ?? 0.0) })
-        let floorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)})
-        let floorsDescended = data.reduce(0, {$0 + ($1.floorsDescended?.intValue ?? 0)})
-        
-        let distanceInLength = Measurement<UnitLength>(value: distance, unit: .meters).converted(to: .kilometers)
-        let distanceString = measurementFormatter?.string(from: distanceInLength)
-        
-        
-        let weeklyData = MetricsSection(title: "Last 7 Days", data: [
-            .init(description: "Step Count", value: steps.formatted(.number)),
-            .init(description: "Distance Traveled", value: distanceString),
-            .init(description: "Floors Ascended", value: floorsAscended),
-            .init(description: "Floors Descended", value: floorsDescended)
-        ])
-        
-        return weeklyData
-    }
-    
-    private func aggregateForSelection(_ data: CMPedometerData) {
-        let dateString = data.endDate
-            .formatted(
-                .dateTime
-                .month(.abbreviated)
-                .weekday(.wide)
-                .day(.twoDigits))
-        
-        let distanceInLength = Measurement<UnitLength>(value: data.distance?.doubleValue ?? 0.0, unit: .meters).converted(to: .kilometers)
-        let distanceString = measurementFormatter?.string(from: distanceInLength)
-        
-        sections[0] = MetricsSection(title: dateString, data: [
-            .init(description: "Step Count", value: data.numberOfSteps.intValue.formatted(.number)),
-                .init(description: "Distance Traveled", value: distanceString),
-                .init(description: "Floors Ascended", value: data.floorsAscended),
-                .init(description: "Floors Descended", value: data.floorsDescended)
-            ])
-        
-        metricsCollectionView.reloadSections(IndexSet(integer: 0))
-    }
-    
-    private func aggregateLifeTimeData() -> MetricsSection {
-        let allEntries = PersistenceManager.shared.getAll()
-        let totalSteps = allEntries.reduce(0, {$0 + $1.numberOfSteps})
-        let totalDistanceInMeters = allEntries.reduce(0.0, {$0 + $1.distanceInMeters})
-        
-        let distanceInLength = Measurement<UnitLength>(value: totalDistanceInMeters, unit: .meters).converted(to: .kilometers)
-        let distanceString = measurementFormatter?.string(from: distanceInLength)
-        
-        let lifetimeSection = MetricsSection(title: "Lifetime Totals", data: [
-            .init(icon: .crown, description: "Step Count", value: totalSteps.formatted(.number), color: .systemTeal),
-            .init(icon: .walking, description: "Distance Traveled", value: distanceString, color: .systemTeal)
-        ])
-        
-        if let firstStepDay = allEntries.first?.startDate {
-            self.lifetimeStartDate = firstStepDay
-        }
-        
-        return lifetimeSection
-    }
-    
-    private func resetSelection() {
-        sections[0] = aggregateCurrentData(self.data)
-        metricsCollectionView.reloadSections(IndexSet(integer: 0))
-    }
 }
 
 // MARK: - ChartView Delegate
 extension MetricsScreen: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        if let pedometerData = entry.data as? CMPedometerData {
-            aggregateForSelection(pedometerData)
-        }
+       
     }
     
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        resetSelection()
+        
     }
 }
 
@@ -447,89 +347,5 @@ class XAxisChartFormatter: IndexAxisValueFormatter {
         
         let date = Date(timeIntervalSince1970: intervals[Int(value)])
         return dateFormatter.string(from: date)
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension MetricsScreen: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sections[section].data.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCell.resuseIdentifier, for: indexPath) as? InfoCell else {
-            fatalError("failed to dequeue a resuable cell")
-        }
-        
-        let dataPoint = sections[indexPath.section].data[indexPath.row]
-        cell.data = dataPoint
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableHeaderView.reuseIdentifier, for: indexPath)
-            
-            guard let titledHeader = header as? ReusableHeaderView else {
-                return header
-            }
-            let title = sections[indexPath.section].title
-            titledHeader.configure(with: title)
-            return titledHeader
-        case UICollectionView.elementKindSectionFooter :
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableFooterView.reuseIdentifier, for: indexPath)
-            
-            guard let titledFooter = footer as? ReusableFooterView else {
-                return footer
-            }
-            
-            if indexPath.section == 1 {
-                let title = lifetimeStartDate
-                    .formatted(
-                        .dateTime
-                        .month()
-                        .weekday()
-                        .day()
-                        .year())
-
-                titledFooter.configure(with: "Since \(title)")
-            }
-            
-            return titledFooter
-        default:
-            fatalError("reusable header of \(kind) is not yet supported")
-        }
-    }
-    
-    
-}
-
-// MARK: - UICollectionView Delegate
-extension MetricsScreen: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        return section == 0 ? .zero : CGSize(width: view.frame.width, height: 30)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.height, height: 30)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalWidth = view.bounds.width
-        let padding: CGFloat = 10
-        let itemSpacing: CGFloat = 10
-        
-        let availableWidth = totalWidth - (padding * 2) - (itemSpacing)
-        
-        let itemWidth = availableWidth / 2
-        
-        return  CGSize(width: itemWidth, height: 80)
     }
 }
