@@ -15,9 +15,12 @@ extension UIImage {
     static let crown = UIImage(systemName: "crown.fill")
     static let walking = UIImage(systemName: "figure.walk",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     static let flag = UIImage(systemName: "flag.filled.and.flag.crossed", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    
-    // Settings
     static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let settingsUnits =   UIImage(systemName: "ruler", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let settingsGoal =   UIImage(systemName: "figure.walk", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    
+    
+    // settings
+    static let general = UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let twitter = UIImage(systemName: "at", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let mail = UIImage(systemName: "paperclip", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let hand = UIImage(systemName: "hand.raised.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
 }
