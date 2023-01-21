@@ -12,6 +12,7 @@ import MessageUI
 class SettingsScreen: UIViewController {
     // MARK: - Properties
     private var feedbackImpactGenerator: UIImpactFeedbackGenerator?
+    private var sections: [SettingsSection] = [ ]
     
     // MARK: - UI
     private var settingsController: SettingsController!
@@ -24,6 +25,14 @@ class SettingsScreen: UIViewController {
         configureViewController()
         configureNavigationBar()
         configureSettingsController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if settingsController != nil {
+            settingsController.updateSections(configureSections())
+        }
     }
 }
 
@@ -51,45 +60,67 @@ private extension SettingsScreen {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    private func configureGeneralGroup() -> SettingsSection {
+        let steps = SettingsStepper(title: "Daily Step Goal", minimum: 100, maximum: 100_000, key: .dailyStepGoal)
+        
+        let distance = SettingsSelection(title: "Distance Units", selection: DistanceUnits(rawValue: UserDefaults.standard.integer(forKey: .distanceUnits)) ?? .miles, data: DistanceUnits.allCases, key: .distanceUnits)
+        
+        
+        
+        let generalGroup = SettingsGroup(icon: .general, title: "General", options: [
+            .init(title: "Steps", settings: [steps]),
+            .init(title: "Display", settings: [distance])
+        ])
+        
+        return .init(title: "General", settings: [ generalGroup ])
+    }
+    
+    private func configureContactGroup() -> SettingsSection {
+        return .init(title: "Get in tourch", settings: [
+            SettingsAction(icon: .twitter, title: "Follow on Twitter", options: [], {
+                self.openUrl(.twitterHandler)
+            }),
+            SettingsAction(icon: .feedback, title: "Send Feedback", options: [], {
+                self.sendFeedback()
+            })
+        ])
+    }
+    
+    private func configurePrivacyGroup() -> SettingsSection {
+        return .init(title: "Privacy", settings: [
+            SettingsAction(icon: .privacy, title: "Privacy Policy", options: [], {
+                self.openUrl(.privacyPolicy)
+            })
+        ])
+    }
+    
+    private func configureSections() -> [SettingsSection] {
+        return [
+            configureGeneralGroup(),
+            configureContactGroup(),
+            configurePrivacyGroup()
+        ]
+    }
+    
     private func configureSettingsController() {
-        let generalSection = SettingsSection(title: "General", settings: [
-            SettingsGroup(
-                icon: .general,
-                title: "General",
-                options: [
-                    SettingsSection(title: "Steps", settings: [
-                        SettingsStepper(title: "Daily Step Goal",minimum: 100, maximum: 150_000,key: .dailyStepGoal)
-                    ])
-                ])
-        ])
-        
-        let aboutSection = SettingsSection(title: "About", settings: [
-            SettingsAction(icon: .twitter, title: "Follow on Twitter", { self.openUrl(.twitterHandler) }),
-            SettingsAction(icon: .feedback, title: "Send Feedback", { self.sendFeedback() })
-        ])
-        
-        let privacySection = SettingsSection(title: "About", settings: [
-            SettingsAction(icon: .privacy, title: "Privacy Policy", { self.openUrl(.privacyPolicy) }),
-        ])
-        
-        settingsController = SettingsController(sections: [
-            generalSection,
-            aboutSection,
-            privacySection
-        ])
-        
+        self.sections = configureSections()
+        settingsController = SettingsController(sections: sections)
         add(settingsController, frame: view.frame)
     }
+    
 }
 
 // MARK: - Methods
-extension SettingsScreen: MFMailComposeViewControllerDelegate {
+extension SettingsScreen {
     private func openUrl(_ url: URL?) {
         if let url = url, UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
     }
-    
+}
+
+// MARK: - MFMailComposeViewControllerDelegate
+extension SettingsScreen: MFMailComposeViewControllerDelegate {
     private func sendFeedback() {
         let iosVerion = ProcessInfo.processInfo.operatingSystemVersionString
         let appVersion = Bundle.main.releaseVersionNumber ?? "1.0"
@@ -120,34 +151,7 @@ extension SettingsScreen: MFMailComposeViewControllerDelegate {
     }
 }
 
-// MARK: - Preview
-struct SettingsScreen_Preview: PreviewProvider {
-    static var previews: some View {
-        UIViewControllerPreview {
-            let generalSection = SettingsSection(title: "General", settings: [
-                SettingsGroup(icon: .general, title: "General", options: [])
-            ])
-            
-            let aboutSection = SettingsSection(title: "About", settings: [
-                SettingsAction(icon: .twitter, title: "Follow on Twitter", { }),
-                SettingsAction(icon: .feedback, title: "Send Feedback", { })
-            ])
-            
-            let privacySection = SettingsSection(title: "About", settings: [
-                SettingsAction(icon: .privacy, title: "Privacy Policy", { }),
-            ])
-            
-            let vc = SettingsController(sections: [
-                generalSection,
-                aboutSection,
-                privacySection
-            ])
-            
-            return vc
-        }
-    }
-}
-
+// MARK: - Bundle
 extension Bundle {
     var releaseVersionNumber: String? {
         return infoDictionary?["CFBundleShortVersionString"] as? String

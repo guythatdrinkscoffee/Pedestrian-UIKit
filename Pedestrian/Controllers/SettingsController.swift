@@ -9,7 +9,9 @@ import UIKit
 
 class SettingsController: UITableViewController {
     // MARK: - Properties
-    private var sections: [SettingsSection] = []
+    private  var sections: [SettingsSection] = []
+    
+    public var updateSelection: ((IndexPath, SettingsOption) -> Void)?
     
     // MARK: - Life cycle
     init(sections: [SettingsSection], style: UITableView.Style = .insetGrouped){
@@ -24,12 +26,10 @@ class SettingsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    public func updateSections(_ sections: [SettingsSection]) {
+        self.sections = sections
     }
 }
 
@@ -39,6 +39,7 @@ extension SettingsController {
         self.tableView.register(GroupCell.self, forCellReuseIdentifier: String(describing: GroupCell.self))
         self.tableView.register(ActionCell.self, forCellReuseIdentifier: String(describing: ActionCell.self))
         self.tableView.register(StepperCell.self, forCellReuseIdentifier: String(describing: StepperCell.self))
+        self.tableView.register(SelectionCell.self, forCellReuseIdentifier: String(describing: SelectionCell.self))
     }
 }
 
@@ -94,6 +95,14 @@ extension SettingsController {
             vc.navigationItem.largeTitleDisplayMode = .never
             vc.navigationItem.title = setting.title
             navigationController?.pushViewController(vc, animated: true)
+        } else if var selection = setting as? SettingsSelection {
+            let vc = SelectionController(selection: selection)
+            vc.navigationItem.title = selection.title
+            vc.updateSelecton = { newSelection in
+                selection.updateSelection(with: newSelection)
+                self.updateForSelection(at: indexPath, with: newSelection, for: selection)
+            }
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -101,7 +110,12 @@ extension SettingsController {
         let section = indexPath.section
         let row = indexPath.row
         let setting = sections[section].settings[row]
-        
         return setting.withRowHeight()
+    }
+    
+    func updateForSelection(at indexPath: IndexPath, with selection: any Selection, for setting: SettingsOption){
+        let cell = tableView.cellForRow(at: indexPath) as? SelectionCell
+        cell?.updateSetting(setting: setting)
+        sections[indexPath.section].settings[indexPath.row] = setting
     }
 }

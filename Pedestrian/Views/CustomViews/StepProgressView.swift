@@ -20,7 +20,7 @@ class StepProgressView: UIView {
         return  (-startPoint * 3)
     }
     
-    private var maxValue: CGFloat = 0.0
+    private var maxValue: CGFloat = 100_000.0
     
     private var currentValue: CGFloat = 0.0
     

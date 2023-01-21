@@ -9,6 +9,6 @@ import Foundation
 
 extension String {
     static let dailyStepGoal = "dailyStepGoal"
-    static let preferMetricUnits = "preferMetricUnits"
+    static let distanceUnits = "distanceUnits"
     static let defaultSettingsSet = "defaultSettingsSet"
 }

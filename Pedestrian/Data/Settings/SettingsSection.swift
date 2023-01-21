@@ -9,11 +9,15 @@ import Foundation
 
 public struct SettingsSection {
     let title: String
-    let settings: [SettingsOption]
+    var settings: [SettingsOption]
     
     init(title: String, settings: [SettingsOption]) {
         self.title = title
         self.settings = settings
+    }
+    
+    mutating func updateSetting(at index:Int, with setting: SettingsOption){
+        settings[index] = setting
     }
 }
 

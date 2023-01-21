@@ -50,6 +50,10 @@
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
 		BEED7E45296D32850077DA71 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED7E44296D32850077DA71 /* UIImage+Ext.swift */; };
+		BEFC168F297B86B7001708FD /* SettingsSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC168E297B86B7001708FD /* SettingsSelection.swift */; };
+		BEFC1691297B8808001708FD /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1690297B8808001708FD /* SelectionCell.swift */; };
+		BEFC1695297B8E55001708FD /* SelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1694297B8E55001708FD /* SelectionController.swift */; };
+		BEFC1697297B8EB2001708FD /* SelectionCaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +104,10 @@
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
 		BEED7E44296D32850077DA71 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		BEFC168E297B86B7001708FD /* SettingsSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSelection.swift; sourceTree = "<group>"; };
+		BEFC1690297B8808001708FD /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
+		BEFC1694297B8E55001708FD /* SelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionController.swift; sourceTree = "<group>"; };
+		BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCaseCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +295,7 @@
 				BEB6AEF0297A79B900C87BDA /* SettingsSection.swift */,
 				BEB6AEF7297B1A6C00C87BDA /* SettingsAction.swift */,
 				BEC148C7297B6A3500497498 /* SettingsStepper.swift */,
+				BEFC168E297B86B7001708FD /* SettingsSelection.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -295,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				BEB6AEFA297B1AFA00C87BDA /* SettingsController.swift */,
+				BEFC1694297B8E55001708FD /* SelectionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -305,6 +315,8 @@
 				BEB6AEFD297B1C7200C87BDA /* GroupCell.swift */,
 				BEC148C3297B2AFC00497498 /* ActionCell.swift */,
 				BEC148C9297B6B3200497498 /* StepperCell.swift */,
+				BEFC1690297B8808001708FD /* SelectionCell.swift */,
+				BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -443,14 +455,17 @@
 			files = (
 				BEB6AEF3297A7A2700C87BDA /* SettingsGroup.swift in Sources */,
 				BE15AF3B296134C8007D4D23 /* HomeScreen.swift in Sources */,
+				BEFC1691297B8808001708FD /* SelectionCell.swift in Sources */,
 				BE3CEEF72973ADCF005B78ED /* MetricsData.swift in Sources */,
 				BEC148C6297B325A00497498 /* URL+Ext.swift in Sources */,
+				BEFC1695297B8E55001708FD /* SelectionController.swift in Sources */,
 				BEB6AEFE297B1C7200C87BDA /* GroupCell.swift in Sources */,
 				BEB6AEF6297A7A7C00C87BDA /* SettingsIcon.swift in Sources */,
 				BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */,
 				BEC148CA297B6B3200497498 /* StepperCell.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */,
+				BEFC1697297B8EB2001708FD /* SelectionCaseCell.swift in Sources */,
 				BE39EF6C2971F6E600999697 /* Pedestrian.xcdatamodeld in Sources */,
 				BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
@@ -463,6 +478,7 @@
 				BE36081129720CCE00A6C0AD /* PersistenceManager.swift in Sources */,
 				BEB6AEF1297A79B900C87BDA /* SettingsSection.swift in Sources */,
 				BE15AF5629623EB3007D4D23 /* InfoSection.swift in Sources */,
+				BEFC168F297B86B7001708FD /* SettingsSelection.swift in Sources */,
 				BE55766F296A06A100A0A927 /* ConfettiView.swift in Sources */,
 				BE3707CB2966B2C400B67D8A /* OpenSystemSettingsScreen.swift in Sources */,
 				BE15AF5829624110007D4D23 /* InfoRow.swift in Sources */,

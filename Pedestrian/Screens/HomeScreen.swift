@@ -80,6 +80,13 @@ class HomeScreen: UIViewController {
     }
     
     private var showConfetti : Bool = true
+    
+    private var distanceUnits: DistanceUnits = .miles {
+        didSet {
+            updateDistanceTraveled(currentStepData?.distance)
+        }
+    }
+    
     // MARK: - UI
     public lazy var metricsViewController : MetricsScreen = {
         let controller = MetricsScreen()
@@ -259,6 +266,14 @@ private extension HomeScreen {
                 self.metricsViewController.setStepGoal(dailyStepGoal)
             })
             .store(in: &cancellables)
+        
+        settingsManager?
+            .distanceUnitsPublisher
+            .compactMap({$0})
+            .sink(receiveValue: { distanceUnits in
+                self.distanceUnits = distanceUnits
+            })
+            .store(in: &cancellables)
     }
     
     private func resetViewsToZero()  {
@@ -315,10 +330,11 @@ private extension HomeScreen {
         stairsDescendedSection.updateBodyLabel("\(value ?? 0.0)")
     }
     
-    private func updateDistanceTraveled(_ value: NSNumber?, preferMetricUnits: Bool? = false) {
+    private func updateDistanceTraveled(_ value: NSNumber?) {
         guard let distanceInMeters = value else { return }
         
-        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: .kilometers)
+        let distanceUnits: UnitLength = self.distanceUnits == .miles ? .miles : .kilometers
+        let distance = Measurement<UnitLength>(value: distanceInMeters.doubleValue, unit: .meters).converted(to: distanceUnits)
         let formattedDistance = measurementFormatter.string(from: distance)
         
         distanceTraveledSection.updateBodyLabel(formattedDistance)
