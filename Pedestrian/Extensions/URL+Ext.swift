@@ -9,5 +9,5 @@ import Foundation
 
 extension URL {
     static let twitterHandler = URL(string: "https://twitter.com/idrankthecoffee")
-    static let privacyPolicy = URL(string: "")
+    static let privacyPolicy = URL(string: "https://guythatdrinkscoffee.github.io/Pedestrian-App/privacypolicy/")
 }

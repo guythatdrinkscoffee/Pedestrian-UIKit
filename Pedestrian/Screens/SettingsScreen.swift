@@ -36,9 +36,10 @@ private extension SettingsScreen {
     
     private func configureNavigationBar() {
         feedbackImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
-        feedbackImpactGenerator?.prepare()
         
         let rightBarButton = UIBarButtonItem(systemItem: .done, primaryAction: UIAction(){ _ in
+            self.feedbackImpactGenerator?.prepare()
+            
             self.feedbackImpactGenerator?.impactOccurred()
             
             self.dismiss(animated: true) {
