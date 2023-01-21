@@ -54,6 +54,8 @@
 		BEFC1691297B8808001708FD /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1690297B8808001708FD /* SelectionCell.swift */; };
 		BEFC1695297B8E55001708FD /* SelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1694297B8E55001708FD /* SelectionController.swift */; };
 		BEFC1697297B8EB2001708FD /* SelectionCaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */; };
+		BEFC1699297BCD39001708FD /* SettingsSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC1698297BCD39001708FD /* SettingsSwitch.swift */; };
+		BEFC169B297BCDE8001708FD /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFC169A297BCDE8001708FD /* SwitchCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +110,8 @@
 		BEFC1690297B8808001708FD /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		BEFC1694297B8E55001708FD /* SelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionController.swift; sourceTree = "<group>"; };
 		BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCaseCell.swift; sourceTree = "<group>"; };
+		BEFC1698297BCD39001708FD /* SettingsSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitch.swift; sourceTree = "<group>"; };
+		BEFC169A297BCDE8001708FD /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +300,7 @@
 				BEB6AEF7297B1A6C00C87BDA /* SettingsAction.swift */,
 				BEC148C7297B6A3500497498 /* SettingsStepper.swift */,
 				BEFC168E297B86B7001708FD /* SettingsSelection.swift */,
+				BEFC1698297BCD39001708FD /* SettingsSwitch.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				BEC148C9297B6B3200497498 /* StepperCell.swift */,
 				BEFC1690297B8808001708FD /* SelectionCell.swift */,
 				BEFC1696297B8EB2001708FD /* SelectionCaseCell.swift */,
+				BEFC169A297BCDE8001708FD /* SwitchCell.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -468,9 +474,11 @@
 				BEFC1697297B8EB2001708FD /* SelectionCaseCell.swift in Sources */,
 				BE39EF6C2971F6E600999697 /* Pedestrian.xcdatamodeld in Sources */,
 				BE3707C52966738000B67D8A /* ReusableHeaderView.swift in Sources */,
+				BEFC169B297BCDE8001708FD /* SwitchCell.swift in Sources */,
 				BE15AF37296134C8007D4D23 /* AppDelegate.swift in Sources */,
 				BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */,
 				BEB6AEEE297A789A00C87BDA /* SettingsOption.swift in Sources */,
+				BEFC1699297BCD39001708FD /* SettingsSwitch.swift in Sources */,
 				BE33E59529678EB400E1C77F /* UIViewControllerPreview.swift in Sources */,
 				BEB6AF00297B1C8600C87BDA /* SettingsCell.swift in Sources */,
 				BEC148C4297B2AFC00497498 /* ActionCell.swift in Sources */,

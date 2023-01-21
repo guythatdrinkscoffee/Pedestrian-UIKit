@@ -23,4 +23,6 @@ extension UIImage {
     static let twitter = UIImage(systemName: "at", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
     static let mail = UIImage(systemName: "paperclip", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
     static let hand = UIImage(systemName: "hand.raised.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let export = UIImage(systemName: "square.and.arrow.up.on.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let analytics = UIImage(systemName: "wand.and.stars.inverse", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
 }

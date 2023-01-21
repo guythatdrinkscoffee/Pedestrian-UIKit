@@ -52,7 +52,8 @@ private extension SettingsManager {
     private func setDefaultSettings() {
         let defaultSettings: [String: Any] = [
             .dailyStepGoal : 10_000,
-            .distanceUnits : determineDistanceUnits()
+            .distanceUnits : determineDistanceUnits(),
+            .analyticsCollectionAllowed: true
         ]
         
         for (k,v) in defaultSettings {

@@ -40,6 +40,7 @@ extension SettingsController {
         self.tableView.register(ActionCell.self, forCellReuseIdentifier: String(describing: ActionCell.self))
         self.tableView.register(StepperCell.self, forCellReuseIdentifier: String(describing: StepperCell.self))
         self.tableView.register(SelectionCell.self, forCellReuseIdentifier: String(describing: SelectionCell.self))
+        self.tableView.register(SwitchCell.self, forCellReuseIdentifier: String(describing: SwitchCell.self))
     }
 }
 

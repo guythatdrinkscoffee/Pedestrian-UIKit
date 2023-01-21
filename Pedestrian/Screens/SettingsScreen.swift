@@ -72,22 +72,38 @@ private extension SettingsScreen {
             .init(title: "Display", settings: [distance])
         ])
         
-        return .init(title: "General", settings: [ generalGroup ])
+        return .init(settings: [ generalGroup ])
     }
     
     private func configureContactGroup() -> SettingsSection {
-        return .init(title: "Get in tourch", settings: [
+        return .init(settings: [
             SettingsAction(icon: .twitter, title: "Follow on Twitter", options: [], {
                 self.openUrl(.twitterHandler)
             }),
+            
             SettingsAction(icon: .feedback, title: "Send Feedback", options: [], {
                 self.sendFeedback()
             })
         ])
     }
     
+    private func configureExportGroup() -> SettingsSection {
+        return .init(settings: [
+            SettingsGroup(icon: .export, title: "Export Step Data", options: [
+                
+            ])
+        ])
+    }
+    
+    
     private func configurePrivacyGroup() -> SettingsSection {
         return .init(title: "Privacy", settings: [
+            SettingsGroup(icon: .analytics, title: "Crash Reporting & Analytics", options: [
+                .init(settings: [
+                    SettingsSwitch(title: "Opt-Out from data collection" , isOn: UserDefaults.standard.bool(forKey: .analyticsCollectionAllowed), key: .analyticsCollectionAllowed)
+                ])
+            ]),
+            
             SettingsAction(icon: .privacy, title: "Privacy Policy", options: [], {
                 self.openUrl(.privacyPolicy)
             })
@@ -97,6 +113,7 @@ private extension SettingsScreen {
     private func configureSections() -> [SettingsSection] {
         return [
             configureGeneralGroup(),
+            configureExportGroup(),
             configureContactGroup(),
             configurePrivacyGroup()
         ]

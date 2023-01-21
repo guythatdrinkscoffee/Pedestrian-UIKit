@@ -11,4 +11,5 @@ extension String {
     static let dailyStepGoal = "dailyStepGoal"
     static let distanceUnits = "distanceUnits"
     static let defaultSettingsSet = "defaultSettingsSet"
+    static let analyticsCollectionAllowed = "analyticsCollectionAllowed"
 }
