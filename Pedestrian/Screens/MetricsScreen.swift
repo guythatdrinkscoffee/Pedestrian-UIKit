@@ -19,12 +19,7 @@ class MetricsScreen: UIViewController {
     
     // The measurement formatter that is passed by the parent view controller
     public var measurementFormatter: MeasurementFormatter?
-    
-    
-    // The max limit value which corresponds
-    // to the daily user's step goal
-    public var stepGoal : Double = 4_000
-    
+
     // MARK: - Private Properties
     
     // This height is the allowed minimum chart height
@@ -64,6 +59,11 @@ class MetricsScreen: UIViewController {
         formatter.dateFormat = "MMM d"
         return formatter
     }()
+    
+    
+    // The max limit value which corresponds
+    // to the daily user's step goal
+    private var stepGoal : Double = 0
     
     private var lifetimeStartDate: Date = .now
     
@@ -220,6 +220,11 @@ private extension MetricsScreen {
 extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
         self.data = data
+    }
+    
+    public func setStepGoal(_ goal: Int){
+        self.stepGoal = Double(goal)
+        self.updateData(data)
     }
 }
 

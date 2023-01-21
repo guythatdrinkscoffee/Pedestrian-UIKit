@@ -53,7 +53,14 @@ private extension SettingsScreen {
     
     private func configureSettingsController() {
         let generalSection = SettingsSection(title: "General", settings: [
-            SettingsGroup(icon: .general, title: "General", options: [])
+            SettingsGroup(
+                icon: .general,
+                title: "General",
+                options: [
+                    SettingsSection(title: "Steps", settings: [
+                        SettingsStepper(title: "Daily Step Goal",minimum: 100, maximum: 150_000,key: .dailyStepGoal)
+                    ])
+                ])
         ])
         
         let aboutSection = SettingsSection(title: "About", settings: [

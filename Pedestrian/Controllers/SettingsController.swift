@@ -38,6 +38,7 @@ extension SettingsController {
     private func configureReusableCells() {
         self.tableView.register(GroupCell.self, forCellReuseIdentifier: String(describing: GroupCell.self))
         self.tableView.register(ActionCell.self, forCellReuseIdentifier: String(describing: ActionCell.self))
+        self.tableView.register(StepperCell.self, forCellReuseIdentifier: String(describing: StepperCell.self))
     }
 }
 
@@ -88,6 +89,11 @@ extension SettingsController {
         
         if let action = setting as? SettingsAction {
             action.action()
+        } else if let options = setting.options {
+            let vc = SettingsController(sections: options)
+            vc.navigationItem.largeTitleDisplayMode = .never
+            vc.navigationItem.title = setting.title
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

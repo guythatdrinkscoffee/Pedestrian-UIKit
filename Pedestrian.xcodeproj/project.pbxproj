@@ -44,6 +44,8 @@
 		BEC148C0297B227F00497498 /* UIFont+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC148BF297B227F00497498 /* UIFont+Ext.swift */; };
 		BEC148C4297B2AFC00497498 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC148C3297B2AFC00497498 /* ActionCell.swift */; };
 		BEC148C6297B325A00497498 /* URL+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC148C5297B325A00497498 /* URL+Ext.swift */; };
+		BEC148C8297B6A3500497498 /* SettingsStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC148C7297B6A3500497498 /* SettingsStepper.swift */; };
+		BEC148CA297B6B3200497498 /* StepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC148C9297B6B3200497498 /* StepperCell.swift */; };
 		BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED6A802297342D6004142EC /* SettingsScreen.swift */; };
 		BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E042962460B00C6656D /* UIViewPreview.swift */; };
 		BEED0E0B29627E4D00C6656D /* MetricsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */; };
@@ -92,6 +94,8 @@
 		BEC148BF297B227F00497498 /* UIFont+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Ext.swift"; sourceTree = "<group>"; };
 		BEC148C3297B2AFC00497498 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
 		BEC148C5297B325A00497498 /* URL+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Ext.swift"; sourceTree = "<group>"; };
+		BEC148C7297B6A3500497498 /* SettingsStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStepper.swift; sourceTree = "<group>"; };
+		BEC148C9297B6B3200497498 /* StepperCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperCell.swift; sourceTree = "<group>"; };
 		BED6A802297342D6004142EC /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		BEED0E042962460B00C6656D /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		BEED0E0A29627E4D00C6656D /* MetricsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsScreen.swift; sourceTree = "<group>"; };
@@ -282,6 +286,7 @@
 				BEB6AEF2297A7A2700C87BDA /* SettingsGroup.swift */,
 				BEB6AEF0297A79B900C87BDA /* SettingsSection.swift */,
 				BEB6AEF7297B1A6C00C87BDA /* SettingsAction.swift */,
+				BEC148C7297B6A3500497498 /* SettingsStepper.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 			children = (
 				BEB6AEFD297B1C7200C87BDA /* GroupCell.swift */,
 				BEC148C3297B2AFC00497498 /* ActionCell.swift */,
+				BEC148C9297B6B3200497498 /* StepperCell.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -442,6 +448,7 @@
 				BEB6AEFE297B1C7200C87BDA /* GroupCell.swift in Sources */,
 				BEB6AEF6297A7A7C00C87BDA /* SettingsIcon.swift in Sources */,
 				BE28523B297214A8004201EE /* PedestrianDay+CoreDataProperties.swift in Sources */,
+				BEC148CA297B6B3200497498 /* StepperCell.swift in Sources */,
 				BEED0E052962460B00C6656D /* UIViewPreview.swift in Sources */,
 				BE28523D2972662D004201EE /* ReusableFooterView.swift in Sources */,
 				BE39EF6C2971F6E600999697 /* Pedestrian.xcdatamodeld in Sources */,
@@ -464,6 +471,7 @@
 				BEC148C0297B227F00497498 /* UIFont+Ext.swift in Sources */,
 				BE36080F2972071F00A6C0AD /* PedestrianDataStore.swift in Sources */,
 				BE2D46052968D62300973B21 /* String+Ext.swift in Sources */,
+				BEC148C8297B6A3500497498 /* SettingsStepper.swift in Sources */,
 				BE28523A297214A8004201EE /* PedestrianDay+CoreDataClass.swift in Sources */,
 				BE15AF4F2962168D007D4D23 /* PedometerManager.swift in Sources */,
 				BED6A803297342D6004142EC /* SettingsScreen.swift in Sources */,

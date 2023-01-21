@@ -102,7 +102,7 @@ class HomeScreen: UIViewController {
     }()
     
     private lazy var stepProgressView : StepProgressView = {
-        let view = StepProgressView(max: 4000)
+        let view = StepProgressView()
         view.setProgressColor(.systemTeal)
         return view
     }()
@@ -158,15 +158,17 @@ class HomeScreen: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        
         // additional config
         configureMetricsViewController()
+   
+        // listen to settings
+        listenToSettings()
+    
+        // request steps for week
+        updateForLastSevenDays()
         
         // listen to progress
         listenToProgess()
-        
-        // request steps for week
-        updateForLastSevenDays()
     }
 }
 
@@ -238,12 +240,24 @@ extension HomeScreen {
 private extension HomeScreen {
     private func listenToProgess() {
         stepProgressView
-            .didReachMax
+            .didReachMax 
+            .compactMap({$0})
             .sink { didComplete in
                 if  didComplete {
                     self.updateCompletionForCurrentStepData()
                 }
             }
+            .store(in: &cancellables)
+    }
+    
+    private func listenToSettings() {
+        settingsManager?
+            .dailyStepGoalPublisher
+            .compactMap({$0})
+            .sink(receiveValue: { dailyStepGoal in
+                self.stepProgressView.setMax(dailyStepGoal)
+                self.metricsViewController.setStepGoal(dailyStepGoal)
+            })
             .store(in: &cancellables)
     }
     

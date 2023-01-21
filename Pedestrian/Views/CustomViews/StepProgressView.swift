@@ -11,7 +11,7 @@ import CoreMotion
 
 class StepProgressView: UIView {
     // MARK: - Public Properties
-    public var didReachMax = CurrentValueSubject<Bool, Never>(false)
+    public var didReachMax = CurrentValueSubject<Bool?, Never>(nil)
     
     // MARK: - Properties
     private var startPoint = CGFloat(-Double.pi * 0.5)
@@ -155,6 +155,7 @@ class StepProgressView: UIView {
         
         self.stepCountLabel.text = value == -1 ? Int(0).formatted(.number) : Int(value).formatted(.number)
         self.currentValue = value
+        
         self.didReachMax(value: value)
     }
     
@@ -187,6 +188,12 @@ class StepProgressView: UIView {
     public func updateValue(_ value: Int){
         let progressValue: CGFloat = CGFloat(value)
         updateProgress(progressValue)
+    }
+    
+    public func setMax(_ value: Int){
+        let value = CGFloat(value)
+        self.maxValue = value
+        self.updateValue(Int(currentValue))
     }
     
     public func setProgressColor(_ color: UIColor){
