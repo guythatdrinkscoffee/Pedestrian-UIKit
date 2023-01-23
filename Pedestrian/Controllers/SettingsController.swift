@@ -42,6 +42,13 @@ extension SettingsController {
         self.tableView.register(SelectionCell.self, forCellReuseIdentifier: String(describing: SelectionCell.self))
         self.tableView.register(SwitchCell.self, forCellReuseIdentifier: String(describing: SwitchCell.self))
     }
+    
+    
+    func updateForSelection(at indexPath: IndexPath, with selection: any Selection, for setting: SettingsOption){
+        let cell = tableView.cellForRow(at: indexPath) as? SelectionCell
+        cell?.updateSetting(setting: setting)
+        sections[indexPath.section].settings[indexPath.row] = setting
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -114,9 +121,67 @@ extension SettingsController {
         return setting.withRowHeight()
     }
     
-    func updateForSelection(at indexPath: IndexPath, with selection: any Selection, for setting: SettingsOption){
-        let cell = tableView.cellForRow(at: indexPath) as? SelectionCell
-        cell?.updateSetting(setting: setting)
-        sections[indexPath.section].settings[indexPath.row] = setting
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let title = sections[section].headerTitle
+        
+        guard title != nil else { return nil }
+        
+        let headerView = UIView(frame: .zero)
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.textColor = .systemGray
+        titleLabel.font = .preferredFont(forTextStyle: .footnote)
+        titleLabel.numberOfLines = 0
+        
+        headerView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: headerView.topAnchor, multiplier: 1),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: headerView.leadingAnchor, multiplier: 2),
+            headerView.trailingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 2),
+            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+        
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let title = sections[section].footerTitle
+        
+        guard title != nil else { return nil }
+        
+        let footerView = UIView(frame: .zero)
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.textColor = .systemGray
+        titleLabel.font = .preferredFont(forTextStyle: .footnote)
+        titleLabel.numberOfLines = 0
+        
+        footerView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: footerView.topAnchor, multiplier: 1),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: footerView.leadingAnchor, multiplier: 2),
+            footerView.trailingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 2),
+            titleLabel.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+        ])
+        
+        return footerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let title = sections[section].footerTitle
+        
+        guard title != nil else { return 0}
+        
+        return 60
     }
 }

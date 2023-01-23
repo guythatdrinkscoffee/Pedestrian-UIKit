@@ -46,7 +46,6 @@ class ActionCell: UITableViewCell {
 extension ActionCell {
     private func configure(for setting: SettingsAction) {
         isUserInteractionEnabled = true
-        separatorInset = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
         accessoryType  = .disclosureIndicator
         
         configureIconView(for: setting)
@@ -64,8 +63,10 @@ extension ActionCell {
                 iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
             ])
             
+            separatorInset = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
         } else {
             self.leading = self.contentView.leadingAnchor
+            separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
     }
     

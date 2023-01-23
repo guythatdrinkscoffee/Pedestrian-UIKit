@@ -45,8 +45,7 @@ class SwitchCell: UITableViewCell {
 extension SwitchCell {
     private func configure(for setting: SettingsSwitch) {
         isUserInteractionEnabled = true
-        separatorInset = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
-        
+
         configureLabels(for: setting)
         configureSwitch(for: setting)
     }
@@ -86,7 +85,7 @@ extension SwitchCell {
     private func handleSwitch(_ sender: UISwitch) {
         uiSwitch.isOn = sender.isOn
         
-        UserDefaults.standard.set(sender.isOn, forKey: .analyticsCollectionAllowed)
+        UserDefaults.standard.set(sender.isOn, forKey: setting.key)
     }
 }
 

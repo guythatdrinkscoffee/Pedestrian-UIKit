@@ -65,11 +65,9 @@ private extension SettingsScreen {
         
         let distance = SettingsSelection(title: "Distance Units", selection: DistanceUnits(rawValue: UserDefaults.standard.integer(forKey: .distanceUnits)) ?? .miles, data: DistanceUnits.allCases, key: .distanceUnits)
         
-        
-        
         let generalGroup = SettingsGroup(icon: .general, title: "General", options: [
-            .init(title: "Steps", settings: [steps]),
-            .init(title: "Display", settings: [distance])
+            .init(title: "STEPS", settings: [steps]),
+            .init(title: "DISPLAY", settings: [distance])
         ])
         
         return .init(settings: [ generalGroup ])
@@ -90,18 +88,22 @@ private extension SettingsScreen {
     private func configureExportGroup() -> SettingsSection {
         return .init(settings: [
             SettingsGroup(icon: .export, title: "Export Step Data", options: [
-                
+                SettingsSection(settings: [
+                    SettingsAction(title: "Export CSV", {
+                        
+                    })
+                ])
             ])
         ])
     }
     
     
     private func configurePrivacyGroup() -> SettingsSection {
-        return .init(title: "Privacy", settings: [
+        return .init(settings: [
             SettingsGroup(icon: .analytics, title: "Crash Reporting & Analytics", options: [
-                .init(settings: [
-                    SettingsSwitch(title: "Opt-Out from data collection" , isOn: UserDefaults.standard.bool(forKey: .analyticsCollectionAllowed), key: .analyticsCollectionAllowed)
-                ])
+                SettingsSection(settings: [
+                    SettingsSwitch(title: "Opt-Out" , isOn: UserDefaults.standard.bool(forKey: .analyticsCollectionAllowed), key: .analyticsCollectionAllowed)
+                ], footerTitle: "Crash Reporting & Analytics collection is used to fix any potential bugs.")
             ]),
             
             SettingsAction(icon: .privacy, title: "Privacy Policy", options: [], {

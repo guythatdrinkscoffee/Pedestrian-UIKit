@@ -53,6 +53,7 @@ private extension SettingsManager {
         let defaultSettings: [String: Any] = [
             .dailyStepGoal : 10_000,
             .distanceUnits : determineDistanceUnits(),
+            .enableConfetti : true,
             .analyticsCollectionAllowed: true
         ]
         

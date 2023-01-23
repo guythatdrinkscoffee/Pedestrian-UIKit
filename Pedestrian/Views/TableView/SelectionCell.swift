@@ -46,7 +46,6 @@ class SelectionCell: UITableViewCell {
 extension SelectionCell {
     private func configure(for setting: SettingsSelection) {
         isUserInteractionEnabled = true
-        separatorInset = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
         accessoryType = .disclosureIndicator
         
         configureLabels(for: setting)
