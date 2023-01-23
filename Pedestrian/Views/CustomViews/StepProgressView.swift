@@ -7,102 +7,92 @@
 
 import UIKit
 import Combine
-import CoreMotion
+import SwiftUI
 
 class StepProgressView: UIView {
-    // MARK: - Public Properties
-    public var didReachMax = CurrentValueSubject<Bool?, Never>(nil)
+    // MARK: - Public properties
+    public var didReachMaxSubject = CurrentValueSubject<Bool?,Never>(nil)
     
-    // MARK: - Properties
-    private var startPoint = CGFloat(-Double.pi * 0.5)
-    
+    // MARK: - Private properties
+    private var maxValue: CGFloat = 0
+    private var currentValue: CGFloat = 0
+    private var startPoint: CGFloat = -((4 * Double.pi) / 2.95)
     private var endPoint: CGFloat {
-        return  (-startPoint * 3)
+        return -((5 * Double.pi) / 3.05)
     }
     
-    private var maxValue: CGFloat = 100_000.0
-    
-    private var currentValue: CGFloat = 0.0
-    
     // MARK: - UI
-    private lazy var bottomLayer : CAShapeLayer = {
+    private lazy var bottomTrackLayer : CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemPink.withAlphaComponent(0.25).cgColor
+        layer.strokeColor = UIColor.systemTeal.withAlphaComponent(0.3).cgColor
+        layer.lineCap = .round
         layer.strokeEnd = 1.0
-        layer.lineCap = .round
-        layer.lineWidth = 33
-        return layer
-    }()
-   
-    private lazy var progressLayer : CAShapeLayer = {
-        let layer = CAShapeLayer()
-        layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.systemPink.cgColor
-        layer.strokeEnd = 0.0
-        layer.lineCap = .round
-        layer.lineWidth = 23
+        layer.lineWidth = 35
         return layer
     }()
     
-    public lazy var stepCountLabel : UILabel = {
+    private lazy var progressTrackLayer : CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = UIColor.systemTeal.cgColor
+        layer.lineCap = .round
+        layer.strokeStart = 0.0
+        layer.strokeEnd = 0.0
+        layer.lineWidth = 25
+        return layer
+    }()
+    
+    private lazy var maxReachedIconView : UIImageView = {
+        let imageView = UIImageView(image: .target)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .systemGray3
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private lazy var valueLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 36, weight: .black)
-        label.minimumScaleFactor = 0.5
-        label.textAlignment = .center
+        label.font = .monospacedSystemFont(ofSize: 28, weight: .black)
+        label.minimumScaleFactor = 0.75
         label.text = "\(0)"
         return label
     }()
     
-    public lazy var stepsLabel : UILabel = {
+    private lazy var detailLabel : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.textAlignment = .center
+        label.font = .preferredFont(forTextStyle: .headline)
         label.text = "steps"
         return label
     }()
     
-    public lazy var goalReachedLabel : UILabel = {
+    private lazy var maxValueLabel : UILabel = {
         let label = UILabel()
-        label.text = "Goal Reached"
-        label.font = .preferredFont(forTextStyle: .headline)
-        label.textAlignment = .center
-        label.isHidden = true
+        label.font = .monospacedSystemFont(ofSize: 14, weight: .semibold)
+        label.text = " "
         return label
     }()
     
-    private lazy var didCompleteImageView : UIImageView = {
-        let imageView = UIImageView(image:  UIImage(systemName: "crown.fill"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .systemYellow
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        imageView.isHidden = true
-        return imageView
-    }()
     
-    private lazy var bottomStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [didCompleteImageView, goalReachedLabel])
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 5
+    private lazy var labelsStackView : UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [valueLabel, detailLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 2
+        stackView.alignment = .center
         return stackView
     }()
     
-    private lazy var rootStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stepCountLabel, stepsLabel])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
+    private lazy var maxReachedStackView : UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [maxReachedIconView, maxValueLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 5
         return stackView
     }()
     
     // MARK: - Life cycle
-    convenience init(max: Int) {
-        self.init(frame: .zero)
-        self.maxValue = CGFloat(max)
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -113,55 +103,59 @@ class StepProgressView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        makePath()
-        layoutLabels()
+        layoutBottomTrackLayer()
+        layoutProgressTrackLayer()
+        layoutLabelsStackView()
+        layoutMaxReachedStackView()
+    }
+}
+
+// MARK: - Configuration
+extension StepProgressView {
+    private func makePath() -> CGPath {
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        let radius = frame.width * 0.30
+        let path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startPoint, endAngle: endPoint, clockwise: true)
+        return path.cgPath
+    }
+}
+
+// MARK: - Layout
+extension StepProgressView {
+    private func layoutBottomTrackLayer() {
+        bottomTrackLayer.path = makePath()
+        layer.addSublayer(bottomTrackLayer)
     }
     
-    // MARK: - Layout
-    private func makePath() {
-        let radius = (frame.width - 1.5) * 0.33
-        let path = UIBezierPath(
-            arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-            radius: radius,
-            startAngle: startPoint,
-            endAngle: endPoint,
-            clockwise: true)
-        
-        bottomLayer.path = path.cgPath
-        layer.addSublayer(bottomLayer)
-        
-        progressLayer.path = path.cgPath
-        layer.addSublayer(progressLayer)
+    private func layoutProgressTrackLayer() {
+        progressTrackLayer.path = makePath()
+        layer.addSublayer(progressTrackLayer)
     }
     
-    private func layoutLabels() {
-        addSubview(rootStackView)
-        addSubview(bottomStackView)
+    private func layoutLabelsStackView() {
+        addSubview(labelsStackView)
+        
         NSLayoutConstraint.activate([
-            rootStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            rootStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            bottomStackView.topAnchor.constraint(equalToSystemSpacingBelow: rootStackView.bottomAnchor, multiplier: 2.5),
-            bottomStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            labelsStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            labelsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
     
-    // MARK: - Private Methods
-    private func updateProgress(_ value: CGFloat) {
-        let endPosition = value / maxValue
-        let startPosition = currentValue / maxValue
+    private func layoutMaxReachedStackView() {
+        addSubview(maxReachedStackView)
         
-        setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressLayer)
-        
-        self.stepCountLabel.text = value == -1 ? Int(0).formatted(.number) : Int(value).formatted(.number)
-        self.currentValue = value
-        
-        self.didReachMax(value: value)
+        NSLayoutConstraint.activate([
+            maxReachedStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            bottomAnchor.constraint(equalToSystemSpacingBelow: maxReachedStackView.bottomAnchor, multiplier: 0),
+        ])
     }
-    
+}
+
+// MARK: - Private Methods
+extension StepProgressView {
     private func setStrokeEndAnimation(start: CGFloat, end: CGFloat, in layer: CAShapeLayer){
         let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-        
+        strokeEnd.delegate = self
         strokeEnd.fillMode = .forwards
         strokeEnd.isRemovedOnCompletion = false
         strokeEnd.timingFunction = CAMediaTimingFunction(name: .linear)
@@ -173,31 +167,64 @@ class StepProgressView: UIView {
         layer.add(strokeEnd, forKey: "progressAnim")
     }
     
-    private func didReachMax(value: CGFloat) {
-        if Int(value) >= Int(maxValue){
-            didReachMax.send(true)
-            didCompleteImageView.isHidden = false
-            goalReachedLabel.isHidden = false
+    private func scaleImageView() {
+        maxReachedIconView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
+        UIView.animate(
+                withDuration: 1.5,
+               delay: 0.0,
+               usingSpringWithDamping: 0.2,
+               initialSpringVelocity: 0.2,
+               options: .curveEaseOut,
+               animations: {
+                   self.maxReachedIconView.transform = CGAffineTransform(scaleX: 1, y: 1)
+               },
+               completion: nil)
+    }
+}
+
+// MARK: - Public Methods
+extension StepProgressView {
+    public func updateMaxValue(_ value: CGFloat) {
+        self.maxValue = value
+        self.maxValueLabel.text = String(format: "%0.0f", value)
+    }
+    
+    public func updateProgress(with value: CGFloat){
+        let endPosition = value / maxValue
+        let startPosition = currentValue / maxValue
+        
+        self.valueLabel.text = Int(value).formatted(.number)
+    
+        if currentValue >= maxValue {
+            didReachMaxSubject.send(true)
         } else {
-            goalReachedLabel.isHidden = true
-            didCompleteImageView.isHidden = true
+            setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressTrackLayer)
+        }
+    
+        self.currentValue = value
+    }
+}
+
+// MARK: - Animation Delegate
+extension StepProgressView: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag && (currentValue >= maxValue) {
+            layer.removeAnimation(forKey: "progressAnim")
+        } else {
+            
         }
     }
-    
-    // MARK: - Public Methods
-    public func updateValue(_ value: Int){
-        let progressValue: CGFloat = CGFloat(value)
-        updateProgress(progressValue)
-    }
-    
-    public func setMax(_ value: Int){
-        let value = CGFloat(value)
-        self.maxValue = value
-        self.updateValue(Int(currentValue))
-    }
-    
-    public func setProgressColor(_ color: UIColor){
-        bottomLayer.strokeColor = color.withAlphaComponent(0.25).cgColor
-        progressLayer.strokeColor = color.cgColor
+}
+
+// MARK: - Preview
+struct StepProgressView_Preview: PreviewProvider {
+    static var previews: some View {
+        UIViewPreview {
+            let stepsProgressView = StepProgressView()
+            stepsProgressView.updateMaxValue(7500)
+            return stepsProgressView
+        }
+        .frame(width: .infinity, height: 300)
     }
 }

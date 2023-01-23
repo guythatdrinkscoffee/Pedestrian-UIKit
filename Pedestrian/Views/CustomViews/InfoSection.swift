@@ -18,7 +18,8 @@ class InfoSection: UIView {
     }()
     private lazy var bodyLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 18, weight: .bold)
+        label.font = .monospacedSystemFont(ofSize: 16
+                                           , weight: .bold)
         label.textAlignment = .center
         return label
     }()
@@ -83,5 +84,6 @@ struct InfoSection_Preview: PreviewProvider {
             let infoSection = InfoSection(icon: UIImage(systemName: "arrow.up.right"), body: "\(4)", detail: "km")
             return infoSection
         }
+        .frame(height: 60)
     }
 }

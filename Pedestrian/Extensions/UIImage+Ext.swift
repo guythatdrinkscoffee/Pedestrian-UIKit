@@ -3,20 +3,17 @@
 //  Pedestrian
 //
 //  Created by J Manuel Zaragoza on 1/9/23.
-//
+//O
 
 import Foundation
 import UIKit
 
 extension UIImage {
-    static let cal = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let arrowUp = UIImage(systemName: "arrow.up.forward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let arrowDown = UIImage(systemName: "arrow.down.forward",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let crown = UIImage(systemName: "crown.fill")
-    static let walking = UIImage(systemName: "figure.walk",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    static let flag = UIImage(systemName: "flag.filled.and.flag.crossed", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
+    static let arrowUp = UIImage(systemName: "arrow.up.forward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let arrowDown = UIImage(systemName: "arrow.down.forward",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
+    static let walking = UIImage(systemName: "figure.walk",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
     static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
-    
+    static let target =   UIImage(systemName: "target", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     
     // settings
     static let general = UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))

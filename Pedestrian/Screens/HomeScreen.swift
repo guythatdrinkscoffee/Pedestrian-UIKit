@@ -21,6 +21,8 @@ class HomeScreen: UIViewController {
     
     private var weeklydataCancellable: AnyCancellable?
     
+    private var completionCancellable: AnyCancellable?
+    
     private lazy var measurementFormatter : MeasurementFormatter = {
         let formatter = MeasurementFormatter()
         formatter.unitStyle = .medium
@@ -110,7 +112,6 @@ class HomeScreen: UIViewController {
     
     private lazy var stepProgressView : StepProgressView = {
         let view = StepProgressView()
-        view.setProgressColor(.systemTeal)
         return view
     }()
     
@@ -164,18 +165,28 @@ class HomeScreen: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // listen to settings
+        listenToSettings()
         
         // additional config
         configureMetricsViewController()
    
-        // listen to settings
-        listenToSettings()
-    
         // request steps for week
         updateForLastSevenDays()
         
         // listen to progress
         listenToProgess()
+        
+        var val = 100
+        Timer
+            .publish(every: 5, on: .main, in: .default)
+            .autoconnect()
+            .sink { _  in
+                self.stepProgressView.updateProgress(with: CGFloat(val))
+                val += 5000
+                
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -246,15 +257,12 @@ extension HomeScreen {
 // MARK: - Private Methods
 private extension HomeScreen {
     private func listenToProgess() {
-        stepProgressView
-            .didReachMax 
+        completionCancellable = stepProgressView
+            .didReachMaxSubject
             .compactMap({$0})
-            .sink { didComplete in
-                if  didComplete {
-                    self.updateCompletionForCurrentStepData()
-                }
-            }
-            .store(in: &cancellables)
+            .sink(receiveValue: { didReachMaxValue in
+                
+            })
     }
     
     private func listenToSettings() {
@@ -262,7 +270,7 @@ private extension HomeScreen {
             .dailyStepGoalPublisher
             .compactMap({$0})
             .sink(receiveValue: { dailyStepGoal in
-                self.stepProgressView.setMax(dailyStepGoal)
+                self.stepProgressView.updateMaxValue(CGFloat(dailyStepGoal))
                 self.metricsViewController.setStepGoal(dailyStepGoal)
             })
             .store(in: &cancellables)
@@ -312,10 +320,11 @@ private extension HomeScreen {
 
     private func updateStepProgress(_ pedometerData: CMPedometerData?) {
         guard let pedometerData = pedometerData else {
-            stepProgressView.updateValue(-1)
+            self.resetViewsToZero()
             return
         }
-        stepProgressView.updateValue(pedometerData.numberOfSteps.intValue)
+        
+        stepProgressView.updateProgress(with: CGFloat(pedometerData.numberOfSteps.intValue))
     }
     
     private func shouldSave(_ pedometerData: CMPedometerData) {
@@ -338,17 +347,6 @@ private extension HomeScreen {
         let formattedDistance = measurementFormatter.string(from: distance)
         
         distanceTraveledSection.updateBodyLabel(formattedDistance)
-    }
-    
-    private func updateCompletionForCurrentStepData() {
-        if showConfetti {
-            confettiView.startConfetti()
-            showConfetti = false
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.confettiView.stopConfetti()
-            }
-        }
     }
     
     @objc
