@@ -125,10 +125,13 @@ class HomeScreen: UIViewController {
         body: "\(0)",
         detail: "Floors Descended")
     
-    private let distanceTraveledSection =  InfoSection(
-        icon: .walking,
-        body: "\(0)",
-        detail: "Distance Traveled")
+    private lazy var distanceTraveledSection : InfoSection = {
+        let section = InfoSection(
+            icon: .walking,
+            body: "\(0) \(distanceUnits == .miles ? "mi" : "km")",
+            detail: "Distance Traveled")
+        return section
+    }()
     
     private lazy var infoRow : InfoRow = {
         let view = InfoRow()
@@ -176,17 +179,6 @@ class HomeScreen: UIViewController {
         
         // listen to progress
         listenToProgess()
-        
-        var val = 100
-        Timer
-            .publish(every: 5, on: .main, in: .default)
-            .autoconnect()
-            .sink { _  in
-                self.stepProgressView.updateProgress(with: CGFloat(val))
-                val += 5000
-                
-            }
-            .store(in: &cancellables)
     }
 }
 
@@ -258,10 +250,10 @@ extension HomeScreen {
 private extension HomeScreen {
     private func listenToProgess() {
         completionCancellable = stepProgressView
-            .didReachMaxSubject
+            .didReachMaxPublisher
             .compactMap({$0})
             .sink(receiveValue: { didReachMaxValue in
-                
+                self.updateCompletion(didReachMaxValue)
             })
     }
     
@@ -327,7 +319,7 @@ private extension HomeScreen {
         stepProgressView.updateProgress(with: CGFloat(pedometerData.numberOfSteps.intValue))
     }
     
-    private func shouldSave(_ pedometerData: CMPedometerData) {
+    private func shouldSave(_ pedometerData: CMPedometerData) { 
         PersistenceManager.shared.save(pedometerData)
     }
     
@@ -349,6 +341,20 @@ private extension HomeScreen {
         distanceTraveledSection.updateBodyLabel(formattedDistance)
     }
     
+    private func updateCompletion(_ didComplete: Bool) {
+        guard let currentStepData = currentStepData, didComplete else { return }
+        
+        print(#function)
+        if showConfetti {
+            confettiView.startConfetti()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                self.confettiView.stopConfetti()
+            }
+        }
+        
+        completionCancellable = nil
+    }
     @objc
     private func handleNewDay(_ notification: NSNotification) {
         if let currentStepData = currentStepData {

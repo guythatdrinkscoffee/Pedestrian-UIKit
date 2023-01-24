@@ -35,7 +35,7 @@ class InfoSection: UIView {
     private lazy var containerStackView : UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [iconImageView, bodyLabel, detailLabel])
         stackView.axis = .vertical
-        stackView.spacing = 5
+        stackView.spacing = 2
         stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView

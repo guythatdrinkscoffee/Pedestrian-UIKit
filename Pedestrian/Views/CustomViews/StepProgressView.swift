@@ -11,12 +11,13 @@ import SwiftUI
 
 class StepProgressView: UIView {
     // MARK: - Public properties
-    public var didReachMaxSubject = CurrentValueSubject<Bool?,Never>(nil)
+    public var didReachMaxPublisher = CurrentValueSubject<Bool?,Never>(nil)
     
     // MARK: - Private properties
     private var maxValue: CGFloat = 0
     private var currentValue: CGFloat = 0
     private var startPoint: CGFloat = -((4 * Double.pi) / 2.95)
+    private var didComplete = false
     private var endPoint: CGFloat {
         return -((5 * Double.pi) / 3.05)
     }
@@ -69,6 +70,7 @@ class StepProgressView: UIView {
     private lazy var maxValueLabel : UILabel = {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 14, weight: .semibold)
+        label.textColor = .systemGray
         label.text = " "
         return label
     }()
@@ -195,10 +197,8 @@ extension StepProgressView {
         let startPosition = currentValue / maxValue
         
         self.valueLabel.text = Int(value).formatted(.number)
-    
-        if currentValue >= maxValue {
-            didReachMaxSubject.send(true)
-        } else {
+        
+        if !didComplete {
             setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressTrackLayer)
         }
     
@@ -209,10 +209,23 @@ extension StepProgressView {
 // MARK: - Animation Delegate
 extension StepProgressView: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if flag && (currentValue >= maxValue) {
-            layer.removeAnimation(forKey: "progressAnim")
-        } else {
-            
+        if let anim = anim as? CABasicAnimation, let keypath = anim.keyPath {
+            if keypath == "strokeEnd" && currentValue >= maxValue {
+                // Set didComplete to true to avoid any extra animations
+                didComplete = true
+                
+                // Remove all of the animations from the layer
+                layer.removeAllAnimations()
+                
+                // Set the tint for the iconView
+                maxReachedIconView.tintColor = .systemPink
+                
+                // Scale the image view
+                scaleImageView()
+                
+                // Send true to subscribers of didReachMaxPublisher
+                didReachMaxPublisher.send(true)
+            }
         }
     }
 }
