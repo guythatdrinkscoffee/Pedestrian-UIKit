@@ -63,9 +63,7 @@ class MetricsScreen: UIViewController {
     
     // The max limit value which corresponds
     // to the daily user's step goal
-    private var stepGoal : Double = 0
-    
-    private var lifetimeStartDate: Date = .now
+    private var stepGoal : Double = 10_000
     
     private var animationDuration: TimeInterval = 0.6
     

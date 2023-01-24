@@ -42,11 +42,11 @@ private extension SettingsManager {
         guard !UserDefaults.standard.bool(forKey: .defaultSettingsSet) else {
             print("Default settings are set")
             setCurrentSettings()
-            listenToSettings()
             return
         }
         
         setDefaultSettings()
+        setCurrentSettings()
     }
     
     private func setDefaultSettings() {
@@ -84,6 +84,8 @@ private extension SettingsManager {
         
         dailyStepGoalPublisher.send(dailyStepGoal)
         distanceUnitsPublisher.send(distanceUnits)
+        
+        listenToSettings()
     }
     
     private func listenToSettings() {

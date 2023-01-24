@@ -22,7 +22,7 @@ final class PersistenceManager {
     }
     
     // MARK: - Public Methods
-    public func save(_ pedometerData: CMPedometerData){
+    public func save(_ pedometerData: CMPedometerData, dailyStepGoal: Int){
         let entry: PedestrianDay = .findOrInsert(in: dataStore.managedContext, for: pedometerData.startDate, and: pedometerData.endDate)
         
         if entry.objectID.isTemporaryID {
@@ -31,7 +31,7 @@ final class PersistenceManager {
             entry.endDate = pedometerData.endDate
             entry.numberOfSteps = pedometerData.numberOfSteps.int32Value
             entry.distanceInMeters = pedometerData.distance?.doubleValue ?? 0.0
-            entry.goalReached = pedometerData.numberOfSteps.intValue >= 4000
+            entry.goalReached = pedometerData.numberOfSteps.intValue >= dailyStepGoal
         }
     }
 

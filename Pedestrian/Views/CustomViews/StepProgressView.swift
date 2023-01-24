@@ -14,12 +14,12 @@ class StepProgressView: UIView {
     public var didReachMaxPublisher = CurrentValueSubject<Bool?,Never>(nil)
     
     // MARK: - Private properties
-    private var maxValue: CGFloat = 0
+    private var maxValue: CGFloat = 10_000
     private var currentValue: CGFloat = 0
-    private var startPoint: CGFloat = -((4 * Double.pi) / 2.95)
+    private var startPoint: CGFloat = -((4 * Double.pi) / 2.89)
     private var didComplete = false
     private var endPoint: CGFloat {
-        return -((5 * Double.pi) / 3.05)
+        return -((5 * Double.pi) / 3.1)
     }
     
     // MARK: - UI
@@ -70,8 +70,7 @@ class StepProgressView: UIView {
     private lazy var maxValueLabel : UILabel = {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 14, weight: .semibold)
-        label.textColor = .systemGray
-        label.text = " "
+        label.text = String(format: "%0.0f", self.maxValue)
         return label
     }()
     
@@ -188,8 +187,16 @@ extension StepProgressView {
 // MARK: - Public Methods
 extension StepProgressView {
     public func updateMaxValue(_ value: CGFloat) {
-        self.maxValue = value
         self.maxValueLabel.text = String(format: "%0.0f", value)
+        
+        setStrokeEndAnimation(start: currentValue / maxValue , end: currentValue / value, in: progressTrackLayer)
+        
+        if currentValue <= value {
+            didComplete = false
+            maxReachedIconView.tintColor = .systemGray3
+        }
+        
+        self.maxValue = value
     }
     
     public func updateProgress(with value: CGFloat){
@@ -210,7 +217,7 @@ extension StepProgressView {
 extension StepProgressView: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if let anim = anim as? CABasicAnimation, let keypath = anim.keyPath {
-            if keypath == "strokeEnd" && currentValue >= maxValue {
+            if keypath == "strokeEnd" && currentValue >= maxValue && !didComplete {
                 // Set didComplete to true to avoid any extra animations
                 didComplete = true
                 

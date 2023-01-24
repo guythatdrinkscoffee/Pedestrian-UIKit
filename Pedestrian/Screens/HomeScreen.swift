@@ -83,6 +83,8 @@ class HomeScreen: UIViewController {
     
     private var showConfetti : Bool = true
     
+    private var dailyStepGoal: Int = 0
+    
     private var distanceUnits: DistanceUnits = .miles {
         didSet {
             updateDistanceTraveled(currentStepData?.distance)
@@ -262,6 +264,7 @@ private extension HomeScreen {
             .dailyStepGoalPublisher
             .compactMap({$0})
             .sink(receiveValue: { dailyStepGoal in
+                self.dailyStepGoal = dailyStepGoal
                 self.stepProgressView.updateMaxValue(CGFloat(dailyStepGoal))
                 self.metricsViewController.setStepGoal(dailyStepGoal)
             })
@@ -304,7 +307,11 @@ private extension HomeScreen {
                 }
                 return weeklyPedometerData
             })
-            .sink(receiveCompletion: { _ in
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished: PersistenceManager.shared.saveChanges()
+                default: break
+                }
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })
@@ -320,7 +327,7 @@ private extension HomeScreen {
     }
     
     private func shouldSave(_ pedometerData: CMPedometerData) { 
-        PersistenceManager.shared.save(pedometerData)
+        PersistenceManager.shared.save(pedometerData, dailyStepGoal: dailyStepGoal)
     }
     
     private func updatedFloorsAscended(_ value: NSNumber?) {
@@ -342,19 +349,19 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ didComplete: Bool) {
-        guard let currentStepData = currentStepData, didComplete else { return }
+        guard let _ = currentStepData, didComplete else { return }
         
-        print(#function)
         if showConfetti {
             confettiView.startConfetti()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.confettiView.stopConfetti()
             }
         }
         
         completionCancellable = nil
     }
+    
     @objc
     private func handleNewDay(_ notification: NSNotification) {
         if let currentStepData = currentStepData {
