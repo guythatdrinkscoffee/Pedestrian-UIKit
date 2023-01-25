@@ -40,6 +40,10 @@ final class PersistenceManager {
         return allEntries
     }
     
+    public func getFirstEntryDate() -> Date {
+        return PedestrianDay.all(in: dataStore.managedContext).first?.startDate ?? .now
+    }
+    
     public  func saveChanges() {
         self.dataStore.save()
     }

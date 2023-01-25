@@ -137,6 +137,24 @@ extension SettingsController {
         
         headerView.addSubview(titleLabel)
         
+        
+        if let detailTitle = sections[section].detailTitle {
+            let detailLabel = UILabel()
+            detailLabel.translatesAutoresizingMaskIntoConstraints = false
+            detailLabel.text = detailTitle
+            detailLabel.textColor = .systemGray
+            detailLabel.font = .preferredFont(forTextStyle: .footnote)
+            detailLabel.numberOfLines = 0
+            
+            headerView.addSubview(detailLabel)
+            
+            NSLayoutConstraint.activate([
+                headerView.trailingAnchor.constraint(equalToSystemSpacingAfter: detailLabel.trailingAnchor, multiplier: 2),
+                detailLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+            ])
+        }
+        
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: headerView.topAnchor, multiplier: 1),
             titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: headerView.leadingAnchor, multiplier: 2),
@@ -166,7 +184,7 @@ extension SettingsController {
         titleLabel.numberOfLines = 0
         
         footerView.addSubview(titleLabel)
-        
+      
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: footerView.topAnchor, multiplier: 1),
             titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: footerView.leadingAnchor, multiplier: 2),
