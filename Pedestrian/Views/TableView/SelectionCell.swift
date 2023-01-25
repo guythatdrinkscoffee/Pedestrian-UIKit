@@ -12,8 +12,10 @@ class SelectionCell: UITableViewCell {
     private var setting: SettingsSelection! = .none 
     
     // MARK: - UI
+    private var iconView: UIView!
     private var titleLabel: UILabel!
     private var selectionLabel: UILabel!
+    private var leading: NSLayoutXAxisAnchor!
     
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,8 +39,6 @@ class SelectionCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        
     }
 }
 
@@ -48,7 +48,26 @@ extension SelectionCell {
         isUserInteractionEnabled = true
         accessoryType = .disclosureIndicator
         
+        configureIconView(for: setting)
         configureLabels(for: setting)
+    }
+    
+    private func configureIconView(for setting: SettingsSelection) {
+        if let icon = setting.icon?.makeView() {
+            self.iconView = icon
+            self.leading = iconView.trailingAnchor
+            
+            contentView.addSubview(iconView)
+            
+            NSLayoutConstraint.activate([
+                iconView.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
+                iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ])
+            
+            
+        } else {
+            self.leading = contentView.leadingAnchor
+        }
     }
     
     private func configureLabels(for setting: SettingsSelection) {
@@ -75,7 +94,7 @@ extension SelectionCell {
         }
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: leading, multiplier: 2),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             selectionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

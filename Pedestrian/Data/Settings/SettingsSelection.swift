@@ -31,6 +31,7 @@ enum DistanceUnits: Int, CaseIterable, Selection, Equatable{
 }
 
 struct SettingsSelection: SettingsOption {
+    let icon: SettingsIcon?
     let title: String
     let highlight: Bool
     let options: [SettingsSection]?
@@ -38,7 +39,8 @@ struct SettingsSelection: SettingsOption {
     let data: [any Selection]
     let key: String
     
-    init(title: String, highlight: Bool = true, options: [SettingsSection]? = nil,selection: any Selection, data: [any Selection], key: String){
+    init(icon: SettingsIcon? = nil,title: String, highlight: Bool = true, options: [SettingsSection]? = nil,selection: any Selection, data: [any Selection], key: String){
+        self.icon = icon
         self.title = title
         self.highlight = highlight
         self.options = options
