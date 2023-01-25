@@ -7,4 +7,5 @@ target 'Pedestrian' do
 
   # Pods for Pedestrian
   pod 'Charts'
+  pod 'EFCountingLabel'
 end

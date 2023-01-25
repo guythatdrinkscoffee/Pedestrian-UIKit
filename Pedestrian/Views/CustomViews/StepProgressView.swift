@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import EFCountingLabel
 
 class StepProgressView: UIView {
     // MARK: - Public properties
@@ -52,11 +53,14 @@ class StepProgressView: UIView {
         return imageView
     }()
     
-    private lazy var valueLabel : UILabel = {
-        let label = UILabel()
+    private lazy var valueLabel : EFCountingLabel = {
+        let label = EFCountingLabel()
         label.font = .monospacedSystemFont(ofSize: 28, weight: .black)
         label.minimumScaleFactor = 0.75
         label.text = "\(0)"
+        label.setUpdateBlock { value, sender in
+            label.text = Int(value).formatted(.number)
+        }
         return label
     }()
     
@@ -203,7 +207,7 @@ extension StepProgressView {
         let endPosition = value / maxValue
         let startPosition = currentValue / maxValue
         
-        self.valueLabel.text = Int(value).formatted(.number)
+        self.valueLabel.countFrom(currentValue, to: value)
         
         if !didComplete {
             setStrokeEndAnimation(start: startPosition, end: endPosition, in: progressTrackLayer)
@@ -243,6 +247,8 @@ struct StepProgressView_Preview: PreviewProvider {
         UIViewPreview {
             let stepsProgressView = StepProgressView()
             stepsProgressView.updateMaxValue(7500)
+            stepsProgressView.updateProgress(with: 100)
+            
             return stepsProgressView
         }
         .frame(width: .infinity, height: 300)
