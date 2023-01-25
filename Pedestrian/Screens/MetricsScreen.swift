@@ -162,8 +162,18 @@ class MetricsScreen: UIViewController {
         return gesture
     }()
     
+    private var settingsManager: SettingsManager?
     
     // MARK: - Life cycle
+    init(_ settingsManager: SettingsManager? = nil){
+        super.init(nibName: nil, bundle: nil)
+        self.settingsManager = settingsManager
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -231,7 +241,7 @@ private extension MetricsScreen {
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
-        let settingsScreen = SettingsScreen()
+        let settingsScreen = SettingsScreen(settingsManager)
         let navigationContainer = UINavigationController(rootViewController: settingsScreen)
         present(navigationContainer, animated: true)
     }

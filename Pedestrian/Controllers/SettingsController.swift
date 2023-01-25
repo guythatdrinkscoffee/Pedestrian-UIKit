@@ -182,6 +182,6 @@ extension SettingsController {
         
         guard title != nil else { return 0}
         
-        return 60
+        return 75
     }
 }

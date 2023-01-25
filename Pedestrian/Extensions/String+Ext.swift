@@ -13,4 +13,5 @@ extension String {
     static let defaultSettingsSet = "defaultSettingsSet"
     static let enableConfetti = "enableConfetti"
     static let analyticsCollectionAllowed = "analyticsCollectionAllowed"
+    static let didCompleteForToday = "didCompleteForToday"
 }

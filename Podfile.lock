@@ -3,24 +3,28 @@ PODS:
     - Charts/Core (= 4.1.0)
   - Charts/Core (4.1.0):
     - SwiftAlgorithms (~> 1.0)
+  - CSV.swift (2.4.3)
   - EFCountingLabel (5.1.4)
   - SwiftAlgorithms (1.0.0)
 
 DEPENDENCIES:
   - Charts
+  - CSV.swift
   - EFCountingLabel
 
 SPEC REPOS:
   trunk:
     - Charts
+    - CSV.swift
     - EFCountingLabel
     - SwiftAlgorithms
 
 SPEC CHECKSUMS:
   Charts: 354f86803d11d9c35de280587fef50d1af063978
+  CSV.swift: d38741b349c067b4a6db42237cb0e2974d21ccac
   EFCountingLabel: 210620994a2d54759f53034b5bda4642255969c7
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
 
-PODFILE CHECKSUM: 278a75914379308f27f5319c14e54c166259a0fa
+PODFILE CHECKSUM: dece3904e675d81781b6b3865ab4cfa969a56cdf
 
 COCOAPODS: 1.11.3

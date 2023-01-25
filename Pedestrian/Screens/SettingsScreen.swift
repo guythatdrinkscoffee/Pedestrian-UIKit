@@ -13,11 +13,21 @@ class SettingsScreen: UIViewController {
     // MARK: - Properties
     private var feedbackImpactGenerator: UIImpactFeedbackGenerator?
     private var sections: [SettingsSection] = [ ]
-    
+    private var settingsManager: SettingsManager?
     // MARK: - UI
     private var settingsController: SettingsController!
     
     // MARK: - Life cycle
+    init(_ settingsManager: SettingsManager? = nil){
+        super.init(nibName: nil, bundle: nil)
+        self.settingsManager = settingsManager
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -88,11 +98,11 @@ private extension SettingsScreen {
     private func configureExportGroup() -> SettingsSection {
         return .init(settings: [
             SettingsGroup(icon: .export, title: "Export Step Data", options: [
-                SettingsSection(settings: [
+                SettingsSection(title: "ALL DATA",settings: [
                     SettingsAction(title: "Export CSV", {
-                        
+                        self.exportAllStepData()
                     })
-                ])
+                ], footerTitle: "Reported step data is collected from the device's onboard hardware and may differ from other step count reportings.")
             ])
         ])
     }
@@ -134,6 +144,16 @@ extension SettingsScreen {
     private func openUrl(_ url: URL?) {
         if let url = url, UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
+        }
+    }
+    
+    private func exportAllStepData() {
+        let stepData = PersistenceManager.shared.getAll()
+        let csvMaker = CSVMaker(data: stepData, distanceUnits: settingsManager?.distanceUnitsPublisher.value)
+        
+        if let csvURL = csvMaker.makeCSV(){
+            let actionSheet = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+            self.present(actionSheet, animated: true)
         }
     }
 }

@@ -93,7 +93,7 @@ class HomeScreen: UIViewController {
     
     // MARK: - UI
     public lazy var metricsViewController : MetricsScreen = {
-        let controller = MetricsScreen()
+        let controller = MetricsScreen(settingsManager)
         controller.minimumOpeningHeight = minOpeningHeight
         controller.measurementFormatter = measurementFormatter
         return controller
@@ -349,11 +349,11 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ didComplete: Bool) {
-        guard let currentStepData = currentStepData, didComplete else { return }
+        guard let _ = currentStepData, didComplete else { return }
         
-        if let _ = PersistenceManager.shared.findEntry(with: currentStepData) {
-            return
-        } else {
+        if !UserDefaults.standard.bool(forKey: .didCompleteForToday) {
+            UserDefaults.standard.set(true, forKey: .didCompleteForToday)
+            
             if showConfetti {
                 confettiView.startConfetti()
                 
@@ -361,8 +361,6 @@ private extension HomeScreen {
                     self.confettiView.stopConfetti()
                 }
             }
-            
-            PersistenceManager.shared.saveWithCompletion(currentStepData, completed: didComplete)
             
             completionCancellable = nil
         }
@@ -379,6 +377,8 @@ private extension HomeScreen {
                     self.titleLabel.text = self.dateFormatter.string(from: .now)
                     self.updateForLastSevenDays()
                 }
+                
+                UserDefaults.standard.set(false, forKey: .didCompleteForToday)
             }
         }
     }

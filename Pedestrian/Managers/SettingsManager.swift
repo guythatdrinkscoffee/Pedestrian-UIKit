@@ -24,7 +24,6 @@ final class SettingsManager {
     // MARK: - Public Properties
     public var dailyStepGoalPublisher = CurrentValueSubject<Int?,Never>(nil)
     public var distanceUnitsPublisher = CurrentValueSubject<DistanceUnits?, Never>(nil)
-    
     // MARK: - Private Properties
     private var cancellables: Set<AnyCancellable>
     

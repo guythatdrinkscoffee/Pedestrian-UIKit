@@ -8,4 +8,5 @@ target 'Pedestrian' do
   # Pods for Pedestrian
   pod 'Charts'
   pod 'EFCountingLabel'
+  pod 'CSV.swift' 
 end
