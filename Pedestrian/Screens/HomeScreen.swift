@@ -349,17 +349,23 @@ private extension HomeScreen {
     }
     
     private func updateCompletion(_ didComplete: Bool) {
-        guard let _ = currentStepData, didComplete else { return }
+        guard let currentStepData = currentStepData, didComplete else { return }
         
-        if showConfetti {
-            confettiView.startConfetti()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.confettiView.stopConfetti()
+        if let _ = PersistenceManager.shared.findEntry(with: currentStepData) {
+            return
+        } else {
+            if showConfetti {
+                confettiView.startConfetti()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    self.confettiView.stopConfetti()
+                }
             }
+            
+            PersistenceManager.shared.saveWithCompletion(currentStepData, completed: didComplete)
+            
+            completionCancellable = nil
         }
-        
-        completionCancellable = nil
     }
     
     @objc

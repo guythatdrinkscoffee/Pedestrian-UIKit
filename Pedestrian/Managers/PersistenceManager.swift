@@ -32,6 +32,37 @@ final class PersistenceManager {
             entry.numberOfSteps = pedometerData.numberOfSteps.int32Value
             entry.distanceInMeters = pedometerData.distance?.doubleValue ?? 0.0
             entry.goalReached = pedometerData.numberOfSteps.intValue >= dailyStepGoal
+        } else {
+            if let start = entry.startDate, let end = entry.endDate {
+                if Calendar.current.isDateInYesterday(start) || Calendar.current.isDateInYesterday(end) {
+                    entry.endDate = pedometerData.endDate
+                    entry.numberOfSteps = pedometerData.numberOfSteps.int32Value
+                    entry.distanceInMeters = pedometerData.distance?.doubleValue ?? 0.0
+                    entry.goalReached = pedometerData.numberOfSteps.intValue >= dailyStepGoal
+                }
+            }
+        }
+    }
+    
+    public func saveWithCompletion(_ pedometerData: CMPedometerData, completed: Bool){
+        let entry: PedestrianDay = .findOrInsert(in: dataStore.managedContext, for: pedometerData.startDate, and: pedometerData.endDate)
+
+        if entry.objectID.isTemporaryID {
+            entry.goalReached = completed
+            entry.startDate = pedometerData.startDate
+            entry.endDate = pedometerData.endDate
+            
+            PersistenceManager.shared.saveChanges()
+        }
+    }
+    
+    public func findEntry(with pedometerData: CMPedometerData) -> PedestrianDay? {
+        let possibleEntry: PedestrianDay = .findOrInsert(in: dataStore.managedContext, for: pedometerData.startDate, and: pedometerData.endDate)
+        
+        if possibleEntry.objectID.isTemporaryID {
+            return nil
+        } else {
+            return possibleEntry
         }
     }
 
