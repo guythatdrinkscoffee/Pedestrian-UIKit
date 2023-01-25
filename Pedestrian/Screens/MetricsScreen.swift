@@ -60,10 +60,7 @@ class MetricsScreen: UIViewController {
         return formatter
     }()
     
-    
-    // The max limit value which corresponds
-    // to the daily user's step goal
-    private var stepGoal : Double = 10_000
+    private var settingsManager: SettingsManager?
     
     private var animationDuration: TimeInterval = 0.6
     
@@ -75,6 +72,13 @@ class MetricsScreen: UIViewController {
     
     private var tintColor: UIColor = .systemTeal
         
+    
+    // The max limit value which corresponds
+    // to the daily user's step goal
+    private var stepGoal : Double = 10_000
+    
+    // The weekly step data returned by the parent
+    // view controller
     private var data: [CMPedometerData] = [] {
         didSet {
             updateData(data)
@@ -162,7 +166,12 @@ class MetricsScreen: UIViewController {
         return gesture
     }()
     
-    private var settingsManager: SettingsManager?
+    private lazy var metricsController : MetricsController = {
+        let controller = MetricsController(settingsManager: settingsManager)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        return controller
+    }()
+    
     
     // MARK: - Life cycle
     init(_ settingsManager: SettingsManager? = nil){
@@ -207,6 +216,8 @@ private extension MetricsScreen {
         view.addSubview(barChart)
         view.addGestureRecognizer(panGesture)
         
+        add(metricsController)
+        
         NSLayoutConstraint.activate([
             dragIndicator.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             dragIndicator.heightAnchor.constraint(equalToConstant: 5),
@@ -220,6 +231,11 @@ private extension MetricsScreen {
             barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight),
+            
+            metricsController.view.topAnchor.constraint(equalTo: barChart.bottomAnchor, constant: safeAreaBottomHeight),
+            metricsController.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
+            metricsController.view.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: metricsController.view.trailingAnchor, multiplier: 2),
         ])
     }
 }
@@ -228,6 +244,7 @@ private extension MetricsScreen {
 extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
         self.data = data
+        self.metricsController.setData(data)
     }
     
     public func setStepGoal(_ goal: Int){

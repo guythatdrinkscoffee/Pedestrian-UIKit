@@ -102,7 +102,7 @@ private extension SettingsScreen {
                     SettingsAction(title: "Export CSV", {
                         self.exportAllStepData()
                     })
-                ], footerTitle: "Reported step data is collected from the device's onboard hardware and may differ from other step count reportings.", detailTitle: "Since \(PersistenceManager.shared.getFirstEntryDate().formatted(.dateTime.day().month().year()))")
+                ], footerTitle: "Reported step data is collected from the device's onboard hardware and may differ from other step count reportings.", detailTitle: "Starting from \(PersistenceManager.shared.getFirstEntryDate().formatted(.dateTime.day().month().year()))")
             ])
         ])
     }
