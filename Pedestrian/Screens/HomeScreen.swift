@@ -101,7 +101,7 @@ class HomeScreen: UIViewController {
     
     private lazy var titleLabel : UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = .rounded(ofSize: 24, weight: .bold)
         label.text = title
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -275,6 +275,7 @@ private extension HomeScreen {
             .compactMap({$0})
             .sink(receiveValue: { distanceUnits in
                 self.distanceUnits = distanceUnits
+                self.metricsViewController.reloadMetricsController()
             })
             .store(in: &cancellables)
     }

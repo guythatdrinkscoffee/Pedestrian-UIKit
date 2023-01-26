@@ -84,6 +84,7 @@ class MetricsScreen: UIViewController {
             updateData(data)
         }
     }
+    
     // MARK: - UI
     private lazy var dragIndicator : UIView = {
         let view = UIView()
@@ -138,6 +139,7 @@ class MetricsScreen: UIViewController {
         leftAxis.drawAxisLineEnabled = false
         leftAxis.drawLimitLinesBehindDataEnabled = true
         leftAxis.axisMinimum = 0
+        leftAxis.gridColor = .systemGray4
         leftAxis.addLimitLine(limitLine)
         
         // chart right axis
@@ -251,10 +253,19 @@ extension MetricsScreen {
         self.stepGoal = Double(goal)
         self.updateData(data)
     }
+    
+    public func reloadMetricsController() {
+        if let highlighted = barChart.highlighted.first,
+           let data = barChart.data?.entry(for: highlighted)?.data as? CMPedometerData {
+            self.metricsController.setData([data], for: .selection(data.startDate))
+        } else {
+            self.metricsController.setData(data)
+        }
+    }
 }
 
 // MARK: - Private Methods
-private extension MetricsScreen {
+private extension MetricsScreen { 
     
     @objc
     private func handleSettingsTap(_ sender: UIButton){
@@ -353,11 +364,15 @@ private extension MetricsScreen {
 // MARK: - ChartView Delegate
 extension MetricsScreen: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-       
+        guard let pedometerData = entry.data as? CMPedometerData else {
+            return
+        }
+        
+        self.metricsController.setData([pedometerData],for: .selection(pedometerData.startDate))
     }
     
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        
+        self.metricsController.setData(data, for: .lastSixDays)
     }
 }
 

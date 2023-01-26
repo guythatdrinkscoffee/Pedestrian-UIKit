@@ -20,19 +20,15 @@ struct Metrics {
 
 enum MetricsType {
     case lastSixDays
-    case monthly
-    case yearToDate
-    
+    case selection(Date)
+
     var name: String {
         switch self {
         case .lastSixDays: return "Last six days"
-        case .monthly: return "Montly"
-        case .yearToDate: return "Year to date"
+        case .selection(let date): return date.formatted(.dateTime.weekday(.wide).month().day())
         }
     }
 }
-
-
 
 class MetricsController: UIViewController {
     // MARK: - Properties
@@ -49,7 +45,7 @@ class MetricsController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGray6
+        collectionView.backgroundColor = .secondarySystemBackground
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -123,7 +119,6 @@ extension MetricsController {
         let totalDistanceInSpecifiedUnit = Measurement<UnitLength>(value: totalDistance, unit: .meters).converted(to: unitLength)
         let totalDistanceValue = totalDistanceInSpecifiedUnit.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
         
-        
         // Total floors ascended
         let totalFloorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)}).formatted(.number)
         
@@ -138,7 +133,6 @@ extension MetricsController {
                 .init(title: "Floors Descended", value: totalFloorsDescended)
             ])
         ]
-        
         
         collectionView.reloadData()
     }
