@@ -15,6 +15,7 @@ extension UIImage {
     static let settings =   UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .large))
     static let target =   UIImage(systemName: "target", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .bold, scale: .large))
     
+    
     // settings
     static let general = UIImage(systemName: "gearshape", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))
     static let twitter = UIImage(systemName: "at", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .medium))

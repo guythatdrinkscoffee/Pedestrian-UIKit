@@ -11,11 +11,25 @@ import CoreMotion
 struct MetricsSection {
     let title: String
     let metrics: [Metrics]
+    let height: CGFloat
+    
+    init(title: String, metrics: [Metrics], height: CGFloat = 65){
+        self.title = title
+        self.metrics = metrics
+        self.height = height
+    }
 }
 
 struct Metrics {
     let title: String
     let value: String
+    let icon: UIImage?
+    
+    init(title: String, value: String, icon: UIImage? = nil){
+        self.title = title
+        self.value = value
+        self.icon = icon
+    }
 }
 
 enum MetricsType {
@@ -122,7 +136,7 @@ extension MetricsController {
         let distanceUnit = self.settingsManager?.distanceUnitsPublisher.value ?? .miles
         let unitLength : UnitLength  = distanceUnit == .miles ? .miles : .kilometers
         let totalDistanceInSpecifiedUnit = Measurement<UnitLength>(value: totalDistance, unit: .meters).converted(to: unitLength)
-        let totalDistanceValue = totalDistanceInSpecifiedUnit.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
+        let totalDistanceValue = totalDistanceInSpecifiedUnit.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(1))))
         
         // Total floors ascended
         let totalFloorsAscended = data.reduce(0, {$0 + ($1.floorsAscended?.intValue ?? 0)}).formatted(.number)
@@ -149,7 +163,8 @@ extension MetricsController: UICollectionViewDelegateFlowLayout {
         let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
         let space: CGFloat = (flowayout?.minimumInteritemSpacing ?? 0.0) + (flowayout?.sectionInset.left ?? 0.0) + (flowayout?.sectionInset.right ?? 0.0)
         let size:CGFloat = (collectionView.frame.size.width - space) / 2.0
-        return CGSize(width: size, height: 65)
+        
+        return CGSize(width: size, height: metrics[indexPath.section].height)
     }
 }
 
@@ -162,7 +177,7 @@ extension MetricsController: UICollectionViewDataSource {
         }
         
         let metric = metrics[indexPath.section].metrics[indexPath.row]
-        cell.set(title: metric.title, value: metric.value)
+        cell.set(metric: metric)
         
         return cell
     }

@@ -251,7 +251,7 @@ private extension MetricsScreen {
             
             streaksMetricsController.view.topAnchor.constraint(equalToSystemSpacingBelow: stepMetricsController.view.bottomAnchor, multiplier: 2),
             streaksMetricsController.view.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            streaksMetricsController.view.heightAnchor.constraint(equalToConstant: 125),
+            streaksMetricsController.view.heightAnchor.constraint(equalToConstant: 150),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: streaksMetricsController.view.trailingAnchor, multiplier: 2),
         ])
     }
@@ -384,9 +384,9 @@ private extension MetricsScreen {
         // update the streaks controller
         self.streaksMetricsController.setMetrics([
             .init(title: "Streaks", metrics: [
-                .init(title: "Current Streak", value: currentStreak),
-                .init(title: "Longest Streak", value: maxStreak)
-            ])
+                .init(title: "Current Streak", value: currentStreak, icon: UIImage(systemName: "flame.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.systemOrange]))),
+                .init(title: "Longest Streak", value: maxStreak, icon: UIImage(systemName: "flag.filled.and.flag.crossed"))
+            ], height: 80)
         ])
     }
 }

@@ -12,6 +12,12 @@ class MetricCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: MetricsController.self)
     
     // MARK: - UI
+    private lazy var iconImageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private lazy var bodyLabel : UILabel = {
         let label = UILabel()
         label.font = .monospacedSystemFont(ofSize: 16, weight: .bold)
@@ -21,16 +27,16 @@ class MetricCell: UICollectionViewCell {
     
     private lazy var detailLabel : UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = .preferredFont(forTextStyle: .subheadline)
         label.textColor = .systemGray
         label.textAlignment = .center
         return label
     }()
     
     private lazy var containerStackView : UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [bodyLabel, detailLabel])
+        let stackView = UIStackView(arrangedSubviews: [iconImageView, bodyLabel, detailLabel])
         stackView.axis = .vertical
-        stackView.spacing = 2
+        stackView.spacing = 3.5
         stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -62,8 +68,12 @@ class MetricCell: UICollectionViewCell {
 
 // MARK: - Configuration
 extension MetricCell {
-    public func set(title: String, value: String) {
-        detailLabel.text = title
-        bodyLabel.text = value
+    public func set(metric: Metrics) {
+        detailLabel.text = metric.title
+        bodyLabel.text = metric.value
+        
+        if let icon = metric.icon {
+            iconImageView.image = icon
+        }
     }
 }
