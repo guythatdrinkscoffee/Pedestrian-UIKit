@@ -168,12 +168,17 @@ class MetricsScreen: UIViewController {
         return gesture
     }()
     
-    private lazy var metricsController : MetricsController = {
+    private lazy var stepMetricsController : MetricsController = {
         let controller = MetricsController(settingsManager: settingsManager)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         return controller
     }()
     
+    private lazy var streaksMetricsController : MetricsController = {
+        let controller = MetricsController(settingsManager: settingsManager)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        return controller
+    }()
     
     // MARK: - Life cycle
     init(_ settingsManager: SettingsManager? = nil){
@@ -198,7 +203,11 @@ class MetricsScreen: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Update the origin point for the view
         origin = view.frame.origin
+        
+        // Update the streaks controller
+        updateStreaksController()
     }
 }
 
@@ -218,7 +227,8 @@ private extension MetricsScreen {
         view.addSubview(barChart)
         view.addGestureRecognizer(panGesture)
         
-        add(metricsController)
+        add(stepMetricsController)
+        add(streaksMetricsController)
         
         NSLayoutConstraint.activate([
             dragIndicator.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
@@ -234,10 +244,15 @@ private extension MetricsScreen {
             barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             barChart.heightAnchor.constraint(equalToConstant: minimumChartHeight),
             
-            metricsController.view.topAnchor.constraint(equalTo: barChart.bottomAnchor, constant: safeAreaBottomHeight),
-            metricsController.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
-            metricsController.view.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: metricsController.view.trailingAnchor, multiplier: 2),
+            stepMetricsController.view.topAnchor.constraint(equalTo: barChart.bottomAnchor, constant: safeAreaBottomHeight),
+            stepMetricsController.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
+            stepMetricsController.view.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stepMetricsController.view.trailingAnchor, multiplier: 2),
+            
+            streaksMetricsController.view.topAnchor.constraint(equalToSystemSpacingBelow: stepMetricsController.view.bottomAnchor, multiplier: 2),
+            streaksMetricsController.view.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            streaksMetricsController.view.heightAnchor.constraint(equalToConstant: 125),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: streaksMetricsController.view.trailingAnchor, multiplier: 2),
         ])
     }
 }
@@ -246,7 +261,7 @@ private extension MetricsScreen {
 extension MetricsScreen {
     public func setData(data: [CMPedometerData]) {
         self.data = data
-        self.metricsController.setData(data)
+        self.stepMetricsController.setData(data)
     }
     
     public func setStepGoal(_ goal: Int){
@@ -257,9 +272,9 @@ extension MetricsScreen {
     public func reloadMetricsController() {
         if let highlighted = barChart.highlighted.first,
            let data = barChart.data?.entry(for: highlighted)?.data as? CMPedometerData {
-            self.metricsController.setData([data], for: .selection(data.startDate))
+            self.stepMetricsController.setData([data], for: .selection(data.startDate))
         } else {
-            self.metricsController.setData(data)
+            self.stepMetricsController.setData(data)
         }
     }
 }
@@ -359,6 +374,21 @@ private extension MetricsScreen {
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
     }
+    
+    private func updateStreaksController() {
+        let (current, max) = PersistenceManager.shared.getCurrentStreak()
+        
+        let currentStreak = current.isMultiple(of: 2) ? "\(current) days"  : "\(current) day"
+        let maxStreak = max.isMultiple(of: 2) ? "\(max) days"  : "\(max) day"
+        
+        // update the streaks controller
+        self.streaksMetricsController.setMetrics([
+            .init(title: "Streaks", metrics: [
+                .init(title: "Current Streak", value: currentStreak),
+                .init(title: "Longest Streak", value: maxStreak)
+            ])
+        ])
+    }
 }
 
 // MARK: - ChartView Delegate
@@ -368,11 +398,11 @@ extension MetricsScreen: ChartViewDelegate {
             return
         }
         
-        self.metricsController.setData([pedometerData],for: .selection(pedometerData.startDate))
+        self.stepMetricsController.setData([pedometerData],for: .selection(pedometerData.startDate))
     }
     
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        self.metricsController.setData(data, for: .lastSixDays)
+        self.stepMetricsController.setData(data, for: .lastSixDays)
     }
 }
 

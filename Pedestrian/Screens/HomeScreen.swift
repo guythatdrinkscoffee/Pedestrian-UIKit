@@ -162,10 +162,8 @@ class HomeScreen: UIViewController {
         // layout
         layoutViews()
         
-        // Add a new day observer
-        NotificationCenter
-            .default
-            .addObserver(self, selector: #selector(handleNewDay(_:)), name: .NSCalendarDayChanged, object: nil)
+        // observers
+        listenForNewDay()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -284,6 +282,8 @@ private extension HomeScreen {
         self.updateStepProgress(nil)
         self.updatedFloorsAscended(0)
         self.updateDistanceTraveled(0)
+        
+        UserDefaults.standard.set(false, forKey: .didCompleteForToday)
     }
     
     private func update(_ pedometerData: CMPedometerData?) {
@@ -353,6 +353,7 @@ private extension HomeScreen {
         guard let _ = currentStepData, didComplete else { return }
         
         if !UserDefaults.standard.bool(forKey: .didCompleteForToday) {
+            
             UserDefaults.standard.set(true, forKey: .didCompleteForToday)
             
             if showConfetti {
@@ -367,6 +368,15 @@ private extension HomeScreen {
         }
     }
     
+    private func listenForNewDay() {
+        // Add a new day observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleNewDay(_:)),
+            name: .NSCalendarDayChanged,
+            object: nil)
+    }
+    
     @objc
     private func handleNewDay(_ notification: NSNotification) {
         if let currentStepData = currentStepData {
@@ -377,9 +387,9 @@ private extension HomeScreen {
                     self.currentStepData = nil
                     self.titleLabel.text = self.dateFormatter.string(from: .now)
                     self.updateForLastSevenDays()
+                    
+                    UserDefaults.standard.set(false, forKey: .didCompleteForToday)
                 }
-                
-                UserDefaults.standard.set(false, forKey: .didCompleteForToday)
             }
         }
     }

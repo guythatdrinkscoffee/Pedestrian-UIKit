@@ -104,6 +104,11 @@ extension MetricsController {
     public func setData(_ data: [CMPedometerData], for type: MetricsType = .lastSixDays) {
         self.aggregateData(for: data, with: type)
     }
+    
+    public func setMetrics(_ metrics: [MetricsSection]) {
+        self.metrics = metrics
+        self.collectionView.reloadData()
+    }
 }
 
 // MARK: - Private Methods

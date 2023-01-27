@@ -40,6 +40,36 @@ final class PersistenceManager {
         return allEntries
     }
     
+    public func getCurrentStreak() -> (Int, Int){
+        let allEntries = self.getAll()
+        
+        var start = allEntries.first?.startDate
+        var end = allEntries.first?.startDate
+        var count = 0
+        var maxCount = 0
+        
+        for entry in allEntries {
+            if entry.goalReached {
+                end = entry.startDate
+                count += 1
+               
+            } else {
+                start = entry.startDate
+                end = entry.startDate
+                count = 0
+            }
+            
+            maxCount = max(maxCount, count)
+        }
+        
+        print("Current Streak 🔥: \(count)")
+        print("Max Streak 🔥: \(maxCount)")
+        print("Streak Start 🗓: \(start ?? .now)")
+        print("Streak End 🗓: \(end ?? .now)")
+        
+        return (count, maxCount)
+    }
+    
     public func getFirstEntryDate() -> Date {
         return PedestrianDay.all(in: dataStore.managedContext).first?.startDate ?? .now
     }
