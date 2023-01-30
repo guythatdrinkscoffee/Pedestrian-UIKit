@@ -110,12 +110,6 @@ private extension SettingsScreen {
     
     private func configurePrivacyGroup() -> SettingsSection {
         return .init(settings: [
-            SettingsGroup(icon: .analytics, title: "Crash Reporting & Analytics", options: [
-                SettingsSection(settings: [
-                    SettingsSwitch(title: "Opt-Out" , isOn: UserDefaults.standard.bool(forKey: .analyticsCollectionAllowed), key: .analyticsCollectionAllowed)
-                ], footerTitle: "Crash Reporting & Analytics collection is used to fix any potential bugs.")
-            ]),
-            
             SettingsAction(icon: .privacy, title: "Privacy Policy", options: [], {
                 self.openUrl(.privacyPolicy)
             })
