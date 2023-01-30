@@ -205,9 +205,6 @@ class MetricsScreen: UIViewController {
         
         // Update the origin point for the view
         origin = view.frame.origin
-        
-        // Update the streaks controller
-        updateStreaksController()
     }
 }
 
@@ -276,6 +273,21 @@ extension MetricsScreen {
         } else {
             self.stepMetricsController.setData(data)
         }
+    }
+    
+    public func updateStreaksController() {
+        let (current, max) = PersistenceManager.shared.getCurrentStreak()
+        
+        let currentStreak = current == 1 ? "\(current) day"  : "\(current) days"
+        let maxStreak = max == 1 ? "\(max) day"  : "\(max) days"
+        
+        // update the streaks controller
+        self.streaksMetricsController.setMetrics([
+            .init(title: "Streaks", metrics: [
+                .init(title: "Current Streak", value: currentStreak, icon: UIImage(systemName: "flame.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.systemOrange]))),
+                .init(title: "Longest Streak", value: maxStreak, icon: UIImage(systemName: "flag.filled.and.flag.crossed"))
+            ], height: 80)
+        ])
     }
 }
 
@@ -373,21 +385,6 @@ private extension MetricsScreen {
             let frame = self.view.frame
             self.view.frame = CGRectMake(0, frame.height - height, frame.width, frame.height)
         }
-    }
-    
-    private func updateStreaksController() {
-        let (current, max) = PersistenceManager.shared.getCurrentStreak()
-        
-        let currentStreak = current.isMultiple(of: 2) ? "\(current) days"  : "\(current) day"
-        let maxStreak = max.isMultiple(of: 2) ? "\(max) days"  : "\(max) day"
-        
-        // update the streaks controller
-        self.streaksMetricsController.setMetrics([
-            .init(title: "Streaks", metrics: [
-                .init(title: "Current Streak", value: currentStreak, icon: UIImage(systemName: "flame.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.systemOrange]))),
-                .init(title: "Longest Streak", value: maxStreak, icon: UIImage(systemName: "flag.filled.and.flag.crossed"))
-            ], height: 80)
-        ])
     }
 }
 

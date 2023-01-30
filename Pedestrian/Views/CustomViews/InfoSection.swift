@@ -18,8 +18,7 @@ class InfoSection: UIView {
     }()
     private lazy var bodyLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 16
-                                           , weight: .bold)
+        label.font = .monospacedSystemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .center
         return label
     }()

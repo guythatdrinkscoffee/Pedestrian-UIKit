@@ -63,7 +63,7 @@ final class PersistenceManager {
         }
         
         print("Current Streak 🔥: \(count)")
-        print("Max Streak 🔥: \(maxCount)")
+        print("Max Streak 🏴: \(maxCount)")
         print("Streak Start 🗓: \(start ?? .now)")
         print("Streak End 🗓: \(end ?? .now)")
         

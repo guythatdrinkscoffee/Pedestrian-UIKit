@@ -17,10 +17,10 @@ class StepProgressView: UIView {
     // MARK: - Private properties
     private var maxValue: CGFloat = 10_000
     private var currentValue: CGFloat = 0
-    private var startPoint: CGFloat = -((4 * Double.pi) / 2.89)
+    private var startPoint: CGFloat = -((4 * Double.pi) / 2.88)
     private var didComplete = false
     private var endPoint: CGFloat {
-        return -((5 * Double.pi) / 3.1)
+        return -((5 * Double.pi) / 3.09)
     }
     
     // MARK: - UI
@@ -46,7 +46,7 @@ class StepProgressView: UIView {
     }()
     
     private lazy var maxReachedIconView : UIImageView = {
-        let imageView = UIImageView(image: .target)
+        let imageView = UIImageView(image: UIImage(named: "trophy"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemGray3
         imageView.contentMode = .scaleAspectFit
@@ -73,7 +73,7 @@ class StepProgressView: UIView {
     
     private lazy var maxValueLabel : UILabel = {
         let label = UILabel()
-        label.font = .monospacedSystemFont(ofSize: 14, weight: .semibold)
+        label.font = .monospacedSystemFont(ofSize: 14, weight: .bold)
         label.text = String(format: "%0.0f", self.maxValue)
         return label
     }()
@@ -93,7 +93,7 @@ class StepProgressView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 5
+        stackView.spacing = 2
         return stackView
     }()
     
@@ -158,10 +158,10 @@ extension StepProgressView {
 
 // MARK: - Private Methods
 extension StepProgressView {
-    private func setStrokeEndAnimation(start: CGFloat, end: CGFloat, in layer: CAShapeLayer){
+    private func setStrokeEndAnimation(start: CGFloat, end: CGFloat, in layer: CAShapeLayer, fillMode: CAMediaTimingFillMode = .forwards){
         let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         strokeEnd.delegate = self
-        strokeEnd.fillMode = .forwards
+        strokeEnd.fillMode = fillMode
         strokeEnd.isRemovedOnCompletion = false
         strokeEnd.timingFunction = CAMediaTimingFunction(name: .linear)
         strokeEnd.duration = 1.5
@@ -172,26 +172,12 @@ extension StepProgressView {
         layer.add(strokeEnd, forKey: "progressAnim")
     }
     
-    private func scaleImageView() {
-        maxReachedIconView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        
-        UIView.animate(
-                withDuration: 1.5,
-               delay: 0.0,
-               usingSpringWithDamping: 0.2,
-               initialSpringVelocity: 0.2,
-               options: .curveEaseOut,
-               animations: {
-                   self.maxReachedIconView.transform = CGAffineTransform(scaleX: 1, y: 1)
-               },
-               completion: nil)
-    }
 }
 
 // MARK: - Public Methods
 extension StepProgressView {
     public func updateMaxValue(_ value: CGFloat) {
-        self.maxValueLabel.text = String(format: "%0.0f", value)
+        self.maxValueLabel.text = Int(value).formatted(.number)
         
         setStrokeEndAnimation(start: currentValue / maxValue , end: currentValue / value, in: progressTrackLayer)
         
@@ -228,16 +214,18 @@ extension StepProgressView: CAAnimationDelegate {
                 // Remove all of the animations from the layer
                 layer.removeAllAnimations()
                 
-                // Set the tint for the iconView
-                maxReachedIconView.tintColor = .systemPink
-                
-                // Scale the image view
-                scaleImageView()
+                // Update the tint color for the image view
+                maxReachedIconView.tintColor = .systemOrange
                 
                 // Send true to subscribers of didReachMaxPublisher
                 didReachMaxPublisher.send(true)
             }
         }
+    }
+    
+    public func reset() {
+        self.didComplete = false
+        self.updateProgress(with: 0)
     }
 }
 
@@ -247,7 +235,7 @@ struct StepProgressView_Preview: PreviewProvider {
         UIViewPreview {
             let stepsProgressView = StepProgressView()
             stepsProgressView.updateMaxValue(7500)
-            stepsProgressView.updateProgress(with: 100)
+            stepsProgressView.updateProgress(with: 5000)
             
             return stepsProgressView
         }

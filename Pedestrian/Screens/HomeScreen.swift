@@ -279,9 +279,10 @@ private extension HomeScreen {
     }
     
     private func resetViewsToZero()  {
-        self.updateStepProgress(nil)
         self.updatedFloorsAscended(0)
+        self.updateFloorsDescended(0)
         self.updateDistanceTraveled(0)
+        self.stepProgressView.reset()
         
         UserDefaults.standard.set(false, forKey: .didCompleteForToday)
     }
@@ -310,20 +311,17 @@ private extension HomeScreen {
             })
             .sink(receiveCompletion: { completion in
                 switch completion {
-                case .finished: PersistenceManager.shared.saveChanges()
+                case .finished:
+                    PersistenceManager.shared.saveChanges()
+                    self.metricsViewController.updateStreaksController()
                 default: break
                 }
             }, receiveValue: { weeklyStepData in
                 self.weeklyStepData = weeklyStepData
             })
     }
-
-    private func updateStepProgress(_ pedometerData: CMPedometerData?) {
-        guard let pedometerData = pedometerData else {
-            self.resetViewsToZero()
-            return
-        }
-        
+    
+    private func updateStepProgress(_ pedometerData: CMPedometerData) {
         stepProgressView.updateProgress(with: CGFloat(pedometerData.numberOfSteps.intValue))
     }
     
@@ -383,12 +381,12 @@ private extension HomeScreen {
             if !Calendar.current.isDateInToday(currentStepData.startDate)
                 || !Calendar.current.isDateInToday(currentStepData.endDate){
                 
+                UserDefaults.standard.set(false, forKey: .didCompleteForToday)
+                
                 DispatchQueue.main.async {
-                    self.currentStepData = nil
-                    self.titleLabel.text = self.dateFormatter.string(from: .now)
+                    self.update(nil)
                     self.updateForLastSevenDays()
-                    
-                    UserDefaults.standard.set(false, forKey: .didCompleteForToday)
+                    self.titleLabel.text = self.dateFormatter.string(from: .now)
                 }
             }
         }
