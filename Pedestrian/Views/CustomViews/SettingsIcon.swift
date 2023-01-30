@@ -41,8 +41,6 @@ struct SettingsIcon {
 extension SettingsIcon {
     static let general = SettingsIcon(image: .general, color: .systemGray)
     static let twitter = SettingsIcon(image: .twitter, color: .systemBlue)
-    static let feedback = SettingsIcon(image: .mail, color: .systemIndigo)
     static let privacy = SettingsIcon(image: .hand, color: .systemGray)
     static let export = SettingsIcon(image: .export, color: .systemPink)
-    static let analytics = SettingsIcon(image: .analytics, color: .systemBrown)
 }

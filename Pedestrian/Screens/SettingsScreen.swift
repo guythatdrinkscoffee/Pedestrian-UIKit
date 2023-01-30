@@ -88,10 +88,6 @@ private extension SettingsScreen {
             SettingsAction(icon: .twitter, title: "Follow on Twitter", options: [], {
                 self.openUrl(.twitterHandler)
             }),
-            
-            SettingsAction(icon: .feedback, title: "Send Feedback", options: [], {
-                self.sendFeedback()
-            })
         ])
     }
     
