@@ -27,7 +27,6 @@ class SettingsScreen: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -103,21 +102,11 @@ private extension SettingsScreen {
         ])
     }
     
-    
-    private func configurePrivacyGroup() -> SettingsSection {
-        return .init(settings: [
-            SettingsAction(icon: .privacy, title: "Privacy Policy", options: [], {
-                self.openUrl(.privacyPolicy)
-            })
-        ])
-    }
-    
     private func configureSections() -> [SettingsSection] {
         return [
             configureGeneralGroup(),
             configureExportGroup(),
-            configureContactGroup(),
-            configurePrivacyGroup()
+            configureContactGroup()
         ]
     }
     
